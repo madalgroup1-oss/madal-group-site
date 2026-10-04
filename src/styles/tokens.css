@@ -1,0 +1,80 @@
+/* MADAL GROUP — jetons de design (issus des maquettes validées) */
+:root {
+  /* Couleurs de marque */
+  --vert-fonce: #0A3D1F;      /* en-têtes de section, titres, fonds forts */
+  --vert-fonce-2: #072C16;    /* pied de page */
+  --vert-accent: #22C55E;     /* boutons, icônes, étiquettes sur fond foncé */
+  --vert-texte: #15803D;      /* liens et étiquettes sur fond clair (contraste AA) */
+  --vert-pale: #DDF5E5;       /* pastilles d'icône sur fond clair */
+
+  /* Neutres */
+  --blanc: #FFFFFF;
+  --gris-fond: #F5F7F6;       /* alternance de sections */
+  --gris-image: #E3E9E5;      /* emplacement d'image vide */
+  --bordure: #E5E9E7;
+  --bordure-champ: #C5CEC9;
+  --texte: #1F2937;
+  --texte-secondaire: #4B5563;
+
+  /* Sur fond vert foncé */
+  --sur-fonce-texte: #DDE9E2;
+  --sur-fonce-bordure: #2F6A47;
+  --sur-fonce-bordure-bouton: #8FB7A0;
+  --sur-fonce-filet: #1F4A31;
+
+  /* Typographie */
+  --police: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --graisse-normal: 400;
+  --graisse-demi: 600;
+  --graisse-gras: 700;
+
+  --taille-h1: clamp(2.5rem, 1.6rem + 4vw, 4rem);        /* 40 → 64 px */
+  --taille-h2: clamp(1.875rem, 1.5rem + 1.6vw, 2.5rem);  /* 30 → 40 px */
+  --taille-h3: clamp(1.375rem, 1.3rem + 0.4vw, 1.625rem);/* 22 → 26 px */
+  --taille-accroche: clamp(1.1875rem, 1.1rem + 0.5vw, 1.5rem);
+  --taille-texte-grand: 1.125rem;  /* 18 px */
+  --taille-texte: 1rem;            /* 16 px */
+  --taille-texte-petit: 0.9375rem; /* 15 px */
+  --taille-etiquette: 0.875rem;    /* 14 px, majuscules, interlettrage 0.14em */
+
+  --interligne-titre: 1.1;
+  --interligne-texte: 1.55;
+  --interlettrage-etiquette: 0.14em;
+
+  /* Mise en page */
+  --largeur-contenu: 1200px;
+  --marge-laterale: 24px;
+  --section-y: clamp(48px, 6vw, 88px);
+  --espace-1: 8px;
+  --espace-2: 12px;
+  --espace-3: 16px;
+  --espace-4: 24px;
+  --espace-5: 32px;
+  --espace-6: 48px;
+  --espace-7: 56px;
+
+  /* Formes */
+  --rayon-champ: 8px;
+  --rayon-bouton: 10px;
+  --rayon-carte: 12px;
+  --ombre-carte: 0 2px 10px rgba(10, 61, 31, 0.08);
+  --ombre-flottant: 0 6px 16px rgba(0, 0, 0, 0.28);
+
+  /* Interaction */
+  --cible-tactile: 44px;
+  --hauteur-bouton: 52px;
+  --hauteur-entete: 76px;
+  --transition: 160ms ease;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --hauteur-entete: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition: 0ms;
+  }
+}
