@@ -1,0 +1,353 @@
+/* MADAL GROUP — styles globaux (reset léger, typographie, classes utilitaires) */
+@import '@fontsource/barlow/latin-400.css';
+@import '@fontsource/barlow/latin-600.css';
+@import '@fontsource/barlow/latin-700.css';
+@import './tokens.css';
+
+/* ---------- Reset léger ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--hauteur-entete) + var(--espace-3));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--police);
+  font-size: var(--taille-texte);
+  font-weight: var(--graisse-normal);
+  line-height: var(--interligne-texte);
+  color: var(--texte);
+  background: var(--blanc);
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* Menu mobile ouvert : la page ne défile plus derrière */
+html.menu-ouvert {
+  overflow: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+/* ---------- Typographie ---------- */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--graisse-gras);
+  line-height: var(--interligne-titre);
+  color: var(--vert-fonce);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--taille-h1);
+}
+
+h2 {
+  font-size: var(--taille-h2);
+  line-height: 1.15;
+}
+
+h3 {
+  font-size: var(--taille-h3);
+  line-height: 1.25;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--vert-texte);
+  text-underline-offset: 0.18em;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--vert-fonce);
+}
+
+:focus-visible {
+  outline: 3px solid var(--vert-texte);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.fond-fonce :focus-visible,
+.fond-fonce:focus-visible {
+  outline-color: var(--vert-accent);
+}
+
+::selection {
+  background: var(--vert-pale);
+  color: var(--vert-fonce);
+}
+
+/* ---------- Accessibilité ---------- */
+.visuellement-cache {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lien-evitement {
+  position: absolute;
+  top: var(--espace-2);
+  left: var(--espace-2);
+  z-index: 1000;
+  padding: var(--espace-2) var(--espace-3);
+  background: var(--vert-fonce);
+  color: var(--blanc);
+  font-weight: var(--graisse-demi);
+  border-radius: var(--rayon-bouton);
+  transform: translateY(-200%);
+}
+
+.lien-evitement:focus {
+  transform: none;
+  color: var(--blanc);
+}
+
+/* ---------- Mise en page ---------- */
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-contenu);
+  margin-inline: auto;
+  padding-inline: var(--marge-laterale);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--grise {
+  background: var(--gris-fond);
+}
+
+.fond-fonce {
+  background: var(--vert-fonce);
+  color: var(--blanc);
+}
+
+.fond-fonce h1,
+.fond-fonce h2,
+.fond-fonce h3 {
+  color: var(--blanc);
+}
+
+.fond-fonce p {
+  color: var(--sur-fonce-texte);
+}
+
+.entete-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-2);
+  max-width: 720px;
+}
+
+.entete-section p {
+  font-size: var(--taille-texte-grand);
+  color: var(--texte-secondaire);
+}
+
+/* ---------- Étiquette (sur-titre en majuscules) ---------- */
+.etiquette {
+  font-size: var(--taille-etiquette);
+  font-weight: var(--graisse-demi);
+  letter-spacing: var(--interlettrage-etiquette);
+  text-transform: uppercase;
+  color: var(--vert-texte);
+}
+
+.fond-fonce .etiquette {
+  color: var(--vert-accent);
+}
+
+/* ---------- Boutons ---------- */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espace-1);
+  min-height: var(--hauteur-bouton);
+  padding: 0 26px;
+  border: 1px solid var(--vert-accent);
+  border-radius: var(--rayon-bouton);
+  background: var(--vert-accent);
+  color: var(--vert-fonce);
+  font-size: var(--taille-texte);
+  font-weight: var(--graisse-demi);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.bouton:hover {
+  color: var(--vert-fonce);
+  box-shadow: inset 0 0 0 1px var(--vert-fonce);
+}
+
+.bouton--contour {
+  background: transparent;
+  border-color: var(--vert-fonce);
+  color: var(--vert-fonce);
+}
+
+.bouton--contour:hover {
+  background: var(--vert-fonce);
+  border-color: var(--vert-fonce);
+  color: var(--blanc);
+}
+
+.fond-fonce .bouton--contour {
+  border-color: var(--sur-fonce-bordure-bouton);
+  color: var(--blanc);
+}
+
+.fond-fonce .bouton--contour:hover {
+  background: var(--blanc);
+  border-color: var(--blanc);
+  color: var(--vert-fonce);
+}
+
+.bouton--compact {
+  min-height: var(--cible-tactile);
+  padding: 0 var(--espace-3);
+  font-size: var(--taille-texte-petit);
+}
+
+.groupe-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@media (max-width: 640px) {
+  .groupe-boutons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ---------- Lien fléché ---------- */
+.lien-fleche {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espace-1);
+  min-height: var(--cible-tactile);
+  font-weight: var(--graisse-demi);
+  color: var(--vert-texte);
+  text-decoration: none;
+}
+
+.lien-fleche svg {
+  transition: transform var(--transition);
+}
+
+.lien-fleche:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---------- Carte ---------- */
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--espace-5);
+  background: var(--gris-fond);
+  border-radius: var(--rayon-carte);
+}
+
+.carte--blanche {
+  background: var(--blanc);
+  box-shadow: var(--ombre-carte);
+}
+
+.carte--bordee {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+}
+
+@media (max-width: 640px) {
+  .carte {
+    padding: var(--espace-4);
+  }
+}
+
+/* ---------- Contenu en attente ---------- */
+.a-fournir {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--gris-image);
+  color: var(--texte-secondaire);
+  font-weight: var(--graisse-demi);
+  border-radius: 4px;
+}

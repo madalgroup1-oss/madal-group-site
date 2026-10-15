@@ -1,0 +1,504 @@
+---
+import { Image } from 'astro:assets';
+import logoDisque from '../assets/images/logo-disque.jpg';
+import { MENU, estActif } from '../lib/navigation';
+
+const chemin = Astro.url.pathname;
+---
+
+<header class="entete" data-entete>
+  <div class="conteneur entete__barre">
+    <a class="entete__logo" href="/" aria-label="MADAL GROUP, retour à l'accueil">
+      <Image
+        src={logoDisque}
+        alt=""
+        width={48}
+        height={48}
+        densities={[1, 2]}
+        loading="eager"
+        class="entete__symbole"
+      />
+      <span class="entete__nom">MADAL GROUP</span>
+    </a>
+
+    <nav class="nav" id="menu-principal" aria-label="Navigation principale" data-nav>
+      <ul class="nav__liste">
+        {
+          MENU.map((entree) =>
+            entree.sousMenu ? (
+              <li class="nav__item nav__item--sous-menu" data-sous-menu>
+                <button
+                  type="button"
+                  class:list={[
+                    'nav__lien',
+                    'nav__declencheur',
+                    { 'est-actif': entree.sousMenu.some((pole) => estActif(pole.href, chemin)) },
+                  ]}
+                  aria-expanded="false"
+                  aria-controls="sous-menu-expertises"
+                  data-declencheur
+                >
+                  {entree.libelle}
+                  <svg
+                    class="nav__chevron"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <ul class="sous-menu" id="sous-menu-expertises" hidden>
+                  {entree.sousMenu.map((pole) => (
+                    <li>
+                      <a
+                        class="sous-menu__lien"
+                        href={pole.href}
+                        aria-current={estActif(pole.href, chemin) ? 'page' : undefined}
+                      >
+                        <span class="etiquette">{pole.verbe}</span>
+                        <span class="sous-menu__nom">{pole.nom}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li class="nav__item">
+                <a
+                  class:list={['nav__lien', { 'est-actif': estActif(entree.href ?? '/', chemin) }]}
+                  href={entree.href}
+                  aria-current={estActif(entree.href ?? '/', chemin) ? 'page' : undefined}
+                >
+                  {entree.libelle}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+
+    <div class="entete__actions">
+      <a class="bouton bouton--compact entete__devis" href="/devis">
+        <span class="entete__devis-long">Demander un devis</span>
+        <span class="entete__devis-court">Devis</span>
+      </a>
+      <button
+        type="button"
+        class="entete__hamburger"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        data-hamburger
+      >
+        <span class="visuellement-cache" data-hamburger-libelle>Ouvrir le menu</span>
+        <svg
+          class="entete__icone-ouvrir"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <svg
+          class="entete__icone-fermer"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .entete {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--blanc);
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .entete__barre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espace-3);
+    min-height: var(--hauteur-entete);
+  }
+
+  .entete__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+    min-height: var(--cible-tactile);
+    color: var(--vert-fonce);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .entete__symbole {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .entete__nom {
+    font-size: 1.25rem;
+    font-weight: var(--graisse-gras);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* ---------- Menu ---------- */
+  .nav__liste {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+    padding: 0;
+  }
+
+  .nav__item {
+    position: relative;
+  }
+
+  .nav__lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: var(--cible-tactile);
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--texte);
+    font-size: var(--taille-texte-petit);
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav__lien:hover,
+  .nav__lien.est-actif {
+    color: var(--vert-texte);
+  }
+
+  .nav__chevron {
+    transition: transform var(--transition);
+  }
+
+  .nav__declencheur[aria-expanded='true'] .nav__chevron {
+    transform: rotate(180deg);
+  }
+
+  .sous-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: -20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 280px;
+    margin: 0;
+    padding: var(--espace-1);
+    list-style: none;
+    background: var(--blanc);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+    box-shadow: var(--ombre-carte);
+  }
+
+  .sous-menu[hidden] {
+    display: none;
+  }
+
+  .sous-menu__lien {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--espace-2) var(--espace-3);
+    border-radius: var(--rayon-champ);
+    color: var(--vert-fonce);
+    text-decoration: none;
+    transition: background-color var(--transition);
+  }
+
+  .sous-menu__lien:hover,
+  .sous-menu__lien[aria-current='page'] {
+    background: var(--gris-fond);
+    color: var(--vert-fonce);
+  }
+
+  .sous-menu__lien .etiquette {
+    font-size: 0.8125rem;
+  }
+
+  .sous-menu__nom {
+    font-size: var(--taille-texte-grand);
+    font-weight: var(--graisse-gras);
+  }
+
+  /* ---------- Actions ---------- */
+  .entete__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-1);
+    flex-shrink: 0;
+  }
+
+  .entete__devis {
+    padding: 0 22px;
+  }
+
+  .entete__devis-court {
+    display: none;
+  }
+
+  .entete__hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--cible-tactile);
+    height: var(--cible-tactile);
+    padding: 0;
+    background: var(--blanc);
+    border: 1px solid var(--bordure-champ);
+    border-radius: var(--rayon-bouton);
+    color: var(--vert-fonce);
+  }
+
+  .entete__icone-fermer {
+    display: none;
+  }
+
+  .entete.est-ouvert .entete__icone-ouvrir {
+    display: none;
+  }
+
+  .entete.est-ouvert .entete__icone-fermer {
+    display: block;
+  }
+
+  /* Bureau étroit : on resserre le menu (le symbole reste, le nom passe en lecteur d'écran) */
+  @media (max-width: 1180px) {
+    .nav__liste {
+      gap: 20px;
+    }
+
+    .entete__nom {
+      display: none;
+    }
+  }
+
+  @media (min-width: 900px) and (max-width: 1023px) {
+    .nav__liste {
+      gap: 16px;
+    }
+
+    .entete__devis {
+      padding: 0 var(--espace-3);
+    }
+
+    .entete__devis-long {
+      display: none;
+    }
+
+    .entete__devis-court {
+      display: inline;
+    }
+  }
+
+  /* ---------- Mobile et tablette : menu plein écran ---------- */
+  @media (max-width: 899px) {
+    .entete__nom {
+      display: inline;
+    }
+
+    .entete__hamburger {
+      display: inline-flex;
+    }
+
+    .nav {
+      display: none;
+      position: fixed;
+      inset: var(--hauteur-entete) 0 0 0;
+      z-index: 99;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: var(--espace-4) var(--marge-laterale) var(--espace-6);
+      background: var(--blanc);
+    }
+
+    .entete.est-ouvert .nav {
+      display: block;
+    }
+
+    .nav__liste {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .nav__item {
+      border-bottom: 1px solid var(--bordure);
+    }
+
+    .nav__lien {
+      width: 100%;
+      justify-content: space-between;
+      min-height: 56px;
+      font-size: var(--taille-texte-grand);
+    }
+
+    .sous-menu {
+      position: static;
+      min-width: 0;
+      margin-bottom: var(--espace-2);
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .sous-menu__lien {
+      padding: var(--espace-2) var(--espace-3);
+      background: var(--gris-fond);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .entete__symbole {
+      width: 40px;
+      height: 40px;
+    }
+
+    .entete__nom {
+      font-size: 1rem;
+    }
+
+    .entete__devis {
+      padding: 0 14px;
+    }
+
+    .entete__devis-long {
+      display: none;
+    }
+
+    .entete__devis-court {
+      display: inline;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .entete__nom {
+      font-size: 0.9375rem;
+      letter-spacing: 0.02em;
+    }
+  }
+</style>
+
+<script>
+  const entete = document.querySelector<HTMLElement>('[data-entete]');
+  const hamburger = document.querySelector<HTMLButtonElement>('[data-hamburger]');
+  const libelleHamburger = document.querySelector<HTMLElement>('[data-hamburger-libelle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const blocSousMenu = document.querySelector<HTMLElement>('[data-sous-menu]');
+  const declencheur = blocSousMenu?.querySelector<HTMLButtonElement>('[data-declencheur]');
+  const sousMenu = blocSousMenu?.querySelector<HTMLElement>('.sous-menu');
+  const requeteMobile = window.matchMedia('(max-width: 899px)');
+
+  /* ---------- Sous-menu « Nos expertises » ---------- */
+  function basculerSousMenu(ouvrir: boolean): void {
+    if (!declencheur || !sousMenu) return;
+    declencheur.setAttribute('aria-expanded', String(ouvrir));
+    sousMenu.hidden = !ouvrir;
+  }
+
+  declencheur?.addEventListener('click', () => {
+    basculerSousMenu(declencheur.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Sur ordinateur : fermeture au clic extérieur et à la sortie du focus
+  document.addEventListener('click', (evenement) => {
+    if (requeteMobile.matches || !blocSousMenu) return;
+    if (!blocSousMenu.contains(evenement.target as Node)) basculerSousMenu(false);
+  });
+
+  blocSousMenu?.addEventListener('focusout', (evenement) => {
+    if (requeteMobile.matches) return;
+    const suivant = evenement.relatedTarget as Node | null;
+    if (suivant && !blocSousMenu.contains(suivant)) basculerSousMenu(false);
+  });
+
+  /* ---------- Menu plein écran (mobile) ---------- */
+  function elementsInertes(): HTMLElement[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('[data-inerte-menu]'));
+  }
+
+  function basculerMenu(ouvrir: boolean): void {
+    if (!entete || !hamburger) return;
+    entete.classList.toggle('est-ouvert', ouvrir);
+    hamburger.setAttribute('aria-expanded', String(ouvrir));
+    if (libelleHamburger) {
+      libelleHamburger.textContent = ouvrir ? 'Fermer le menu' : 'Ouvrir le menu';
+    }
+    document.documentElement.classList.toggle('menu-ouvert', ouvrir);
+    elementsInertes().forEach((element) => {
+      element.inert = ouvrir;
+    });
+    if (ouvrir) {
+      nav?.querySelector<HTMLElement>('a, button')?.focus();
+    } else {
+      basculerSousMenu(false);
+    }
+  }
+
+  hamburger?.addEventListener('click', () => {
+    basculerMenu(hamburger.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Un lien suivi dans le menu mobile referme le menu (ancres sur la même page)
+  nav?.addEventListener('click', (evenement) => {
+    if ((evenement.target as HTMLElement).closest('a') && requeteMobile.matches) {
+      basculerMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', (evenement) => {
+    if (evenement.key !== 'Escape') return;
+    if (entete?.classList.contains('est-ouvert')) {
+      basculerMenu(false);
+      hamburger?.focus();
+    } else if (declencheur?.getAttribute('aria-expanded') === 'true') {
+      basculerSousMenu(false);
+      declencheur.focus();
+    }
+  });
+
+  // Retour sur grand écran : on referme le menu mobile
+  requeteMobile.addEventListener('change', (evenement) => {
+    if (!evenement.matches) basculerMenu(false);
+  });
+</script>

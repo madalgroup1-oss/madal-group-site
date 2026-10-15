@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import abidjan from '../assets/images/abidjan.jpg';
+
+interface Props {
+  titre?: string;
+  texte?: string;
+  /** Lien du bouton principal, ex. « /devis?pole=consulting » sur une landing. */
+  lienDevis?: string;
+}
+
+// Textes officiels : docs/brief-strategique.md
+const {
+  titre = 'Vous avez un projet ? Parlons-en.',
+  texte = 'Que vous recherchiez un accompagnement en gestion, un produit, une fourniture ou une solution technologique, notre équipe est à votre écoute.',
+  lienDevis = '/devis',
+} = Astro.props;
+---
+
+<section class="cta fond-fonce" aria-labelledby="cta-titre">
+  <Image
+    src={abidjan}
+    alt=""
+    widths={[480, 800, 1200, 1600]}
+    sizes="100vw"
+    class="cta__fond"
+  />
+  <div class="conteneur cta__contenu">
+    <h2 id="cta-titre">{titre}</h2>
+    <p>{texte}</p>
+    <div class="groupe-boutons">
+      <a class="bouton" href={lienDevis}>Demander un devis</a>
+      <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .cta__fond {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Voile vert foncé pour garantir le contraste du texte */
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--vert-fonce);
+    opacity: 0.84;
+  }
+
+  .cta__contenu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding-block: 80px;
+  }
+
+  .cta h2 {
+    font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .cta p {
+    max-width: 680px;
+    font-size: var(--taille-texte-grand);
+  }
+
+  .cta .groupe-boutons {
+    margin-top: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .cta__contenu {
+      padding-block: var(--espace-6);
+    }
+
+    .cta p {
+      font-size: var(--taille-texte);
+    }
+
+    .cta .groupe-boutons {
+      align-self: stretch;
+    }
+  }
+</style>
