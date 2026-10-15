@@ -1,0 +1,92 @@
+---
+import Icone from './Icone.astro';
+import type { Pole } from '../data/groupe';
+import { insecablePuces } from '../lib/format';
+
+interface Props {
+  pole: Pole;
+  /** Fond de la carte : gris sur section blanche, blanc sur section grise. */
+  fond?: 'gris' | 'blanc';
+}
+
+const { pole, fond = 'gris' } = Astro.props;
+---
+
+<article class:list={['carte', 'carte-pole', { 'carte--blanche': fond === 'blanc' }]}>
+  <span class="carte-pole__icone">
+    <Icone nom={pole.icone} taille={26} />
+  </span>
+  <p class="etiquette">{pole.verbe}</p>
+  <h3 class="carte-pole__nom">{pole.nom}</h3>
+  <p class="carte-pole__domaines">{insecablePuces(pole.domaines)}</p>
+  <p class="carte-pole__texte">{pole.texte}</p>
+  <a class="lien-fleche carte-pole__lien" href={pole.href}>
+    Découvrir {pole.nom}
+    <Icone nom="fleche" taille={18} />
+  </a>
+</article>
+
+<style>
+  .carte-pole {
+    position: relative;
+    height: 100%;
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  /* Toute la carte est cliquable, le lien reste l'unique cible pour le clavier */
+  .carte-pole__lien::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--rayon-carte);
+  }
+
+  .carte-pole:hover {
+    box-shadow: var(--ombre-carte);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carte-pole:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .carte-pole__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--rayon-carte);
+    background: var(--vert-fonce);
+    color: var(--vert-accent);
+  }
+
+  .carte-pole__nom {
+    font-size: var(--taille-h3);
+  }
+
+  .carte-pole__domaines {
+    font-size: var(--taille-texte-petit);
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+  }
+
+  .carte-pole__texte {
+    color: var(--texte-secondaire);
+  }
+
+  .carte-pole__lien {
+    margin-top: auto;
+  }
+
+  @media (max-width: 640px) {
+    .carte-pole__icone {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--rayon-bouton);
+    }
+  }
+</style>

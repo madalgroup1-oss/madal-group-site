@@ -1,0 +1,48 @@
+---
+// Icônes au trait, une seule famille (trait 2 px, extrémités arrondies), reprises des maquettes.
+export type NomIconeSite = 'consulting' | 'distribution' | 'technologie' | 'fleche' | 'coche';
+
+interface Props {
+  nom: NomIconeSite;
+  taille?: number;
+  epaisseur?: number;
+  class?: string;
+}
+
+const { nom, taille = 24, epaisseur = 2, class: classe } = Astro.props;
+---
+
+<svg
+  class={classe}
+  width={taille}
+  height={taille}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={epaisseur}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {nom === 'consulting' && <path d="M4 20h16M6 20V10M10 20V4M14 20v-8M18 20V7" />}
+  {
+    nom === 'distribution' && (
+      <>
+        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" />
+        <circle cx="7" cy="18" r="2" />
+        <circle cx="17" cy="18" r="2" />
+      </>
+    )
+  }
+  {
+    nom === 'technologie' && (
+      <>
+        <rect x="7" y="7" width="10" height="10" rx="2" />
+        <path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
+      </>
+    )
+  }
+  {nom === 'fleche' && <path d="M5 12h14M13 6l6 6-6 6" />}
+  {nom === 'coche' && <path d="M5 12l5 5 9-10" />}
+</svg>

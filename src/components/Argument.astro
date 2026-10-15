@@ -1,0 +1,57 @@
+---
+import Icone from './Icone.astro';
+
+interface Props {
+  titre: string;
+  texte: string;
+}
+
+const { titre, texte } = Astro.props;
+---
+
+<div class="argument">
+  <div class="argument__entete">
+    <span class="argument__pastille">
+      <Icone nom="coche" taille={16} epaisseur={2.5} />
+    </span>
+    <h3 class="argument__titre">{titre}</h3>
+  </div>
+  <p class="argument__texte">{texte}</p>
+</div>
+
+<style>
+  .argument {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+  }
+
+  .argument__entete {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .argument__pastille {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--vert-pale);
+    color: var(--vert-texte);
+  }
+
+  .argument__titre {
+    font-size: 1.1875rem;
+    font-weight: var(--graisse-demi);
+  }
+
+  .argument__texte {
+    font-size: var(--taille-texte-petit);
+    line-height: 1.5;
+    color: var(--texte-secondaire);
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  numero: number;
+  titre: string;
+  texte: string;
+}
+
+const { numero, titre, texte } = Astro.props;
+const numeroAffiche = String(numero).padStart(2, '0');
+---
+
+<li class="etape">
+  <span class="etape__numero" aria-hidden="true">{numeroAffiche}</span>
+  <h3 class="etape__titre">
+    <span class="visuellement-cache">Étape {numero} : </span>{titre}
+  </h3>
+  <p class="etape__texte">{texte}</p>
+</li>
+
+<style>
+  .etape {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+    padding-top: 20px;
+    border-top: 3px solid var(--vert-accent);
+  }
+
+  .etape__numero {
+    font-size: 2rem;
+    font-weight: var(--graisse-gras);
+    line-height: 1.2;
+    color: var(--vert-fonce);
+  }
+
+  .etape__titre {
+    font-size: 1.25rem;
+    font-weight: var(--graisse-demi);
+  }
+
+  .etape__texte {
+    color: var(--texte-secondaire);
+  }
+
+  :global(.fond-fonce) .etape__numero {
+    color: var(--vert-accent);
+  }
+
+  :global(.fond-fonce) .etape__texte {
+    color: var(--sur-fonce-texte);
+  }
+</style>
