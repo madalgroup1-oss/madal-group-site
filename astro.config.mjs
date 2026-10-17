@@ -13,6 +13,10 @@ export default defineConfig({
       filter: (page) => !page.includes('/admin'),
     }),
   ],
+  image: {
+    // Logos et captures téléversés dans le stockage Supabase (bucket « media »)
+    remotePatterns: [{ protocol: 'https', hostname: '**.supabase.co' }],
+  },
   build: {
     // Feuilles de style toujours externes : la CSP n'autorise pas les styles en ligne
     inlineStylesheets: 'never',

@@ -14,11 +14,16 @@ import logoDisque from '../assets/images/logo-disque.jpg';
 import { ACCROCHE } from '../lib/coordonnees';
 import { jsonLd, organisation } from '../lib/seo';
 import { ARGUMENTS, INTRODUCTION, METHODE, POLES_DETAILS, POSITIONNEMENT } from '../data/groupe';
-// Provisoire (phase 1) : remplacé par Supabase en phase 2
-import { ARTICLES_PROVISOIRES, SOLUTIONS_PROVISOIRES } from '../data/provisoire';
+import { listerArticles, listerSolutions } from '../lib/supabase';
 
 const logoJsonLd = await getImage({ src: logoDisque, width: 320, height: 320, format: 'png' });
 const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).href);
+
+// Contenus lus dans Supabase au moment du build
+const [solutions, articles] = await Promise.all([
+  listerSolutions({ miseEnAvant: true }),
+  listerArticles(3),
+]);
 ---
 
 <Base
@@ -166,7 +171,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
       </div>
       <ul class="grille grille--large" data-apparition-groupe>
         {
-          SOLUTIONS_PROVISOIRES.map((solution) => (
+          solutions.map((solution) => (
             <li>
               <CarteSolution solution={solution} />
             </li>
@@ -189,15 +194,23 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
           <Icone nom="fleche" taille={18} />
         </a>
       </div>
-      <ul class="grille" data-apparition-groupe>
-        {
-          ARTICLES_PROVISOIRES.slice(0, 3).map((article) => (
-            <li>
-              <CarteArticle article={article} />
-            </li>
-          ))
-        }
-      </ul>
+      {
+        articles.length > 0 ? (
+          <ul class="grille" data-apparition-groupe>
+            {articles.map((article) => (
+              <li>
+                <CarteArticle article={article} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="mag-vide" data-apparition>
+            <span class="a-fournir">
+              [À FOURNIR : 3 premiers articles du Mag, un par pôle, saisis dans /admin]
+            </span>
+          </p>
+        )
+      }
     </div>
   </section>
 
@@ -466,6 +479,13 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     position: absolute;
     inset: 0;
     z-index: -1;
+  }
+
+  .mag-vide {
+    padding: var(--espace-5);
+    border: 1px dashed var(--bordure-champ);
+    border-radius: var(--rayon-carte);
+    text-align: center;
   }
 
   /* ---------- En-tête de section avec lien à droite ---------- */

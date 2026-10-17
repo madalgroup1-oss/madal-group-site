@@ -1,40 +1,35 @@
 ---
-import type { ArticleResume } from '../data/provisoire';
+import type { Article } from '../lib/supabase';
+import { NOM_POLE_COURT } from '../lib/libelles';
 
 interface Props {
-  article: ArticleResume;
+  article: Article;
 }
 
 const { article } = Astro.props;
+const date = article.publie_le ? new Date(article.publie_le) : null;
 
 const formatDate = new Intl.DateTimeFormat('fr-FR', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
+  timeZone: 'Africa/Abidjan',
 });
 ---
 
 <article class="carte carte--bordee carte-article">
-  <p class="carte-article__rubrique">{article.pole}{' · '}{article.rubrique}</p>
+  <p class="carte-article__rubrique">
+    {NOM_POLE_COURT[article.pole]}{article.rubrique && ` · ${article.rubrique}`}
+  </p>
   <h3 class="carte-article__titre">
-    {
-      article.slug ? (
-        <a class="carte-article__lien" href={`/mag/${article.slug}`}>
-          {article.titre}
-        </a>
-      ) : (
-        article.titre
-      )
-    }
+    <a class="carte-article__lien" href={`/mag/${article.slug}`}>{article.titre}</a>
   </h3>
   <p class="carte-article__resume">{article.resume}</p>
   {
-    article.date ? (
-      <time class="carte-article__date" datetime={article.date.toISOString().slice(0, 10)}>
-        {formatDate.format(article.date)}
+    date && (
+      <time class="carte-article__date" datetime={date.toISOString().slice(0, 10)}>
+        {formatDate.format(date)}
       </time>
-    ) : (
-      <p class="carte-article__date">[À FOURNIR : date de publication]</p>
     )
   }
 </article>
