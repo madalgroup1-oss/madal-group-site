@@ -52,7 +52,12 @@ const { page } = Astro.props;
 
   .whatsapp:hover {
     color: var(--vert-fonce);
-    transform: scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .whatsapp:hover {
+      transform: scale(1.06);
+    }
   }
 
   .whatsapp:focus-visible {

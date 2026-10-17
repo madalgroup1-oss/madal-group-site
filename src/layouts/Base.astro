@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import BoutonWhatsApp from '../components/BoutonWhatsApp.astro';
 import BlocCTA from '../components/BlocCTA.astro';
 import logoDisque from '../assets/images/logo-disque.jpg';
-import facade from '../assets/images/facade.jpg';
+import partageAccueil from '../assets/images/partage-accueil.jpg';
 
 interface Props {
   /** Balise <title>, rédigée à la main et unique par page. */
@@ -15,7 +15,7 @@ interface Props {
   description: string;
   /** Nom lisible de la page, repris dans le message WhatsApp pré-rempli. */
   page: string;
-  /** Image de partage (1200 × 630) ; par défaut la façade du siège. */
+  /** Image de partage (1200 × 630) ; par défaut l'enseigne du siège. */
   imagePartage?: ImageMetadata;
   /** Type Open Graph : « website » ou « article ». */
   typeOG?: 'website' | 'article';
@@ -31,7 +31,7 @@ const {
   titre,
   description,
   page,
-  imagePartage = facade,
+  imagePartage = partageAccueil,
   typeOG = 'website',
   noindex = false,
   blocCTA = true,
@@ -86,5 +86,8 @@ const urlImageOG = new URL(imageOG.src, Astro.site);
     </main>
     <Footer />
     <BoutonWhatsApp page={page} />
+    <script>
+      import '../scripts/animations';
+    </script>
   </body>
 </html>

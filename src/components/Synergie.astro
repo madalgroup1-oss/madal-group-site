@@ -1,0 +1,97 @@
+---
+import { SYNERGIE } from '../data/groupe';
+
+interface Props {
+  /** « fonce » sur section vert foncé (accueil), « clair » sur section claire (Le Groupe). */
+  variante?: 'fonce' | 'clair';
+}
+
+const { variante = 'fonce' } = Astro.props;
+---
+
+<ol class:list={['synergie', `synergie--${variante}`]} data-apparition-groupe>
+  {
+    SYNERGIE.map((etape, index) => (
+      <li class="synergie__etape">
+        <p class="synergie__verbe">
+          {index + 1} · {etape.verbe}
+        </p>
+        <p class="synergie__texte">{etape.texte}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .synergie {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: var(--espace-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .synergie__etape {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-radius: var(--rayon-carte);
+    transition:
+      border-color var(--duree-survol) var(--courbe-sortie),
+      background-color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .synergie--fonce .synergie__etape:hover {
+    border-color: var(--vert-accent);
+    background: var(--vert-fonce-2);
+  }
+
+  .synergie--clair .synergie__etape:hover {
+    border-color: var(--vert-texte);
+  }
+
+  .synergie__verbe {
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    font-weight: 500;
+    letter-spacing: var(--interlettrage-etiquette);
+    text-transform: uppercase;
+  }
+
+  .synergie__texte {
+    font-size: var(--taille-texte-grand);
+    line-height: 1.5;
+  }
+
+  .synergie--fonce .synergie__etape {
+    border: 1px solid var(--sur-fonce-bordure);
+  }
+
+  .synergie--fonce .synergie__verbe {
+    color: var(--vert-accent);
+  }
+
+  .synergie--fonce .synergie__texte {
+    color: var(--blanc);
+  }
+
+  .synergie--clair .synergie__etape {
+    background: var(--blanc);
+    border: 1px solid var(--bordure);
+  }
+
+  .synergie--clair .synergie__verbe {
+    color: var(--vert-texte);
+  }
+
+  .synergie--clair .synergie__texte {
+    color: var(--texte);
+  }
+
+  @media (max-width: 640px) {
+    .synergie__etape {
+      padding: var(--espace-4);
+    }
+  }
+</style>

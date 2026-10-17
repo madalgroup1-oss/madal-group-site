@@ -1,0 +1,353 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import CartePole from '../components/CartePole.astro';
+import EtapeMethode from '../components/EtapeMethode.astro';
+import Icone from '../components/Icone.astro';
+import Synergie from '../components/Synergie.astro';
+import logoSceau from '../assets/images/logo-sceau.jpg';
+import bureauDirection from '../assets/images/bureau-direction.jpg';
+import {
+  A_PROPOS,
+  METHODE,
+  POLES_DETAILS,
+  POSITIONNEMENT,
+  VALEURS,
+  VISION,
+} from '../data/groupe';
+---
+
+<Base
+  titre="Le Groupe — MADAL GROUP SARL, Abidjan"
+  description="Découvrez MADAL GROUP SARL, groupe ivoirien basé à Abidjan : notre histoire, notre vision, nos valeurs, notre méthode et nos trois pôles."
+  page="Le Groupe"
+>
+  <!-- 1. En-tête -->
+  <section class="entete-page fond-fonce" aria-labelledby="groupe-titre">
+    <div class="trame entete-page__trame" aria-hidden="true"></div>
+    <div class="conteneur entete-page__grille">
+      <div class="entete-page__texte">
+        <p class="etiquette">Le Groupe</p>
+        <h1 id="groupe-titre">Construire aujourd'hui le groupe de demain.</h1>
+        <p class="entete-page__positionnement">{POSITIONNEMENT}</p>
+      </div>
+      <div class="entete-page__sceau">
+        <Image
+          src={logoSceau}
+          alt="Sceau MADAL GROUP : Plus qu'une entreprise, une référence"
+          widths={[240, 360, 480, 720]}
+          sizes="(min-width: 1000px) 360px, 240px"
+          loading="eager"
+          class="photo"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. À propos -->
+  <section class="section" id="a-propos" aria-labelledby="a-propos-titre">
+    <div class="conteneur a-propos">
+      <div class="a-propos__texte" data-apparition>
+        <p class="etiquette">À propos</p>
+        <h2 id="a-propos-titre">MADAL GROUP SARL</h2>
+        {A_PROPOS.map((paragraphe) => <p>{paragraphe}</p>)}
+      </div>
+      <div class="a-propos__visuel" data-apparition="image">
+        <Image
+          src={bureauDirection}
+          alt="Bureau de la direction de MADAL GROUP"
+          widths={[360, 480, 720, 1000]}
+          sizes="(min-width: 1000px) 440px, calc(100vw - 48px)"
+          class="photo"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Notre vision -->
+  <section class="section section--grise" id="vision" aria-labelledby="vision-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Notre vision</p>
+        <h2 id="vision-titre">{VISION.titre}</h2>
+        <p>{VISION.introduction}</p>
+      </div>
+      <ul class="grille engagements" data-apparition-groupe>
+        {
+          VISION.engagements.map((engagement) => (
+            <li class="engagement">
+              <span class="engagement__pastille">
+                <Icone nom="coche" taille={16} epaisseur={2.5} />
+              </span>
+              <span>{engagement}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. Nos valeurs -->
+  <section class="section" id="valeurs" aria-labelledby="valeurs-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <h2 id="valeurs-titre">Nos valeurs</h2>
+      </div>
+      <ul class="grille" data-apparition-groupe>
+        {
+          VALEURS.map((valeur) => (
+            <li class="carte valeur">
+              <h3 class="valeur__titre">{valeur.titre}</h3>
+              <p class="valeur__texte">{valeur.texte}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. Notre méthode -->
+  <section class="section fond-fonce" id="methode" aria-labelledby="methode-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Notre méthode</p>
+        <h2 id="methode-titre">Écouter, analyser, concevoir, accompagner</h2>
+      </div>
+      <ol class="grille grille--etroite" data-apparition-groupe>
+        {
+          METHODE.map((etape, index) => (
+            <EtapeMethode numero={index + 1} titre={etape.titre} texte={etape.texte} />
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Les trois pôles -->
+  <section class="section section--grise" id="poles" aria-labelledby="poles-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Nos expertises</p>
+        <h2 id="poles-titre">Trois pôles complémentaires</h2>
+      </div>
+      <ul class="grille-technique grille-technique--trois" data-apparition-groupe>
+        {
+          POLES_DETAILS.map((pole, index) => (
+            <li>
+              <CartePole pole={pole} numero={index + 1} />
+            </li>
+          ))
+        }
+      </ul>
+      <div class="synergie-bloc" data-apparition>
+        <h3 class="synergie-bloc__titre">Un seul interlocuteur, trois réponses</h3>
+        <Synergie variante="clair" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- En-tête ---------- */
+  .entete-page {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .entete-page__trame {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .entete-page__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    align-items: center;
+    gap: var(--espace-7);
+    padding-block: 72px;
+  }
+
+  .entete-page__texte {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .entete-page h1 {
+    font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .entete-page__positionnement {
+    max-width: 620px;
+    font-size: var(--taille-accroche);
+    line-height: 1.4;
+  }
+
+  .entete-page__sceau {
+    aspect-ratio: 1;
+  }
+
+  /* Entrée de l'en-tête au chargement : texte en cascade, sceau en fondu */
+  @media (prefers-reduced-motion: no-preference) {
+    .entete-page__texte > *,
+    .entete-page__sceau {
+      animation: entete-entree 900ms var(--courbe-sortie) both;
+    }
+
+    .entete-page__texte > :nth-child(2) {
+      animation-delay: 120ms;
+    }
+
+    .entete-page__texte > :nth-child(3) {
+      animation-delay: 240ms;
+    }
+
+    .entete-page__sceau {
+      animation-delay: 300ms;
+    }
+  }
+
+  @keyframes entete-entree {
+    from {
+      opacity: 0;
+      translate: 0 24px;
+    }
+  }
+
+  /* ---------- À propos ---------- */
+  .a-propos {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: center;
+    gap: var(--espace-6);
+  }
+
+  .a-propos__texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+  }
+
+  .a-propos__texte h2 {
+    margin-bottom: var(--espace-1);
+  }
+
+  .a-propos__texte p:not(.etiquette) {
+    font-size: var(--taille-texte-grand);
+    color: var(--texte-secondaire);
+  }
+
+  .a-propos__visuel {
+    aspect-ratio: 4 / 5;
+  }
+
+  /* Recadrage centré sur le bureau et la personne, pas sur le plafond */
+  .a-propos__visuel :global(img) {
+    object-position: 50% 45%;
+  }
+
+  /* ---------- Vision ---------- */
+  .engagement {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+    padding: 20px var(--espace-4);
+    background: var(--blanc);
+    border-radius: var(--rayon-carte);
+    font-size: var(--taille-texte-grand);
+    font-weight: var(--graisse-demi);
+    color: var(--vert-fonce);
+  }
+
+  .engagement span:last-child::first-letter {
+    text-transform: uppercase;
+  }
+
+  .engagement__pastille {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--vert-pale);
+    color: var(--vert-texte);
+  }
+
+  /* ---------- Valeurs ---------- */
+  .valeur {
+    gap: var(--espace-1);
+    border-top: 3px solid transparent;
+    transition:
+      border-color var(--duree-survol) var(--courbe-sortie),
+      box-shadow var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .valeur:hover {
+    border-top-color: var(--vert-accent);
+    box-shadow: var(--ombre-carte-survol);
+  }
+
+  .valeur__titre {
+    font-size: var(--taille-texte-grand);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .valeur__texte {
+    color: var(--texte-secondaire);
+  }
+
+  /* ---------- Pôles et synergie ---------- */
+  .synergie-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-4);
+    margin-top: var(--espace-3);
+  }
+
+  .synergie-bloc__titre {
+    font-size: var(--taille-h3);
+  }
+
+  /* ---------- Tablette et mobile ---------- */
+  @media (max-width: 999px) {
+    .entete-page__grille {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--espace-5);
+      padding-block: var(--espace-6);
+    }
+
+    .entete-page__sceau {
+      width: 240px;
+    }
+
+    .a-propos {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .a-propos__visuel {
+      aspect-ratio: auto;
+      height: clamp(280px, 70vw, 520px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .entete-page__grille {
+      padding-block: 40px;
+    }
+
+    .entete-page__sceau {
+      width: 180px;
+    }
+
+    .entete-page__positionnement,
+    .a-propos__texte p:not(.etiquette) {
+      font-size: var(--taille-texte);
+    }
+  }
+</style>

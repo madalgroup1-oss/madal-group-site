@@ -24,11 +24,13 @@
 
   /* Typographie */
   --police: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; /* étiquettes, boutons */
   --graisse-normal: 400;
   --graisse-demi: 600;
   --graisse-gras: 700;
 
   --taille-h1: clamp(2.5rem, 1.6rem + 4vw, 4rem);        /* 40 → 64 px */
+  --taille-hero: clamp(3.25rem, 1.4rem + 8vw, 8rem);     /* 52 → 128 px, titre de l'accueil */
   --taille-h2: clamp(1.875rem, 1.5rem + 1.6vw, 2.5rem);  /* 30 → 40 px */
   --taille-h3: clamp(1.375rem, 1.3rem + 0.4vw, 1.625rem);/* 22 → 26 px */
   --taille-accroche: clamp(1.1875rem, 1.1rem + 0.5vw, 1.5rem);
@@ -38,8 +40,10 @@
   --taille-etiquette: 0.875rem;    /* 14 px, majuscules, interlettrage 0.14em */
 
   --interligne-titre: 1.1;
+  --interlettrage-titre: -0.03em;
   --interligne-texte: 1.55;
-  --interlettrage-etiquette: 0.14em;
+  --interlettrage-etiquette: 0.12em;
+  --taille-mono: 0.8125rem;  /* 13 px */
 
   /* Mise en page */
   --largeur-contenu: 1200px;
@@ -63,8 +67,23 @@
   /* Interaction */
   --cible-tactile: 44px;
   --hauteur-bouton: 52px;
-  --hauteur-entete: 76px;
+  --hauteur-entete: 72px;
+  --marge-entete: 12px;      /* l'en-tête flotte à 12 px du haut */
+  --decalage-entete: calc(var(--hauteur-entete) + var(--marge-entete));
   --transition: 160ms ease;
+
+  /* Mouvement (animations d'apparition, survols, transitions de page) */
+  --courbe-sortie: cubic-bezier(0.16, 1, 0.3, 1);  /* départ vif, arrivée douce */
+  --duree-apparition: 750ms;
+  --duree-survol: 450ms;
+  --decalage-apparition: 28px;
+  --ombre-carte-survol: 0 18px 40px -12px rgba(10, 61, 31, 0.28);
+
+  /* Style « plan technique » */
+  --trame-pas: 96px;
+  --trame-sur-fonce: rgba(143, 183, 160, 0.14);  /* --sur-fonce-bordure-bouton translucide */
+  --trame-sur-clair: rgba(10, 61, 31, 0.06);
+  --angle-coupe: 28px;
 }
 
 @media (max-width: 640px) {
@@ -76,5 +95,8 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --transition: 0ms;
+    --duree-apparition: 0ms;
+    --duree-survol: 0ms;
+    --decalage-apparition: 0px;
   }
 }

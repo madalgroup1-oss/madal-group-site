@@ -1,0 +1,237 @@
+---
+import { Image } from 'astro:assets';
+import Icone from './Icone.astro';
+import type { Pole } from '../data/groupe';
+import { VISUELS_POLES } from '../data/visuels';
+import { insecablePuces } from '../lib/format';
+
+interface Props {
+  pole: Pole;
+  /** Rang du pôle (1, 2, 3), affiché « 01 / Structurer ». */
+  numero: number;
+}
+
+const { pole, numero } = Astro.props;
+const visuel = VISUELS_POLES[pole.cle];
+const rang = String(numero).padStart(2, '0');
+---
+
+<!-- Cellule d'une .grille-technique : croix « + » aux angles, photo à angle coupé -->
+<article class="carte-pole">
+  <div class="carte-pole__haut">
+    <p class="etiquette">{rang} / {pole.verbe}</p>
+    <span class="carte-pole__icone">
+      <Icone nom={pole.icone} taille={22} />
+    </span>
+  </div>
+  <div class="carte-pole__visuel angle-coupe">
+    <Image
+      src={visuel.src}
+      alt={visuel.alt}
+      widths={[240, 360, 560]}
+      sizes="(min-width: 1000px) 330px, (min-width: 641px) 40vw, 112px"
+      class="carte-pole__photo"
+    />
+  </div>
+  <div class="carte-pole__texte">
+    <h3 class="carte-pole__nom">{pole.nom}</h3>
+    <p class="carte-pole__domaines">{insecablePuces(pole.domaines)}</p>
+    <p class="carte-pole__description">{pole.texte}</p>
+  </div>
+  <a class="lien-fleche carte-pole__lien" href={pole.href}>
+    Découvrir <span class="visuellement-cache">{pole.nom}</span>
+    <Icone nom="fleche" taille={18} />
+  </a>
+</article>
+
+<style>
+  .carte-pole {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    padding: var(--espace-5);
+    background: var(--blanc);
+    transition: background-color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  /* Croix de repère aux angles */
+  .carte-pole::before,
+  .carte-pole::after {
+    content: '+';
+    position: absolute;
+    z-index: 1;
+    font-family: var(--police-mono);
+    font-size: 18px;
+    line-height: 1;
+    color: var(--sur-fonce-bordure-bouton);
+    pointer-events: none;
+  }
+
+  .carte-pole::before {
+    top: -10px;
+    left: -6px;
+  }
+
+  .carte-pole::after {
+    right: -6px;
+    bottom: -10px;
+  }
+
+  .carte-pole:hover {
+    background: var(--gris-fond);
+  }
+
+  .carte-pole:has(.carte-pole__lien:focus-visible) {
+    outline: 3px solid var(--vert-texte);
+    outline-offset: -3px;
+  }
+
+  .carte-pole__lien:focus-visible {
+    outline: none;
+  }
+
+  /* Toute la cellule est cliquable */
+  .carte-pole__lien::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .carte-pole__haut {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espace-2);
+  }
+
+  .carte-pole__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-bouton);
+    color: var(--vert-texte);
+    transition:
+      background-color var(--duree-survol) var(--courbe-sortie),
+      color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .carte-pole:hover .carte-pole__icone {
+    background: var(--vert-fonce);
+    border-color: var(--vert-fonce);
+    color: var(--vert-accent);
+  }
+
+  .carte-pole__visuel {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .carte-pole__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--courbe-sortie);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carte-pole:hover .carte-pole__photo {
+      scale: 1.06;
+    }
+  }
+
+  .carte-pole__texte {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--espace-1);
+  }
+
+  .carte-pole__nom {
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.02em;
+  }
+
+  .carte-pole__domaines {
+    font-size: var(--taille-texte-petit);
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+  }
+
+  .carte-pole__description {
+    color: var(--texte-secondaire);
+  }
+
+  /* ---------- Tablette : cellule horizontale, photo à gauche ---------- */
+  @media (max-width: 999px) {
+    .carte-pole {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      grid-template-areas:
+        'haut haut'
+        'visuel texte'
+        'visuel lien';
+      gap: var(--espace-3) var(--espace-5);
+    }
+
+    .carte-pole__haut {
+      grid-area: haut;
+    }
+
+    .carte-pole__visuel {
+      grid-area: visuel;
+      aspect-ratio: 4 / 3;
+    }
+
+    .carte-pole__texte {
+      grid-area: texte;
+    }
+
+    .carte-pole__lien {
+      grid-area: lien;
+      align-self: end;
+    }
+  }
+
+  /* ---------- Téléphone : cellule compacte ---------- */
+  @media (max-width: 640px) {
+    .carte-pole {
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: var(--espace-2) var(--espace-3);
+      padding: 20px var(--espace-3);
+    }
+
+    .carte-pole__icone {
+      width: 40px;
+      height: 40px;
+    }
+
+    .carte-pole__visuel {
+      aspect-ratio: 1;
+      --angle-coupe: 18px;
+    }
+
+    .carte-pole__texte {
+      gap: 4px;
+    }
+
+    .carte-pole__nom {
+      font-size: 1.3125rem;
+    }
+
+    .carte-pole__domaines {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--texte-secondaire);
+    }
+
+    .carte-pole__description {
+      display: none;
+    }
+  }
+</style>

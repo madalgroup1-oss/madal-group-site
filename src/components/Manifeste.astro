@@ -1,0 +1,116 @@
+---
+interface Props {
+  etiquette: string;
+  texte: string;
+}
+
+const { etiquette, texte } = Astro.props;
+// Un <span> par mot : le script les « allume » un à un pendant le défilement
+const mots = texte.split(/\s+/);
+---
+
+<section class="manifeste section" aria-label={etiquette}>
+  <div class="conteneur manifeste__contenu">
+    <p class="etiquette">{etiquette}</p>
+    <p class="manifeste__texte" data-manifeste>
+      {
+        mots.map((mot, index) => (
+          <>
+            <span class="manifeste__mot">{mot}</span>
+            {index < mots.length - 1 && ' '}
+          </>
+        ))
+      }
+    </p>
+  </div>
+</section>
+
+<style>
+  .manifeste {
+    padding-block: clamp(80px, 12vw, 160px);
+  }
+
+  .manifeste__contenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espace-5);
+    max-width: 1060px;
+    text-align: center;
+  }
+
+  .manifeste__texte {
+    font-size: clamp(1.875rem, 1.1rem + 3.4vw, 3.875rem);
+    font-weight: var(--graisse-normal);
+    line-height: 1.12;
+    letter-spacing: var(--interlettrage-titre);
+    color: var(--vert-fonce);
+    text-wrap: balance;
+  }
+
+  /* Sans JavaScript, ou animations réduites : tout le texte est affiché en vert foncé */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.anime) .manifeste__mot {
+      color: var(--bordure-champ);
+      transition: color 300ms ease;
+    }
+
+    :global(.anime) .manifeste__mot.est-allume {
+      color: var(--vert-fonce);
+    }
+  }
+</style>
+
+<script>
+  // Allume les mots au fil du défilement (seulement si les animations sont autorisées)
+  const textes = document.querySelectorAll<HTMLElement>('[data-manifeste]');
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduit && textes.length > 0) {
+    const actifs = new Set<HTMLElement>();
+    let enAttente = false;
+
+    const mettreAJour = (): void => {
+      enAttente = false;
+      const hauteur = window.innerHeight;
+      actifs.forEach((texte) => {
+        const zone = texte.getBoundingClientRect();
+        // 0 quand le haut du texte atteint 85 % de l'écran, 1 quand son bas atteint 45 %
+        const debut = hauteur * 0.85;
+        const fin = hauteur * 0.45 - zone.height;
+        const progression = Math.min(Math.max((debut - zone.top) / (debut - fin), 0), 1);
+        const mots = texte.querySelectorAll('.manifeste__mot');
+        const allumes = Math.round(progression * mots.length);
+        mots.forEach((mot, index) => mot.classList.toggle('est-allume', index < allumes));
+      });
+    };
+
+    const demander = (): void => {
+      if (enAttente) return;
+      enAttente = true;
+      requestAnimationFrame(mettreAJour);
+    };
+
+    // Le calcul ne tourne que lorsque le texte est à l'écran
+    const observateur = new IntersectionObserver((entrees) => {
+      entrees.forEach((entree) => {
+        const texte = entree.target as HTMLElement;
+        if (entree.isIntersecting) {
+          actifs.add(texte);
+          return;
+        }
+        // Texte sorti de l'écran : tout allumé s'il est passé au-dessus, éteint s'il est en dessous
+        actifs.delete(texte);
+        const passe = entree.boundingClientRect.top < 0;
+        texte
+          .querySelectorAll('.manifeste__mot')
+          .forEach((mot) => mot.classList.toggle('est-allume', passe));
+      });
+      demander();
+    });
+
+    textes.forEach((texte) => observateur.observe(texte));
+    window.addEventListener('scroll', demander, { passive: true });
+    window.addEventListener('resize', demander, { passive: true });
+  }
+</script>

@@ -1,0 +1,97 @@
+---
+import type { ArticleResume } from '../data/provisoire';
+
+interface Props {
+  article: ArticleResume;
+}
+
+const { article } = Astro.props;
+
+const formatDate = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<article class="carte carte--bordee carte-article">
+  <p class="carte-article__rubrique">{article.pole}{' · '}{article.rubrique}</p>
+  <h3 class="carte-article__titre">
+    {
+      article.slug ? (
+        <a class="carte-article__lien" href={`/mag/${article.slug}`}>
+          {article.titre}
+        </a>
+      ) : (
+        article.titre
+      )
+    }
+  </h3>
+  <p class="carte-article__resume">{article.resume}</p>
+  {
+    article.date ? (
+      <time class="carte-article__date" datetime={article.date.toISOString().slice(0, 10)}>
+        {formatDate.format(article.date)}
+      </time>
+    ) : (
+      <p class="carte-article__date">[À FOURNIR : date de publication]</p>
+    )
+  }
+</article>
+
+<style>
+  .carte-article {
+    position: relative;
+    height: 100%;
+    gap: 10px;
+    padding: 28px;
+  }
+
+  .carte-article__rubrique {
+    font-size: 0.8125rem;
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--vert-texte);
+  }
+
+  .carte-article__titre {
+    font-size: 1.3125rem;
+    font-weight: var(--graisse-demi);
+    line-height: 1.3;
+  }
+
+  .carte-article__lien {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .carte-article__lien::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--rayon-carte);
+  }
+
+  .carte-article__lien:hover {
+    color: var(--vert-texte);
+  }
+
+  .carte-article__resume {
+    font-size: var(--taille-texte-petit);
+    line-height: 1.5;
+    color: var(--texte-secondaire);
+  }
+
+  .carte-article__date {
+    margin-top: auto;
+    font-size: var(--taille-etiquette);
+    color: var(--texte-secondaire);
+  }
+
+  @media (max-width: 640px) {
+    .carte-article {
+      padding: var(--espace-4);
+    }
+  }
+</style>

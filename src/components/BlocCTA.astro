@@ -17,83 +17,131 @@ const {
 } = Astro.props;
 ---
 
-<section class="cta fond-fonce" aria-labelledby="cta-titre">
-  <Image
-    src={abidjan}
-    alt=""
-    widths={[480, 800, 1200, 1600]}
-    sizes="100vw"
-    class="cta__fond"
-  />
-  <div class="conteneur cta__contenu">
-    <h2 id="cta-titre">{titre}</h2>
-    <p>{texte}</p>
-    <div class="groupe-boutons">
-      <a class="bouton" href={lienDevis}>Demander un devis</a>
-      <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+<section class="cta-bloc" aria-labelledby="cta-titre">
+  <div class="conteneur">
+    <div class="cta fond-fonce" data-apparition>
+      <Image
+        src={abidjan}
+        alt=""
+        widths={[480, 800, 1200, 1600]}
+        sizes="(min-width: 1200px) 1152px, 100vw"
+        class="cta__fond"
+        data-parallaxe
+      />
+      <div class="trame cta__trame" aria-hidden="true"></div>
+      <div class="cta__contenu">
+        <div class="cta__textes">
+          <p class="etiquette">Contact</p>
+          <h2 id="cta-titre">{titre}</h2>
+          <p class="cta__texte">{texte}</p>
+        </div>
+        <div class="groupe-boutons">
+          <a class="bouton" href={lienDevis}>Demander un devis</a>
+          <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  .cta-bloc {
+    padding-block: var(--section-y);
+    background: var(--blanc);
+  }
+
+  /* Carte sombre avec une encoche en haut (style « plan technique ») */
   .cta {
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    border-radius: 20px;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 2;
+    width: min(26%, 280px);
+    height: 30px;
+    background: var(--blanc);
+    border-radius: 0 0 16px 16px;
+    translate: -50% 0;
   }
 
   .cta__fond {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: -3;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
   /* Voile vert foncé pour garantir le contraste du texte */
-  .cta::before {
+  .cta::after {
     content: '';
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: -2;
     background: var(--vert-fonce);
-    opacity: 0.84;
+    opacity: 0.9;
+  }
+
+  .cta__trame {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
   }
 
   .cta__contenu {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--espace-5);
+    padding: 88px clamp(24px, 5vw, 64px) clamp(40px, 5vw, 64px);
+  }
+
+  .cta__textes {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
-    padding-block: 80px;
+    gap: var(--espace-3);
+    max-width: 680px;
   }
 
   .cta h2 {
-    font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
-    line-height: 1.15;
+    font-size: clamp(2rem, 1.3rem + 3vw, 3.75rem);
+    line-height: 1;
   }
 
-  .cta p {
-    max-width: 680px;
+  .cta__texte {
     font-size: var(--taille-texte-grand);
   }
 
-  .cta .groupe-boutons {
-    margin-top: 10px;
-  }
-
   @media (max-width: 640px) {
-    .cta__contenu {
-      padding-block: var(--espace-6);
+    .cta-bloc .conteneur {
+      padding-inline: var(--espace-2);
     }
 
-    .cta p {
+    .cta::before {
+      width: 34%;
+      height: 20px;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .cta__contenu {
+      padding-top: 56px;
+    }
+
+    .cta__texte {
       font-size: var(--taille-texte);
     }
 
     .cta .groupe-boutons {
-      align-self: stretch;
+      flex: 1 1 100%;
     }
   }
 </style>

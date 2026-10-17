@@ -2,7 +2,9 @@
 @import '@fontsource/barlow/latin-400.css';
 @import '@fontsource/barlow/latin-600.css';
 @import '@fontsource/barlow/latin-700.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
 @import './tokens.css';
+@import './animations.css';
 
 /* ---------- Reset léger ---------- */
 *,
@@ -14,7 +16,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--hauteur-entete) + var(--espace-3));
+  scroll-padding-top: calc(var(--decalage-entete) + var(--espace-3));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -39,6 +41,12 @@ body {
 
 main {
   flex: 1 0 auto;
+}
+
+/* L'en-tête flotte au-dessus du contenu : la première section de chaque page
+   (toujours sur fond foncé) passe dessous et réserve sa hauteur. */
+main > :first-child {
+  padding-top: var(--decalage-entete);
 }
 
 main:focus {
@@ -94,6 +102,12 @@ h4 {
   line-height: var(--interligne-titre);
   color: var(--vert-fonce);
   text-wrap: balance;
+}
+
+h1,
+h2 {
+  font-weight: var(--graisse-demi);
+  letter-spacing: var(--interlettrage-titre);
 }
 
 h1 {
@@ -187,6 +201,45 @@ a:hover {
   background: var(--gris-fond);
 }
 
+/* Contenu d'une section : en-tête puis blocs, espacés régulièrement */
+.section__contenu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-6);
+}
+
+@media (max-width: 640px) {
+  .section__contenu {
+    gap: var(--espace-5);
+  }
+}
+
+/* Grilles fluides (pas de style en ligne : la CSP l'interdit) */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--espace-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grille--etroite {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.grille--large {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+}
+
+/* Photo arrondie qui remplit son bloc */
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--rayon-carte);
+}
+
 .fond-fonce {
   background: var(--vert-fonce);
   color: var(--blanc);
@@ -209,15 +262,20 @@ a:hover {
   max-width: 720px;
 }
 
-.entete-section p {
+.entete-section p:not(.etiquette) {
   font-size: var(--taille-texte-grand);
   color: var(--texte-secondaire);
 }
 
-/* ---------- Étiquette (sur-titre en majuscules) ---------- */
+.fond-fonce .entete-section p:not(.etiquette) {
+  color: var(--sur-fonce-texte);
+}
+
+/* ---------- Étiquette (sur-titre technique, chasse fixe) ---------- */
 .etiquette {
-  font-size: var(--taille-etiquette);
-  font-weight: var(--graisse-demi);
+  font-family: var(--police-mono);
+  font-size: var(--taille-mono);
+  font-weight: 500;
   letter-spacing: var(--interlettrage-etiquette);
   text-transform: uppercase;
   color: var(--vert-texte);
@@ -239,20 +297,37 @@ a:hover {
   border-radius: var(--rayon-bouton);
   background: var(--vert-accent);
   color: var(--vert-fonce);
-  font-size: var(--taille-texte);
-  font-weight: var(--graisse-demi);
+  font-family: var(--police-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
   transition:
     background-color var(--transition),
     border-color var(--transition),
-    color var(--transition);
+    color var(--transition),
+    box-shadow var(--duree-survol) var(--courbe-sortie),
+    translate var(--duree-survol) var(--courbe-sortie);
 }
 
 .bouton:hover {
   color: var(--vert-fonce);
-  box-shadow: inset 0 0 0 1px var(--vert-fonce);
+  box-shadow:
+    inset 0 0 0 1px var(--vert-fonce),
+    0 10px 24px -10px rgba(10, 61, 31, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bouton:hover {
+    translate: 0 -2px;
+  }
+
+  .bouton:active {
+    translate: 0 0;
+  }
 }
 
 .bouton--contour {
@@ -281,7 +356,7 @@ a:hover {
 .bouton--compact {
   min-height: var(--cible-tactile);
   padding: 0 var(--espace-3);
-  font-size: var(--taille-texte-petit);
+  font-size: 0.75rem;
 }
 
 .groupe-boutons {
@@ -309,11 +384,11 @@ a:hover {
 }
 
 .lien-fleche svg {
-  transition: transform var(--transition);
+  transition: transform var(--duree-survol) var(--courbe-sortie);
 }
 
 .lien-fleche:hover svg {
-  transform: translateX(3px);
+  transform: translateX(5px);
 }
 
 /* ---------- Carte ---------- */
@@ -340,6 +415,58 @@ a:hover {
   .carte {
     padding: var(--espace-4);
   }
+}
+
+/* ---------- Style « plan technique » ---------- */
+/* Trame de lignes fines, en décor de fond (élément vide aria-hidden ou pseudo-élément) */
+.trame {
+  background-image:
+    linear-gradient(var(--trame-couleur, var(--trame-sur-clair)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--trame-couleur, var(--trame-sur-clair)) 1px, transparent 1px);
+  background-size: var(--trame-pas) var(--trame-pas);
+}
+
+.fond-fonce .trame,
+.trame--fonce {
+  --trame-couleur: var(--trame-sur-fonce);
+}
+
+/* Grille de cellules séparées par des filets (les cellules portent les croix « + ») */
+.grille-technique {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--bordure);
+  border-left: 1px solid var(--bordure);
+}
+
+.grille-technique > * {
+  border-right: 1px solid var(--bordure);
+  border-bottom: 1px solid var(--bordure);
+}
+
+/* Trois cellules : trois colonnes sur ordinateur, empilées en dessous */
+.grille-technique--trois {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 999px) {
+  .grille-technique--trois {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Angle coupé en haut à droite (photos) */
+.angle-coupe {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--angle-coupe)) 0,
+    100% var(--angle-coupe),
+    100% 100%,
+    0 100%
+  );
 }
 
 /* ---------- Contenu en attente ---------- */

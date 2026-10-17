@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import type { SolutionResume } from '../data/provisoire';
+
+interface Props {
+  solution: SolutionResume;
+}
+
+const { solution } = Astro.props;
+---
+
+<article class="carte-solution">
+  <div class:list={['carte-solution__visuel', { 'carte-solution__visuel--vide': !solution.image }]}>
+    {
+      solution.image ? (
+        <Image
+          src={solution.image}
+          alt={solution.altImage ?? solution.nom}
+          widths={[320, 480, 800]}
+          sizes="(min-width: 900px) 400px, 86vw"
+        />
+      ) : (
+        <span>{solution.imageAFournir}</span>
+      )
+    }
+  </div>
+  <div class="carte-solution__corps">
+    <p class="carte-solution__pole">{solution.pole}{' · '}{solution.type}</p>
+    <h3 class="carte-solution__nom">{solution.nom}</h3>
+    <p class="carte-solution__texte">{solution.description}</p>
+    <a class="lien-fleche carte-solution__lien" href={`/solutions/${solution.slug}`}>
+      Voir la fiche<span class="visuellement-cache"> {solution.nom}</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .carte-solution {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--blanc);
+    border-radius: var(--rayon-carte);
+    transition: box-shadow var(--transition);
+  }
+
+  .carte-solution:hover {
+    box-shadow: var(--ombre-carte);
+  }
+
+  .carte-solution__lien::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .carte-solution__visuel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 240px;
+    padding: 0 var(--espace-4);
+    background: var(--blanc);
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .carte-solution__visuel img {
+    width: 400px;
+    max-width: 86%;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
+  }
+
+  .carte-solution__visuel--vide {
+    background: var(--gris-image);
+    border-bottom: 0;
+    font-size: var(--taille-texte-petit);
+    font-weight: var(--graisse-demi);
+    color: var(--texte-secondaire);
+    text-align: center;
+  }
+
+  .carte-solution__corps {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+  }
+
+  .carte-solution__pole {
+    font-size: 0.8125rem;
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--vert-texte);
+  }
+
+  .carte-solution__nom {
+    font-size: 1.5rem;
+  }
+
+  .carte-solution__texte {
+    color: var(--texte-secondaire);
+  }
+
+  .carte-solution__lien {
+    margin-top: auto;
+  }
+
+  @media (max-width: 640px) {
+    .carte-solution__visuel {
+      height: 180px;
+    }
+
+    .carte-solution__corps {
+      padding: var(--espace-4);
+    }
+  }
+</style>

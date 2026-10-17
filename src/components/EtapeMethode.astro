@@ -1,0 +1,80 @@
+---
+interface Props {
+  numero: number;
+  titre: string;
+  texte: string;
+}
+
+const { numero, titre, texte } = Astro.props;
+const numeroAffiche = String(numero).padStart(2, '0');
+---
+
+<li class="etape">
+  <span class="etape__numero" aria-hidden="true">{numeroAffiche}</span>
+  <h3 class="etape__titre">
+    <span class="visuellement-cache">Étape {numero} : </span>{titre}
+  </h3>
+  <p class="etape__texte">{texte}</p>
+</li>
+
+<style>
+  .etape {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+    padding-top: 20px;
+    border-top: 3px solid var(--vert-accent);
+  }
+
+  /* Animation : le filet se trace de gauche à droite à l'apparition de l'étape */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.anime) .etape {
+      border-top-color: transparent;
+    }
+
+    :global(.anime) .etape::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--vert-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1000ms var(--courbe-sortie);
+      transition-delay: calc(var(--delai, 0ms) + 150ms);
+    }
+
+    :global(.anime) .etape:global(.est-visible)::before {
+      transform: none;
+    }
+  }
+
+  .etape__numero {
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    letter-spacing: var(--interlettrage-etiquette);
+    line-height: 1.6;
+    color: var(--vert-texte);
+  }
+
+  .etape__titre {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.02em;
+  }
+
+  .etape__texte {
+    color: var(--texte-secondaire);
+  }
+
+  :global(.fond-fonce) .etape__numero {
+    color: var(--vert-accent);
+  }
+
+  :global(.fond-fonce) .etape__texte {
+    color: var(--sur-fonce-texte);
+  }
+</style>
