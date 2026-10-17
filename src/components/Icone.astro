@@ -1,6 +1,18 @@
 ---
 // Icônes au trait, une seule famille (trait 2 px, extrémités arrondies), reprises des maquettes.
-export type NomIconeSite = 'consulting' | 'distribution' | 'technologie' | 'fleche' | 'coche';
+export type NomIconeSite =
+  | 'consulting'
+  | 'distribution'
+  | 'technologie'
+  | 'fleche'
+  | 'coche'
+  | 'whatsapp'
+  | 'telephone'
+  | 'partage'
+  | 'boutique'
+  | 'bureau'
+  | 'ordinateur'
+  | 'panier';
 
 interface Props {
   nom: NomIconeSite;
@@ -45,4 +57,39 @@ const { nom, taille = 24, epaisseur = 2, class: classe } = Astro.props;
   }
   {nom === 'fleche' && <path d="M5 12h14M13 6l6 6-6 6" />}
   {nom === 'coche' && <path d="M5 12l5 5 9-10" />}
+  {nom === 'whatsapp' && <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z" />}
+  {
+    nom === 'telephone' && (
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+    )
+  }
+  {
+    nom === 'partage' && (
+      <>
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+      </>
+    )
+  }
+  {nom === 'boutique' && <path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-6h6v6" />}
+  {nom === 'bureau' && <path d="M7 3h10v18H7zM10 7h4M10 11h4M10 15h4" />}
+  {
+    nom === 'ordinateur' && (
+      <>
+        <rect x="3" y="4" width="18" height="12" rx="2" />
+        <path d="M8 20h8M12 16v4" />
+      </>
+    )
+  }
+  {
+    nom === 'panier' && (
+      <>
+        <path d="M3 4h2l2.5 11h11L21 7H6.5" />
+        <circle cx="9" cy="19" r="1.5" />
+        <circle cx="18" cy="19" r="1.5" />
+      </>
+    )
+  }
 </svg>

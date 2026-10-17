@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import CarteService from '../components/CarteService.astro';
+import CarteOffre from '../components/CarteOffre.astro';
+import CarteSolution from '../components/CarteSolution.astro';
+import EtapeMethode from '../components/EtapeMethode.astro';
+import Icone from '../components/Icone.astro';
+import equipe from '../assets/images/equipe.jpg';
+import { POLES_DETAILS } from '../data/groupe';
+import { METHODE_CONSULTING, SERVICES_CONSULTING } from '../data/landings';
+import { lienDevis, lienWhatsApp } from '../lib/coordonnees';
+import { listerOffres, listerSolutions } from '../lib/supabase';
+
+const pole = POLES_DETAILS.find((element) => element.cle === 'consulting');
+if (!pole) throw new Error('Pôle consulting introuvable dans data/groupe.ts');
+
+const [offres, solutions] = await Promise.all([listerOffres(), listerSolutions()]);
+// Solution liée (cahier des charges 4.3) : le logiciel RH / paie de Madal Technologie
+const madalRh = solutions.find((solution) => solution.slug === 'madal-rh');
+---
+
+<Base
+  titre="Madal Consulting — Comptabilité, fiscalité et gestion sociale à Abidjan"
+  description="Madal Consulting, pôle de MADAL GROUP : comptabilité, fiscalité, gestion sociale, accompagnement administratif et conseil aux entreprises à Abidjan."
+  page="Madal Consulting"
+  lienDevis={lienDevis('consulting')}
+>
+  <!-- 1. Hero -->
+  <EntetePage
+    etiquette="01 / Madal Consulting"
+    verbe="Structurer."
+    titre={pole.nom}
+    domaines={pole.domaines}
+    texte={pole.texte}
+    visuel={{ src: equipe, alt: "L'équipe MADAL GROUP au travail dans les bureaux" }}
+  >
+    <a class="bouton" href={lienDevis('consulting')}>Demander un devis</a>
+    <a class="bouton bouton--contour" href="#offres">Voir nos offres</a>
+  </EntetePage>
+
+  <!-- 2. Services -->
+  <section class="section" aria-labelledby="services-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-ligne">
+        <div class="entete-section" data-apparition>
+          <p class="etiquette">Nos services</p>
+          <h2 id="services-titre">Cinq domaines d'accompagnement</h2>
+        </div>
+        <a class="lien-fleche" href={lienWhatsApp(pole.nom)} target="_blank" rel="noopener">
+          <Icone nom="whatsapp" taille={18} />
+          Un besoin précis ? Écrivez-nous sur WhatsApp
+          <span class="visuellement-cache">(nouvelle fenêtre)</span>
+        </a>
+      </div>
+      <ul class="grille-technique" data-apparition-groupe>
+        {
+          SERVICES_CONSULTING.map((service, index) => (
+            <li>
+              <CarteService service={service} numero={index + 1} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Méthode de travail -->
+  <section class="section section--grise" aria-labelledby="methode-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Méthode de travail</p>
+        <h2 id="methode-titre">Comment se déroule une mission</h2>
+      </div>
+      <ol class="grille grille--etroite" data-apparition-groupe>
+        {
+          METHODE_CONSULTING.map((etape, index) => (
+            <EtapeMethode numero={index + 1} titre={etape.titre} texte={etape.texte} />
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Offres (saisies dans /admin) -->
+  <section class="section" id="offres" aria-labelledby="offres-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Nos offres</p>
+        <h2 id="offres-titre">Des formules claires, des tarifs affichés</h2>
+      </div>
+      {
+        offres.length > 0 ? (
+          <ul class="grille" data-apparition-groupe>
+            {offres.map((offre) => (
+              <li>
+                <CarteOffre offre={offre} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="bloc-a-fournir" data-apparition>
+            <span class="a-fournir">
+              [À FOURNIR : offres Consulting (nom, prestations, tarif, périodicité), saisies dans /admin]
+            </span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- 5. Solution liée -->
+  {
+    madalRh && (
+      <section class="section section--grise" aria-labelledby="solution-titre">
+        <div class="conteneur solution-liee">
+          <div class="entete-section" data-apparition>
+            <p class="etiquette">Solution liée à Madal Technologie</p>
+            <h2 id="solution-titre">Votre paie et vos RH dans un seul logiciel</h2>
+            <p>Madal RH est la solution de gestion des ressources humaines développée par Madal Technologie.</p>
+            <div class="groupe-boutons solution-liee__boutons">
+              <a class="bouton" href={lienDevis('technologie', 'Démonstration Madal RH')}>
+                Demander une démonstration
+              </a>
+            </div>
+          </div>
+          <div class="solution-liee__carte" data-apparition>
+            <CarteSolution solution={madalRh} />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 6. Demande de devis : bloc commun du layout, pôle Consulting pré-sélectionné -->
+</Base>
+
+<style>
+  .grille-technique {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  }
+
+  .solution-liee {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--espace-6);
+  }
+
+  .solution-liee__boutons {
+    margin-top: var(--espace-2);
+  }
+
+  @media (max-width: 899px) {
+    .solution-liee {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

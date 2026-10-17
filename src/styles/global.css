@@ -155,6 +155,11 @@ a:hover {
 }
 
 /* ---------- Accessibilité ---------- */
+/* Un élément masqué (filtres, listes) le reste, quel que soit son display */
+[hidden] {
+  display: none !important;
+}
+
 .visuellement-cache {
   position: absolute !important;
   width: 1px;
@@ -469,7 +474,24 @@ a:hover {
   );
 }
 
+/* En-tête de section avec un lien à droite */
+.entete-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espace-3);
+}
+
 /* ---------- Contenu en attente ---------- */
+/* Bloc qui remplace une liste vide (contenu à saisir dans /admin) */
+.bloc-a-fournir {
+  padding: var(--espace-5);
+  border: 1px dashed var(--bordure-champ);
+  border-radius: var(--rayon-carte);
+  text-align: center;
+}
+
 .a-fournir {
   display: inline-block;
   padding: 2px 6px;

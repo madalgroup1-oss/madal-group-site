@@ -27,6 +27,9 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | 2 | Quelle version du symbole fait foi (blanc et vert, ou deux verts) ? | `src/assets/images/logo-disque.jpg`, recadrage provisoire du sceau |
 | 3 | Les visuels fournis (façade, bureaux, équipe) sont-ils les photos définitives ? | Utilisés tels quels |
 | 4 | Ordre des sections de /consulting : le bloc « Nos offres » a été déplacé tout en haut dans la maquette en ligne | Ordre du cahier des charges (offres après la méthode) |
+| 5 | /distribution : le bandeau « Promotions » est 5e dans le cahier des charges ; un bandeau se lit mieux en haut de page | Placé juste sous le hero (masqué tant qu'aucune promotion n'est en cours) |
+| 6 | Textes des méthodes : /technologie n'a que les noms des 5 étapes (cadrage, maquette, développement, déploiement, maintenance) | Descriptions affichées en `[À FOURNIR]` |
+| 7 | Photos de banque d'images (`src/assets/images/poles/`) utilisées pour illustrer les services et les familles de produits | Hors hero uniquement ; heros Distribution et Technologie typographiques, hero Consulting avec la photo réelle de l'équipe |
 
 ## Images disponibles
 

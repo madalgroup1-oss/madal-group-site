@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import type { Visuel } from '../data/visuels';
+import { insecablePuces } from '../lib/format';
+
+interface Props {
+  /** Sur-titre technique, ex. « 01 / Structurer ». */
+  etiquette: string;
+  /** Titre de la page (unique <h1>). */
+  titre: string;
+  /** Grand verbe décoratif des pages de pôle, ex. « Structurer. ». */
+  verbe?: string;
+  /** Domaines du pôle, ex. « Comptabilité · Fiscalité · … ». */
+  domaines?: string;
+  texte?: string;
+  /** Photo réelle à droite (jamais une photo de banque d'images en hero). */
+  visuel?: Visuel;
+}
+
+const { etiquette, titre, verbe, domaines, texte, visuel } = Astro.props;
+---
+
+<!-- En-tête des pages intérieures : première section, sur fond foncé (passe sous l'en-tête flottant) -->
+<section
+  class:list={['entete-page', 'fond-fonce', { 'entete-page--visuel': visuel }]}
+  aria-labelledby="entete-page-titre"
+>
+  <div class="trame entete-page__trame" aria-hidden="true"></div>
+  <div class="conteneur entete-page__grille">
+    <div class="entete-page__texte">
+      <slot name="ariane" />
+      <p class="etiquette entete-page__etiquette">[ {etiquette} ]</p>
+      {verbe && <p class="entete-page__verbe" aria-hidden="true">{verbe}</p>}
+      <h1 id="entete-page-titre" class:list={['entete-page__titre', { 'entete-page__titre--seul': !verbe }]}>
+        {titre}
+      </h1>
+      {domaines && <p class="entete-page__domaines">{insecablePuces(domaines)}</p>}
+      {texte && <p class="entete-page__description">{texte}</p>}
+      {
+        Astro.slots.has('default') && (
+          <div class="groupe-boutons entete-page__actions">
+            <slot />
+          </div>
+        )
+      }
+    </div>
+    {
+      visuel && (
+        <div class="entete-page__visuel">
+          <Image
+            src={visuel.src}
+            alt={visuel.alt}
+            widths={[480, 720, 960]}
+            sizes="(min-width: 1000px) 460px, calc(100vw - 48px)"
+            loading="eager"
+            fetchpriority="high"
+            class="entete-page__photo"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .entete-page {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--vert-fonce-2);
+  }
+
+  .entete-page__trame {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .entete-page__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+    gap: var(--espace-6);
+    padding-block: var(--espace-6) clamp(56px, 7vw, 96px);
+  }
+
+  .entete-page--visuel .entete-page__grille {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  }
+
+  .entete-page__texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    max-width: 820px;
+  }
+
+  .entete-page__etiquette {
+    color: var(--vert-accent);
+  }
+
+  .entete-page__verbe {
+    font-size: clamp(3.25rem, min(1rem + 7vw, 15svh), 7.5rem);
+    font-weight: var(--graisse-demi);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    color: var(--vert-accent);
+  }
+
+  .entete-page__titre {
+    font-size: clamp(1.875rem, 1.3rem + 2.2vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .entete-page__titre--seul {
+    font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .fond-fonce .entete-page__domaines {
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    letter-spacing: var(--interlettrage-etiquette);
+    text-transform: uppercase;
+    color: var(--blanc);
+  }
+
+  .entete-page__description {
+    max-width: 640px;
+    font-size: var(--taille-texte-grand);
+  }
+
+  .entete-page__actions {
+    margin-top: var(--espace-2);
+  }
+
+  .entete-page__visuel {
+    height: clamp(320px, 50svh, 480px);
+  }
+
+  .entete-page__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--rayon-carte);
+    --angle-coupe: 48px;
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--angle-coupe)) 0,
+      100% var(--angle-coupe),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .entete-page__texte > * {
+      animation: entete-page-entree 900ms var(--courbe-sortie) both;
+    }
+
+    .entete-page__texte > :nth-child(2) {
+      animation-delay: 100ms;
+    }
+
+    .entete-page__texte > :nth-child(3) {
+      animation-delay: 200ms;
+    }
+
+    .entete-page__texte > :nth-child(n + 4) {
+      animation-delay: 300ms;
+    }
+
+    .entete-page__photo {
+      animation: entete-page-photo 2000ms var(--courbe-sortie) both;
+    }
+  }
+
+  @keyframes entete-page-entree {
+    from {
+      opacity: 0;
+      translate: 0 28px;
+    }
+  }
+
+  @keyframes entete-page-photo {
+    from {
+      scale: 1.06;
+    }
+  }
+
+  @media (max-width: 999px) {
+    .entete-page--visuel .entete-page__grille {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .entete-page__visuel {
+      height: clamp(220px, 56vw, 400px);
+    }
+  }
+</style>

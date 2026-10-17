@@ -1,0 +1,218 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import EntetePage from '../../components/EntetePage.astro';
+import FilAriane from '../../components/FilAriane.astro';
+import Icone from '../../components/Icone.astro';
+import { POLES_DETAILS } from '../../data/groupe';
+import { lienDevis } from '../../lib/coordonnees';
+import { formatDate } from '../../lib/format';
+import { NOM_POLE, NOM_POLE_COURT } from '../../lib/libelles';
+import { rendreMarkdown } from '../../lib/markdown';
+import { article as donneesArticle, jsonLd } from '../../lib/seo';
+import { listerArticles, urlMedia, type Article } from '../../lib/supabase';
+
+export async function getStaticPaths() {
+  const articles = await listerArticles();
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const date = article.publie_le ? new Date(article.publie_le) : null;
+const couverture = article.couverture_path ? urlMedia(article.couverture_path) : undefined;
+const corps = rendreMarkdown(article.corps_md);
+
+// Pôle concerné : lien vers sa page et demande de devis pré-remplie
+const pole = article.pole === 'groupe' ? undefined : POLES_DETAILS.find((element) => element.cle === article.pole);
+const urlArticle = new URL(Astro.url.pathname, Astro.site).href;
+const partageWhatsApp = `https://wa.me/?text=${encodeURIComponent(`${article.titre} ${urlArticle}`)}`;
+const partageFacebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlArticle)}`;
+---
+
+<Base
+  titre={`${article.titre} — Le Mag MADAL`}
+  description={article.resume}
+  page={`Le Mag MADAL : ${article.titre}`}
+  typeOG="article"
+  imagePartage={couverture}
+  lienDevis={lienDevis(article.pole)}
+>
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={jsonLd(
+      donneesArticle({
+        titre: article.titre,
+        resume: article.resume,
+        chemin: Astro.url.pathname,
+        publieLe: article.publie_le,
+        modifieLe: article.modifie_le,
+        urlImage: couverture,
+      }),
+    )}
+  />
+
+  <EntetePage
+    etiquette={`${NOM_POLE_COURT[article.pole]}${article.rubrique ? ` / ${article.rubrique}` : ''}`}
+    titre={article.titre}
+    texte={article.resume}
+  >
+    <FilAriane
+      slot="ariane"
+      etapes={[
+        { libelle: 'Accueil', href: '/' },
+        { libelle: 'Le Mag MADAL', href: '/mag' },
+        { libelle: article.titre },
+      ]}
+    />
+  </EntetePage>
+
+  <article class="section" aria-labelledby="entete-page-titre">
+    <div class="conteneur lecture">
+      <p class="lecture__meta">
+        {date && <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>}
+        <span>{NOM_POLE[article.pole]}</span>
+      </p>
+
+      {
+        couverture && (
+          <Image
+            src={couverture}
+            alt=""
+            inferSize
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 860px) 760px, calc(100vw - 48px)"
+            loading="eager"
+            class="lecture__couverture"
+          />
+        )
+      }
+
+      <div class="prose" set:html={corps} />
+
+      <div class="partage" role="group" aria-label="Partager cet article">
+        <p class="etiquette">Partager</p>
+        <a class="bouton bouton--contour bouton--compact" href={partageWhatsApp} target="_blank" rel="noopener">
+          <Icone nom="whatsapp" taille={18} />
+          WhatsApp<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+        </a>
+        <a class="bouton bouton--contour bouton--compact" href={partageFacebook} target="_blank" rel="noopener">
+          <Icone nom="partage" taille={18} />
+          Facebook<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+        </a>
+      </div>
+
+      {
+        pole && (
+          <a class="lien-fleche lecture__pole" href={pole.href}>
+            Découvrir {pole.nom}
+            <Icone nom="fleche" taille={18} />
+          </a>
+        )
+      }
+    </div>
+  </article>
+  <!-- Bloc d'appel à l'action du pôle concerné : bloc commun du layout -->
+</Base>
+
+<style>
+  .lecture {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-5);
+    max-width: calc(760px + 2 * var(--marge-laterale));
+  }
+
+  .lecture__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espace-1) var(--espace-3);
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    letter-spacing: var(--interlettrage-etiquette);
+    text-transform: uppercase;
+    color: var(--texte-secondaire);
+  }
+
+  .lecture__couverture {
+    width: 100%;
+    height: auto;
+    border-radius: var(--rayon-carte);
+  }
+
+  /* Corps de l'article (HTML assaini) */
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+
+  .prose :global(h2) {
+    margin-top: var(--espace-4);
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
+  }
+
+  .prose :global(h3) {
+    margin-top: var(--espace-3);
+    font-size: 1.375rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0;
+    padding-left: 1.4em;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 6px;
+  }
+
+  .prose :global(blockquote) {
+    margin: 0;
+    padding: var(--espace-2) var(--espace-4);
+    border-left: 3px solid var(--vert-accent);
+    background: var(--gris-fond);
+  }
+
+  .prose :global(img) {
+    border-radius: var(--rayon-carte);
+  }
+
+  .prose :global(table) {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: var(--espace-1) var(--espace-2);
+    border: 1px solid var(--bordure);
+    text-align: left;
+  }
+
+  .partage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espace-2);
+    padding-top: var(--espace-4);
+    border-top: 1px solid var(--bordure);
+  }
+
+  .partage .etiquette {
+    margin-right: var(--espace-1);
+  }
+
+  @media (max-width: 640px) {
+    .prose {
+      font-size: 1.0625rem;
+    }
+  }
+</style>

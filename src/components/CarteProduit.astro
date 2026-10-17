@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import Icone from './Icone.astro';
+import { urlMedia, type Produit } from '../lib/supabase';
+import { formatPrix } from '../lib/format';
+import { lienWhatsApp } from '../lib/coordonnees';
+
+interface Props {
+  produit: Produit;
+}
+
+const { produit } = Astro.props;
+const commande = lienWhatsApp('Madal Distribution', `Je souhaite commander : ${produit.nom}.`);
+---
+
+<article class="carte-produit">
+  <div class:list={['carte-produit__visuel', { 'carte-produit__visuel--vide': !produit.photo_path }]}>
+    {
+      produit.photo_path ? (
+        <Image
+          src={urlMedia(produit.photo_path)}
+          alt={produit.nom}
+          inferSize
+          widths={[240, 360, 560]}
+          sizes="(min-width: 1000px) 270px, (min-width: 641px) 30vw, 45vw"
+          class="carte-produit__photo"
+        />
+      ) : (
+        <span class="a-fournir">[À FOURNIR : photo]</span>
+      )
+    }
+  </div>
+  <div class="carte-produit__corps">
+    {produit.famille && <p class="etiquette carte-produit__famille">{produit.famille.nom}</p>}
+    <h3 class="carte-produit__nom">{produit.nom}</h3>
+    {produit.conditionnement && <p class="carte-produit__conditionnement">{produit.conditionnement}</p>}
+    <p class="carte-produit__prix">{formatPrix(produit.prix_fcfa)}</p>
+    <a class="bouton bouton--compact carte-produit__commande" href={commande} target="_blank" rel="noopener">
+      <Icone nom="whatsapp" taille={18} />
+      Commander<span class="visuellement-cache"> {produit.nom} sur WhatsApp (nouvelle fenêtre)</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .carte-produit {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--blanc);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  .carte-produit__visuel {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--gris-image);
+  }
+
+  .carte-produit__visuel--vide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carte-produit__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--courbe-sortie);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carte-produit:hover .carte-produit__photo {
+      scale: 1.06;
+    }
+  }
+
+  .carte-produit__corps {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--espace-3);
+  }
+
+  .carte-produit__famille {
+    font-size: 0.6875rem;
+  }
+
+  .carte-produit__nom {
+    font-size: 1.125rem;
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.01em;
+  }
+
+  .carte-produit__conditionnement {
+    font-size: var(--taille-texte-petit);
+    color: var(--texte-secondaire);
+  }
+
+  .carte-produit__prix {
+    margin-top: auto;
+    padding-top: var(--espace-1);
+    font-size: 1.125rem;
+    font-weight: var(--graisse-gras);
+    color: var(--vert-fonce);
+  }
+
+  .carte-produit__commande {
+    width: 100%;
+    margin-top: var(--espace-1);
+  }
+</style>

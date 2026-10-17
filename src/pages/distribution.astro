@@ -1,0 +1,377 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import CarteProduit from '../components/CarteProduit.astro';
+import Filtres from '../components/Filtres.astro';
+import Icone from '../components/Icone.astro';
+import { POLES_DETAILS } from '../data/groupe';
+import { VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
+import { lienDevis, lienWhatsApp } from '../lib/coordonnees';
+import { formatDate, formatPrix } from '../lib/format';
+import { listerFamilles, listerProduits, promotionsEnCours } from '../lib/supabase';
+
+const pole = POLES_DETAILS.find((element) => element.cle === 'distribution');
+if (!pole) throw new Error('Pôle distribution introuvable dans data/groupe.ts');
+
+const [familles, produits, promotions] = await Promise.all([
+  listerFamilles(),
+  listerProduits(),
+  promotionsEnCours(),
+]);
+
+// Promotion liée à un produit : on affiche le nom du produit à côté du titre
+const nomProduit = new Map(produits.map((produit) => [produit.id, produit.nom]));
+const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite passer une commande.');
+---
+
+<Base
+  titre="Madal Distribution — Produits alimentaires, lapins, volailles et fournitures à Abidjan"
+  description="Madal Distribution, pôle de MADAL GROUP : produits alimentaires, lapins et volailles, produits carnés, fournitures de bureau et équipements informatiques à Abidjan."
+  page="Madal Distribution"
+  lienDevis={lienDevis('distribution')}
+>
+  <!-- 1. Hero -->
+  <EntetePage
+    etiquette="02 / Madal Distribution"
+    verbe="Distribuer."
+    titre={pole.nom}
+    domaines={pole.domaines}
+    texte={pole.texte}
+  >
+    <a class="bouton" href={lienWhatsApp(pole.nom, 'Je souhaite passer une commande.')} target="_blank" rel="noopener">
+      <Icone nom="whatsapp" taille={18} />
+      Commander<span class="visuellement-cache"> sur WhatsApp (nouvelle fenêtre)</span>
+    </a>
+    <a class="bouton bouton--contour" href="#catalogue">Voir le catalogue</a>
+  </EntetePage>
+
+  <!-- 5. Promotions : bandeau masqué s'il n'y en a aucune (placé en tête pour être vu) -->
+  {
+    promotions.length > 0 && (
+      <section class="promotions" aria-labelledby="promotions-titre">
+        <div class="conteneur promotions__contenu">
+          <h2 id="promotions-titre" class="etiquette promotions__titre">Promotions en cours</h2>
+          <ul class="promotions__liste">
+            {promotions.map((promotion) => (
+              <li class="promotion">
+                <p class="promotion__titre">
+                  {promotion.titre}
+                  {promotion.produit_id && nomProduit.get(promotion.produit_id) && (
+                    <span class="promotion__produit"> · {nomProduit.get(promotion.produit_id)}</span>
+                  )}
+                </p>
+                {promotion.prix_promo_fcfa !== null && (
+                  <p class="promotion__prix">{formatPrix(promotion.prix_promo_fcfa)}</p>
+                )}
+                <p class="promotion__fin">
+                  Jusqu'au <time datetime={promotion.date_fin}>{formatDate(new Date(promotion.date_fin))}</time>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 2. Familles de produits -->
+  <section class="section" aria-labelledby="familles-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Familles de produits</p>
+        <h2 id="familles-titre">Nos familles de produits</h2>
+      </div>
+      <ul class="grille-technique familles" data-apparition-groupe>
+        {
+          familles.map((famille, index) => {
+            const affichage = VISUELS_FAMILLES[famille.slug];
+            return (
+              <li>
+                <a class="famille" href={`?famille=${famille.slug}#catalogue`}>
+                  <span class="etiquette">{String(index + 1).padStart(2, '0')}</span>
+                  {affichage?.visuel ? (
+                    <span class="famille__visuel angle-coupe">
+                      <Image
+                        src={affichage.visuel.src}
+                        alt=""
+                        widths={[240, 360]}
+                        sizes="(min-width: 1000px) 220px, 45vw"
+                        class="famille__photo"
+                      />
+                    </span>
+                  ) : (
+                    <span class="famille__visuel famille__visuel--icone">
+                      <Icone nom={affichage?.icone ?? 'panier'} taille={36} epaisseur={1.6} />
+                    </span>
+                  )}
+                  <span class="famille__nom">{famille.nom}</span>
+                  <span class="famille__lien">
+                    Voir les produits <Icone nom="fleche" taille={16} />
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Allô Lapins & Volailles by MG -->
+  <section class="section section--grise" aria-labelledby="allo-titre">
+    <div class="conteneur allo">
+      <div class="allo__visuel" data-apparition="image">
+        <Image
+          src={VISUEL_ALLO_LAPINS.src}
+          alt={VISUEL_ALLO_LAPINS.alt}
+          widths={[360, 560]}
+          sizes="(min-width: 900px) 460px, calc(100vw - 48px)"
+          class="allo__photo"
+        />
+      </div>
+      <div class="entete-section allo__texte" data-apparition>
+        <p class="etiquette">Une marque de Madal Distribution</p>
+        <h2 id="allo-titre">Allô Lapins &amp; Volailles by MG</h2>
+        <p>
+          <span class="a-fournir">[À FOURNIR : présentation de la marque en 3 lignes et logo]</span>
+        </p>
+        <div class="groupe-boutons allo__boutons">
+          <a class="bouton" href={commandeAllo} target="_blank" rel="noopener">
+            <Icone nom="whatsapp" taille={18} />
+            Commander sur WhatsApp<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Catalogue (saisi dans /admin), filtre par famille -->
+  <section class="section" id="catalogue" aria-labelledby="catalogue-titre" data-filtres>
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Catalogue</p>
+        <h2 id="catalogue-titre">Nos produits</h2>
+      </div>
+      {
+        produits.length > 0 ? (
+          <>
+            <Filtres
+              nom="famille"
+              libelle="Filtrer par famille de produits"
+              tous="Toutes les familles"
+              options={familles.map((famille) => ({ valeur: famille.slug, libelle: famille.nom }))}
+            />
+            <p class="visuellement-cache" aria-live="polite" data-filtres-compte></p>
+            <ul class="catalogue">
+              {produits.map((produit) => (
+                <li data-element data-f-famille={produit.famille?.slug ?? ''}>
+                  <CarteProduit produit={produit} />
+                </li>
+              ))}
+            </ul>
+            <p class="bloc-a-fournir" data-filtres-vide hidden>
+              Aucun produit dans cette famille pour le moment.
+            </p>
+          </>
+        ) : (
+          <p class="bloc-a-fournir" data-apparition>
+            <span class="a-fournir">
+              [À FOURNIR : catalogue Distribution (nom, famille, conditionnement, photo, prix), saisi dans
+              /admin]
+            </span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- 6. Demande de devis ou commande : bloc commun du layout, pôle Distribution pré-sélectionné -->
+</Base>
+
+<style>
+  /* ---------- Promotions ---------- */
+  .promotions {
+    background: var(--vert-accent);
+  }
+
+  .promotions__contenu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espace-2) var(--espace-5);
+    padding-block: var(--espace-4);
+  }
+
+  .etiquette.promotions__titre {
+    color: var(--vert-fonce);
+  }
+
+  .promotions__liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espace-2) var(--espace-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .promotion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px var(--espace-2);
+    color: var(--vert-fonce);
+  }
+
+  .promotion__titre,
+  .promotion__prix {
+    font-weight: var(--graisse-gras);
+  }
+
+  .promotion__fin {
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+  }
+
+  /* ---------- Familles ---------- */
+  .familles {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  }
+
+  .famille {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-2);
+    height: 100%;
+    padding: var(--espace-4);
+    background: var(--blanc);
+    color: var(--vert-fonce);
+    text-decoration: none;
+    transition: background-color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .famille:hover {
+    background: var(--gris-fond);
+    color: var(--vert-fonce);
+  }
+
+  .famille::before {
+    content: '+';
+    position: absolute;
+    top: -10px;
+    left: -6px;
+    font-family: var(--police-mono);
+    font-size: 18px;
+    line-height: 1;
+    color: var(--sur-fonce-bordure-bouton);
+  }
+
+  .famille__visuel {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    --angle-coupe: 20px;
+  }
+
+  .famille__visuel--icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vert-pale);
+    color: var(--vert-texte);
+    border-radius: var(--rayon-champ);
+  }
+
+  .famille__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--courbe-sortie);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .famille:hover .famille__photo {
+      scale: 1.06;
+    }
+  }
+
+  .famille__nom {
+    font-size: 1.25rem;
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.01em;
+  }
+
+  .famille__lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    font-weight: var(--graisse-demi);
+    color: var(--vert-texte);
+  }
+
+  /* ---------- Allô Lapins & Volailles ---------- */
+  .allo {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: var(--espace-6);
+  }
+
+  .allo__visuel {
+    height: clamp(240px, 36vw, 420px);
+  }
+
+  .allo__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--rayon-carte);
+  }
+
+  .allo__boutons {
+    margin-top: var(--espace-2);
+  }
+
+  /* ---------- Catalogue ---------- */
+  .catalogue {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: var(--espace-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 899px) {
+    .allo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .familles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .famille {
+      gap: var(--espace-1);
+      padding: var(--espace-3) var(--espace-2);
+    }
+
+    .famille__nom {
+      font-size: 1.0625rem;
+    }
+
+    .famille__lien {
+      font-size: var(--taille-texte-petit);
+    }
+
+    .catalogue {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--espace-2);
+    }
+  }
+</style>

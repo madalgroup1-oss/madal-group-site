@@ -1,0 +1,204 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import EntetePage from '../../components/EntetePage.astro';
+import FilAriane from '../../components/FilAriane.astro';
+import Icone from '../../components/Icone.astro';
+import { VISUELS_SOLUTIONS_PROVISOIRES } from '../../data/visuels';
+import { lienDevis } from '../../lib/coordonnees';
+import { NOM_POLE, TYPE_SOLUTION } from '../../lib/libelles';
+import { listerSolutions, urlMedia, type Solution } from '../../lib/supabase';
+
+export async function getStaticPaths() {
+  const solutions = await listerSolutions();
+  return solutions.map((solution) => ({ params: { slug: solution.slug }, props: { solution } }));
+}
+
+interface Props {
+  solution: Solution;
+}
+
+const { solution } = Astro.props;
+const visuelLocal = VISUELS_SOLUTIONS_PROVISOIRES[solution.slug];
+const demonstration = lienDevis(solution.pole, `Démonstration ${solution.nom}`);
+const imagePartage = solution.logo_path ? urlMedia(solution.logo_path) : visuelLocal?.src;
+---
+
+<Base
+  titre={`${solution.nom} — ${TYPE_SOLUTION[solution.type]} de ${NOM_POLE[solution.pole]}`}
+  description={`${solution.nom} : ${solution.resume} Une solution de ${NOM_POLE[solution.pole]}, MADAL GROUP.`}
+  page={solution.nom}
+  imagePartage={imagePartage}
+  lienDevis={demonstration}
+>
+  <EntetePage
+    etiquette={`${NOM_POLE[solution.pole]} / ${TYPE_SOLUTION[solution.type]}`}
+    titre={solution.nom}
+    texte={solution.resume}
+  >
+    <FilAriane
+      slot="ariane"
+      etapes={[
+        { libelle: 'Accueil', href: '/' },
+        { libelle: 'Nos solutions', href: '/solutions' },
+        { libelle: solution.nom },
+      ]}
+    />
+    <a class="bouton" href={demonstration}>Demander une démonstration</a>
+  </EntetePage>
+
+  <!-- Problème traité et visuel -->
+  <section class="section" aria-labelledby="probleme-titre">
+    <div class="conteneur fiche">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Problème traité</p>
+        <h2 id="probleme-titre">Pourquoi {solution.nom}</h2>
+        <p>
+          {
+            solution.probleme ?? (
+              <span class="a-fournir">[À FOURNIR : problème traité par {solution.nom}]</span>
+            )
+          }
+        </p>
+      </div>
+      <div class:list={['fiche__visuel', { 'fiche__visuel--vide': !solution.logo_path && !visuelLocal }]} data-apparition="image">
+        {
+          solution.logo_path ? (
+            <Image src={urlMedia(solution.logo_path)} alt={`Logo ${solution.nom}`} inferSize widths={[360, 560]} sizes="(min-width: 900px) 480px, calc(100vw - 48px)" />
+          ) : visuelLocal ? (
+            <Image src={visuelLocal.src} alt={visuelLocal.alt} widths={[360, 560]} sizes="(min-width: 900px) 480px, calc(100vw - 48px)" />
+          ) : (
+            <span class="a-fournir">[À FOURNIR : logo {solution.nom}]</span>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Fonctionnalités clés -->
+  <section class="section section--grise" aria-labelledby="fonctionnalites-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Fonctionnalités clés</p>
+        <h2 id="fonctionnalites-titre">Ce que fait {solution.nom}</h2>
+      </div>
+      {
+        solution.fonctionnalites.length > 0 ? (
+          <ul class="grille-technique fonctionnalites" data-apparition-groupe>
+            {solution.fonctionnalites.map((fonctionnalite, index) => (
+              <li class="fonctionnalite">
+                <span class="etiquette">{String(index + 1).padStart(2, '0')}</span>
+                <Icone nom="coche" taille={20} epaisseur={2.5} />
+                <span>{fonctionnalite}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="bloc-a-fournir">
+            <span class="a-fournir">[À FOURNIR : fonctionnalités clés de {solution.nom}]</span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Captures d'écran -->
+  <section class="section" aria-labelledby="captures-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Captures d'écran</p>
+        <h2 id="captures-titre">{solution.nom} en images</h2>
+      </div>
+      {
+        solution.captures.length > 0 ? (
+          <ul class="captures" data-apparition-groupe>
+            {solution.captures.map((capture, index) => (
+              <li>
+                <Image
+                  src={urlMedia(capture)}
+                  alt={`Capture d'écran ${index + 1} de ${solution.nom}`}
+                  inferSize
+                  widths={[480, 800, 1200]}
+                  sizes="(min-width: 1000px) 560px, calc(100vw - 48px)"
+                  class="captures__image"
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="bloc-a-fournir">
+            <span class="a-fournir">[À FOURNIR : 3 captures d'écran de {solution.nom}]</span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .fiche {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: var(--espace-6);
+  }
+
+  .fiche__visuel {
+    overflow: hidden;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  .fiche__visuel :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .fiche__visuel--vide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+    background: var(--gris-image);
+  }
+
+  .fonctionnalites {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+
+  .fonctionnalite {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--espace-2);
+    padding: var(--espace-4);
+    background: var(--blanc);
+    font-size: var(--taille-texte-grand);
+  }
+
+  .fonctionnalite :global(svg) {
+    color: var(--vert-texte);
+  }
+
+  .captures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: var(--espace-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .captures__image {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  @media (max-width: 899px) {
+    .fiche {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

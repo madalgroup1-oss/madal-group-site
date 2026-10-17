@@ -1,0 +1,72 @@
+---
+import { filAriane, jsonLd, type EtapeAriane } from '../lib/seo';
+
+interface Props {
+  /** Étapes depuis l'accueil ; la dernière (sans href) est la page courante. */
+  etapes: EtapeAriane[];
+}
+
+const { etapes } = Astro.props;
+const donnees = filAriane(etapes, Astro.url.pathname);
+---
+
+<nav class="fil-ariane" aria-label="Fil d'Ariane">
+  <ol class="fil-ariane__liste">
+    {
+      etapes.map((etape) => (
+        <li class="fil-ariane__etape">
+          {etape.href ? (
+            <a href={etape.href}>{etape.libelle}</a>
+          ) : (
+            <span aria-current="page">{etape.libelle}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={jsonLd(donnees)} />
+
+<style>
+  .fil-ariane__liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .fil-ariane__etape {
+    display: inline-flex;
+    align-items: center;
+    color: var(--sur-fonce-texte);
+  }
+
+  .fil-ariane__etape + .fil-ariane__etape::before {
+    content: '/';
+    margin-inline: 10px;
+    color: var(--sur-fonce-bordure-bouton);
+  }
+
+  .fil-ariane a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cible-tactile);
+    color: var(--vert-accent);
+    text-decoration: none;
+  }
+
+  .fil-ariane a:hover {
+    color: var(--blanc);
+    text-decoration: underline;
+  }
+
+  .fil-ariane [aria-current] {
+    color: var(--blanc);
+  }
+</style>
