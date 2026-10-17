@@ -52,13 +52,13 @@ git commit -m "Kit de démarrage du site vitrine"
 Avec GitHub CLI :
 
 ```powershell
-gh repo create Dalilegre/madal-group-site --private --source . --push
+gh repo create madalgroup1-oss/madal-group-site --private --source . --push
 ```
 
 Sans GitHub CLI : créer le dépôt vide `madal-group-site` sur github.com, puis :
 
 ```powershell
-git remote add origin https://github.com/Dalilegre/madal-group-site.git
+git remote add origin https://github.com/madalgroup1-oss/madal-group-site.git
 git push -u origin main
 ```
 

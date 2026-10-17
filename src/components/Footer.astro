@@ -1,0 +1,220 @@
+---
+import { Image } from 'astro:assets';
+import logoDisque from '../assets/images/logo-disque.jpg';
+import {
+  ACCROCHE,
+  ADRESSE,
+  EMAIL,
+  PAYS,
+  RAISON_SOCIALE,
+  SIGNATURE,
+  TELEPHONES,
+} from '../lib/coordonnees';
+import { LIENS_ENTREPRISE, POLES } from '../lib/navigation';
+
+const annee = new Date().getFullYear();
+---
+
+<footer class="pied" data-inerte-menu>
+  <div class="conteneur">
+    <div class="pied__colonnes">
+      <div class="pied__identite">
+        <div class="pied__marque">
+          <Image
+            src={logoDisque}
+            alt=""
+            width={52}
+            height={52}
+            densities={[1, 2]}
+            class="pied__symbole"
+          />
+          <span class="pied__nom">{RAISON_SOCIALE}</span>
+        </div>
+        <p class="pied__signature">{SIGNATURE}</p>
+        <p>{ACCROCHE}</p>
+      </div>
+
+      <nav class="pied__colonne" aria-labelledby="pied-expertises">
+        <h2 class="pied__titre" id="pied-expertises">Nos expertises</h2>
+        <ul>
+          {
+            POLES.map((pole) => (
+              <li>
+                <a href={pole.href}>{pole.nom}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="pied__colonne" aria-labelledby="pied-entreprise">
+        <h2 class="pied__titre" id="pied-entreprise">Entreprise</h2>
+        <ul>
+          {
+            LIENS_ENTREPRISE.map((lien) => (
+              <li>
+                <a href={lien.href}>{lien.libelle}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="pied__colonne pied__colonne--coordonnees">
+        <h2 class="pied__titre">Coordonnées</h2>
+        <address>
+          <ul>
+            <li class="pied__adresse">{ADRESSE}, {PAYS}</li>
+            {
+              TELEPHONES.map((telephone) => (
+                <li>
+                  <a href={telephone.lien}>{telephone.affiche}</a>
+                </li>
+              ))
+            }
+            <li>
+              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            </li>
+          </ul>
+        </address>
+      </div>
+    </div>
+
+    <div class="pied__bas">
+      <p>© {annee} {RAISON_SOCIALE} — Tous droits réservés</p>
+      <ul class="pied__legal">
+        <li><a href="/mentions-legales">Mentions légales</a></li>
+        <li><a href="/confidentialite">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pied {
+    padding: 64px 0 var(--espace-5);
+    background: var(--vert-fonce-2);
+    color: var(--sur-fonce-texte);
+    font-size: var(--taille-texte-petit);
+  }
+
+  .pied :focus-visible {
+    outline-color: var(--vert-accent);
+  }
+
+  .pied ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pied a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--cible-tactile);
+    color: var(--sur-fonce-texte);
+    text-decoration: none;
+  }
+
+  .pied a:hover {
+    color: var(--blanc);
+    text-decoration: underline;
+  }
+
+  .pied__colonnes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .pied__identite {
+    flex: 1.4 1 260px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pied__marque {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+  }
+
+  .pied__symbole {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .pied__nom {
+    font-size: 1.25rem;
+    font-weight: var(--graisse-gras);
+    letter-spacing: 0.04em;
+    color: var(--blanc);
+  }
+
+  .pied__signature {
+    font-size: var(--taille-etiquette);
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.12em;
+    color: var(--vert-accent);
+  }
+
+  .pied__colonne {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+
+  .pied__colonne--coordonnees {
+    flex: 1.2 1 240px;
+  }
+
+  .pied__titre {
+    margin-bottom: var(--espace-1);
+    font-size: var(--taille-etiquette);
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--blanc);
+  }
+
+  .pied address {
+    font-style: normal;
+  }
+
+  .pied__adresse {
+    padding: 10px 0;
+  }
+
+  .pied__bas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espace-2) var(--espace-4);
+    margin-top: 40px;
+    padding-top: var(--espace-3);
+    border-top: 1px solid var(--sur-fonce-filet);
+    font-size: var(--taille-etiquette);
+  }
+
+  .pied__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--espace-4);
+  }
+
+  @media (max-width: 640px) {
+    .pied {
+      padding-top: 40px;
+      /* Laisse la place au bouton WhatsApp flottant */
+      padding-bottom: 96px;
+    }
+
+    .pied__colonnes {
+      gap: var(--espace-5);
+    }
+  }
+</style>

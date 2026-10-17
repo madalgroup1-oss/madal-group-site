@@ -22,7 +22,7 @@ Sept phases. Une phase = une branche = une PR. Ne pas commencer une phase avant 
 - `components/Header.astro` : logo, menu à 6 entrées, sous-menu « Nos expertises », bouton « Demander un devis », menu hamburger plein écran sous 900 px (accessible au clavier, `aria-expanded`).
 - `components/Footer.astro`, `components/BoutonWhatsApp.astro`, `components/BlocCTA.astro`.
 - `public/_headers` (en-têtes de sécurité), `public/robots.txt`.
-- Dépôt GitHub `Dalilegre/madal-group-site`, premier commit, première PR.
+- Dépôt GitHub `madalgroup1-oss/madal-group-site`, premier commit, première PR.
 
 ## Phase 1 — Accueil et Le Groupe
 

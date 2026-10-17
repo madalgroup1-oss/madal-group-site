@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { ACCROCHE, SIGNATURE } from '../lib/coordonnees';
+---
+
+<Base
+  titre="MADAL GROUP — Consulting, Distribution et Technologie à Abidjan"
+  description="MADAL GROUP SARL, groupe ivoirien basé à Abidjan : Madal Consulting, Madal Distribution et Madal Technologie. Un groupe, trois expertises, une même ambition."
+  page="Accueil"
+>
+  <!-- Page provisoire de la phase 0 : les sections de l'accueil arrivent en phase 1 -->
+  <section class="section fond-fonce">
+    <div class="conteneur socle">
+      <p class="etiquette">MADAL GROUP SARL · Abidjan</p>
+      <h1>MADAL GROUP</h1>
+      <p class="socle__signature">{SIGNATURE}</p>
+      <p>{ACCROCHE}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .socle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    padding-block: var(--espace-6);
+  }
+
+  .socle__signature {
+    font-size: var(--taille-accroche);
+    font-weight: var(--graisse-demi);
+  }
+
+  .fond-fonce .socle__signature {
+    color: var(--vert-accent);
+  }
+</style>

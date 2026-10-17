@@ -31,7 +31,7 @@ Kit de démarrage, **avant la phase 0** : pas encore de `package.json`, de proje
 - **Supabase** : Postgres + RLS, Auth (email + mot de passe), Storage, Edge Functions (Deno).
 - **Cloudflare Pages** : hébergement, déploiement à chaque push sur `main`, Web Analytics.
 - **Resend** : envoi des emails depuis la fonction serveur (expéditeur sur le domaine madalgroup.ci).
-- Dépôt GitHub : compte `Dalilegre`.
+- Dépôt GitHub : compte `madalgroup1-oss` (dépôt `madalgroup1-oss/madal-group-site`).
 
 ## Architecture
 
