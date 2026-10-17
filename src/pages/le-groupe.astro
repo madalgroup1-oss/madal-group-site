@@ -46,12 +46,12 @@ import {
   <!-- 2. À propos -->
   <section class="section" id="a-propos" aria-labelledby="a-propos-titre">
     <div class="conteneur a-propos">
-      <div class="a-propos__texte">
+      <div class="a-propos__texte" data-apparition>
         <p class="etiquette">À propos</p>
         <h2 id="a-propos-titre">MADAL GROUP SARL</h2>
         {A_PROPOS.map((paragraphe) => <p>{paragraphe}</p>)}
       </div>
-      <div class="a-propos__visuel">
+      <div class="a-propos__visuel" data-apparition="image">
         <Image
           src={bureauDirection}
           alt="Bureau de la direction de MADAL GROUP"
@@ -66,12 +66,12 @@ import {
   <!-- 3. Notre vision -->
   <section class="section section--grise" id="vision" aria-labelledby="vision-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Notre vision</p>
         <h2 id="vision-titre">{VISION.titre}</h2>
         <p>{VISION.introduction}</p>
       </div>
-      <ul class="grille engagements">
+      <ul class="grille engagements" data-apparition-groupe>
         {
           VISION.engagements.map((engagement) => (
             <li class="engagement">
@@ -89,10 +89,10 @@ import {
   <!-- 4. Nos valeurs -->
   <section class="section" id="valeurs" aria-labelledby="valeurs-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <h2 id="valeurs-titre">Nos valeurs</h2>
       </div>
-      <ul class="grille">
+      <ul class="grille" data-apparition-groupe>
         {
           VALEURS.map((valeur) => (
             <li class="carte valeur">
@@ -108,11 +108,11 @@ import {
   <!-- 5. Notre méthode -->
   <section class="section fond-fonce" id="methode" aria-labelledby="methode-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Notre méthode</p>
         <h2 id="methode-titre">Écouter, analyser, concevoir, accompagner</h2>
       </div>
-      <ol class="grille grille--etroite">
+      <ol class="grille grille--etroite" data-apparition-groupe>
         {
           METHODE.map((etape, index) => (
             <EtapeMethode numero={index + 1} titre={etape.titre} texte={etape.texte} />
@@ -125,11 +125,11 @@ import {
   <!-- 6. Les trois pôles -->
   <section class="section section--grise" id="poles" aria-labelledby="poles-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Nos expertises</p>
         <h2 id="poles-titre">Trois pôles complémentaires</h2>
       </div>
-      <ul class="grille">
+      <ul class="grille" data-apparition-groupe>
         {
           POLES_DETAILS.map((pole) => (
             <li>
@@ -138,7 +138,7 @@ import {
           ))
         }
       </ul>
-      <div class="synergie-bloc">
+      <div class="synergie-bloc" data-apparition>
         <h3 class="synergie-bloc__titre">Un seul interlocuteur, trois réponses</h3>
         <Synergie variante="clair" />
       </div>
@@ -174,6 +174,33 @@ import {
 
   .entete-page__sceau {
     aspect-ratio: 1;
+  }
+
+  /* Entrée de l'en-tête au chargement : texte en cascade, sceau en fondu */
+  @media (prefers-reduced-motion: no-preference) {
+    .entete-page__texte > *,
+    .entete-page__sceau {
+      animation: entete-entree 900ms var(--courbe-sortie) both;
+    }
+
+    .entete-page__texte > :nth-child(2) {
+      animation-delay: 120ms;
+    }
+
+    .entete-page__texte > :nth-child(3) {
+      animation-delay: 240ms;
+    }
+
+    .entete-page__sceau {
+      animation-delay: 300ms;
+    }
+  }
+
+  @keyframes entete-entree {
+    from {
+      opacity: 0;
+      translate: 0 24px;
+    }
   }
 
   /* ---------- À propos ---------- */
@@ -240,6 +267,15 @@ import {
   /* ---------- Valeurs ---------- */
   .valeur {
     gap: var(--espace-1);
+    border-top: 3px solid transparent;
+    transition:
+      border-color var(--duree-survol) var(--courbe-sortie),
+      box-shadow var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .valeur:hover {
+    border-top-color: var(--vert-accent);
+    box-shadow: var(--ombre-carte-survol);
   }
 
   .valeur__titre {

@@ -9,7 +9,7 @@ interface Props {
 const { variante = 'fonce' } = Astro.props;
 ---
 
-<ol class:list={['synergie', `synergie--${variante}`]}>
+<ol class:list={['synergie', `synergie--${variante}`]} data-apparition-groupe>
   {
     SYNERGIE.map((etape, index) => (
       <li class="synergie__etape">
@@ -37,6 +37,18 @@ const { variante = 'fonce' } = Astro.props;
     gap: 10px;
     padding: 28px;
     border-radius: var(--rayon-carte);
+    transition:
+      border-color var(--duree-survol) var(--courbe-sortie),
+      background-color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .synergie--fonce .synergie__etape:hover {
+    border-color: var(--vert-accent);
+    background: var(--vert-fonce-2);
+  }
+
+  .synergie--clair .synergie__etape:hover {
+    border-color: var(--vert-texte);
   }
 
   .synergie__verbe {

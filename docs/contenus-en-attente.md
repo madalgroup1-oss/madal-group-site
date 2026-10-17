@@ -40,3 +40,23 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | `accueil-reception.jpg` | Banque d'accueil | Réserve pour la page Contact |
 | `abidjan.jpg` | Vue aérienne d'Abidjan | Fond du bloc d'appel à l'action |
 | `madal-rh.jpg` | Logo Madal RH (recadré, provisoire) | Carte solution, encart /consulting |
+
+### Photos des pôles (`src/assets/images/poles/`, reçues le 17/10/2026)
+
+Photos de banque d'images, de faible définition (≈ 600 px de large). Le cahier des charges exclut la banque d'images du hero : elles servent aux cartes et aux sections intérieures. Demander si possible les originaux en haute définition et des photos réelles des activités.
+
+| Dossier | Fichiers | Usage |
+| --- | --- | --- |
+| `consulting/` | 13 photos : réunions, comptabilité, analyse financière, entretien conseil, dirigeants sous pression | `conseillere-entretien.jpg` : carte du pôle (accueil, Le Groupe) ; le reste pour /consulting (phase 3) |
+| `distribution/` | 11 photos produits : lapin, poulets de chair, pondeuses, ailes, blancs, gésiers, caille, canard, dinde, viande de bœuf, rôti | `poules-pondeuses.jpg` : carte du pôle ; le reste pour /distribution et le catalogue. `dinde.jpg` est très petite (250 px) |
+| `technologie/` | 17 photos : développeurs, maintenance, réseaux, fibre, serveurs, électronique, IA | `developpeurs.jpg` : carte du pôle ; le reste pour /technologie (phase 3) |
+
+Écartées (restées dans le dossier `image/`, non versionné) :
+
+- `Consulting/images (1).jpg` : filigrane 123RF (photo sous licence payante).
+- `Consulting/images (2).jpg` : image générée contenant du texte inventé (« Dakar », pourcentages).
+- `Technologie/images.jpg` : image générée avec des chiffres inventés (score de crédit, montant en euros).
+- `distribution/WhatsApp Image … 10.35.37 (3).jpeg` : doublon de `lapin frais.jpeg`.
+- `Technologie/WhatsApp Image … 10.35.45.jpeg` : quasi-doublon de `appareils-connectes.jpg`.
+
+Droits : vérifier que chaque photo peut être utilisée commercialement (licence achetée ou libre de droits) avant la mise en ligne.

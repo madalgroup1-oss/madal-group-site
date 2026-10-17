@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Icone from './Icone.astro';
 import type { Pole } from '../data/groupe';
+import { VISUELS_POLES } from '../data/visuels';
 import { insecablePuces } from '../lib/format';
 
 interface Props {
@@ -10,32 +12,70 @@ interface Props {
 }
 
 const { pole, fond = 'gris' } = Astro.props;
+const visuel = VISUELS_POLES[pole.cle];
 ---
 
-<article class:list={['carte', 'carte-pole', { 'carte--blanche': fond === 'blanc' }]}>
-  <span class="carte-pole__icone">
-    <Icone nom={pole.icone} taille={26} />
-  </span>
-  <p class="etiquette">{pole.verbe}</p>
-  <h3 class="carte-pole__nom">{pole.nom}</h3>
-  <p class="carte-pole__domaines">{insecablePuces(pole.domaines)}</p>
-  <p class="carte-pole__texte">{pole.texte}</p>
-  <a class="lien-fleche carte-pole__lien" href={pole.href}>
-    Découvrir {pole.nom}
-    <Icone nom="fleche" taille={18} />
-  </a>
+<article class:list={['carte-pole', { 'carte-pole--blanche': fond === 'blanc' }]}>
+  <div class="carte-pole__visuel">
+    <div class="carte-pole__cadre">
+      <Image
+        src={visuel.src}
+        alt={visuel.alt}
+        widths={[360, 560]}
+        sizes="(min-width: 1000px) 370px, (min-width: 700px) 50vw, calc(100vw - 48px)"
+        class="carte-pole__photo"
+      />
+    </div>
+    <span class="carte-pole__icone">
+      <Icone nom={pole.icone} taille={26} />
+    </span>
+  </div>
+  <div class="carte-pole__corps">
+    <p class="etiquette">{pole.verbe}</p>
+    <h3 class="carte-pole__nom">{pole.nom}</h3>
+    <p class="carte-pole__domaines">{insecablePuces(pole.domaines)}</p>
+    <p class="carte-pole__texte">{pole.texte}</p>
+    <a class="lien-fleche carte-pole__lien" href={pole.href}>
+      Découvrir {pole.nom}
+      <Icone nom="fleche" taille={18} />
+    </a>
+  </div>
 </article>
 
 <style>
   .carte-pole {
+    --fond-carte: var(--gris-fond);
     position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    overflow: hidden;
+    background: var(--fond-carte);
+    border-radius: var(--rayon-carte);
     transition:
-      transform var(--transition),
-      box-shadow var(--transition);
+      translate var(--duree-survol) var(--courbe-sortie),
+      box-shadow var(--duree-survol) var(--courbe-sortie);
   }
 
-  /* Toute la carte est cliquable, le lien reste l'unique cible pour le clavier */
+  .carte-pole--blanche {
+    --fond-carte: var(--blanc);
+    box-shadow: var(--ombre-carte);
+  }
+
+  .carte-pole:hover {
+    box-shadow: var(--ombre-carte-survol);
+  }
+
+  /* La carte entière est cliquable : son contour suit le focus clavier du lien */
+  .carte-pole:has(.carte-pole__lien:focus-visible) {
+    outline: 3px solid var(--vert-texte);
+    outline-offset: 3px;
+  }
+
+  .carte-pole__lien:focus-visible {
+    outline: none;
+  }
+
   .carte-pole__lien::after {
     content: '';
     position: absolute;
@@ -43,25 +83,77 @@ const { pole, fond = 'gris' } = Astro.props;
     border-radius: var(--rayon-carte);
   }
 
-  .carte-pole:hover {
-    box-shadow: var(--ombre-carte);
+  /* ---------- Photo ---------- */
+  .carte-pole__visuel {
+    position: relative;
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Le cadre rogne la photo (zoom au survol) sans rogner la pastille d'icône */
+  .carte-pole__cadre {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .carte-pole__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--courbe-sortie);
+  }
+
+  /* Voile dégradé : la photo se fond dans la carte */
+  .carte-pole__cadre::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 61, 31, 0.55), rgba(10, 61, 31, 0) 55%);
+    transition: opacity var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .carte-pole__icone {
+    position: absolute;
+    z-index: 1;
+    left: var(--espace-5);
+    bottom: -26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: 4px solid var(--fond-carte);
+    border-radius: 14px;
+    background: var(--vert-fonce);
+    color: var(--vert-accent);
+    transition: rotate var(--duree-survol) var(--courbe-sortie);
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .carte-pole:hover {
-      transform: translateY(-3px);
+      translate: 0 -6px;
+    }
+
+    .carte-pole:hover .carte-pole__photo {
+      scale: 1.07;
+    }
+
+    .carte-pole:hover .carte-pole__icone {
+      rotate: -6deg;
     }
   }
 
-  .carte-pole__icone {
+  .carte-pole:hover .carte-pole__cadre::after {
+    opacity: 0.6;
+  }
+
+  /* ---------- Texte ---------- */
+  .carte-pole__corps {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: var(--rayon-carte);
-    background: var(--vert-fonce);
-    color: var(--vert-accent);
+    flex: 1;
+    flex-direction: column;
+    gap: 14px;
+    padding: 46px var(--espace-5) var(--espace-5);
   }
 
   .carte-pole__nom {
@@ -84,9 +176,15 @@ const { pole, fond = 'gris' } = Astro.props;
 
   @media (max-width: 640px) {
     .carte-pole__icone {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--rayon-bouton);
+      left: var(--espace-4);
+      bottom: -22px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+
+    .carte-pole__corps {
+      padding: 38px var(--espace-4) var(--espace-4);
     }
   }
 </style>

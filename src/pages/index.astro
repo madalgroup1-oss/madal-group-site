@@ -30,6 +30,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
 
   <!-- 1. Hero -->
   <section class="hero fond-fonce" aria-labelledby="hero-titre">
+    <div class="hero__decor" aria-hidden="true"></div>
     <div class="conteneur hero__grille">
       <div class="hero__texte">
         <p class="etiquette">MADAL GROUP SARL · Abidjan</p>
@@ -44,6 +45,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
         </div>
       </div>
       <div class="hero__visuel">
+        <span class="hero__cadre" aria-hidden="true"></span>
         <Image
           src={facade}
           alt="Façade du siège de MADAL GROUP"
@@ -60,7 +62,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <!-- 2. Les trois expertises -->
   <section class="section" id="expertises" aria-labelledby="expertises-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Nos expertises</p>
         <h2 id="expertises-titre">Trois pôles complémentaires</h2>
         <p>
@@ -68,7 +70,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
           correspond à votre besoin.
         </p>
       </div>
-      <ul class="grille">
+      <ul class="grille" data-apparition-groupe>
         {
           POLES_DETAILS.map((pole) => (
             <li>
@@ -83,12 +85,12 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <!-- 3. Pourquoi MADAL GROUP -->
   <section class="section section--grise" aria-labelledby="pourquoi-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Pourquoi MADAL GROUP</p>
         <h2 id="pourquoi-titre">Plus qu'une entreprise, une référence</h2>
       </div>
       <div class="pourquoi">
-        <div class="pourquoi__visuel">
+        <div class="pourquoi__visuel" data-apparition="image">
           <Image
             src={equipe}
             alt="L'équipe MADAL GROUP au travail"
@@ -97,7 +99,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
             class="photo"
           />
         </div>
-        <div class="pourquoi__arguments">
+        <div class="pourquoi__arguments" data-apparition-groupe>
           {ARGUMENTS.map((argument) => <Argument titre={argument.titre} texte={argument.texte} />)}
         </div>
       </div>
@@ -107,7 +109,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <!-- 4. Synergie -->
   <section class="section fond-fonce" aria-labelledby="synergie-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">La synergie du groupe</p>
         <h2 id="synergie-titre">Un seul interlocuteur, trois réponses</h2>
       </div>
@@ -118,11 +120,11 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <!-- 5. Notre méthode -->
   <section class="section" aria-labelledby="methode-titre">
     <div class="conteneur section__contenu">
-      <div class="entete-section">
+      <div class="entete-section" data-apparition>
         <p class="etiquette">Notre méthode</p>
         <h2 id="methode-titre">Écouter, analyser, concevoir, accompagner</h2>
       </div>
-      <ol class="grille grille--etroite">
+      <ol class="grille grille--etroite" data-apparition-groupe>
         {
           METHODE.map((etape, index) => (
             <EtapeMethode numero={index + 1} titre={etape.titre} texte={etape.texte} />
@@ -136,7 +138,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <section class="section section--grise" aria-labelledby="solutions-titre">
     <div class="conteneur section__contenu">
       <div class="entete-ligne">
-        <div class="entete-section">
+        <div class="entete-section" data-apparition>
           <p class="etiquette">Nos solutions</p>
           <h2 id="solutions-titre">Ce que nous avons déjà construit</h2>
         </div>
@@ -145,7 +147,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
           <Icone nom="fleche" taille={18} />
         </a>
       </div>
-      <ul class="grille grille--large">
+      <ul class="grille grille--large" data-apparition-groupe>
         {
           SOLUTIONS_PROVISOIRES.map((solution) => (
             <li>
@@ -161,7 +163,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   <section class="section" aria-labelledby="mag-titre">
     <div class="conteneur section__contenu">
       <div class="entete-ligne">
-        <div class="entete-section">
+        <div class="entete-section" data-apparition>
           <p class="etiquette">Le Mag MADAL</p>
           <h2 id="mag-titre">Actualités et conseils</h2>
         </div>
@@ -170,7 +172,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
           <Icone nom="fleche" taille={18} />
         </a>
       </div>
-      <ul class="grille">
+      <ul class="grille" data-apparition-groupe>
         {
           ARTICLES_PROVISOIRES.slice(0, 3).map((article) => (
             <li>
@@ -187,6 +189,44 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
 
 <style>
   /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  /* Décor : halo vert qui dérive lentement et trame de points estompée */
+  .hero__decor {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .hero__decor::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 80%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--vert-accent) 30%, transparent),
+      transparent
+    );
+  }
+
+  .hero__decor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--sur-fonce-filet) 1.2px, transparent 1.2px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 70% 80% at 15% 30%, #000, transparent 70%);
+  }
+
   .hero__grille {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -227,7 +267,102 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
   }
 
   .hero__visuel {
+    position: relative;
     height: 440px;
+  }
+
+  /* Cadre décalé derrière la photo */
+  .hero__cadre {
+    position: absolute;
+    inset: 18px -18px -18px 18px;
+    z-index: -1;
+    border: 2px solid var(--sur-fonce-bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  /* ---------- Entrée du hero au chargement ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__decor::before {
+      animation: hero-derive 14s ease-in-out 2 alternate;
+    }
+
+    .hero__texte > *,
+    .hero h1 span {
+      animation: hero-entree 900ms var(--courbe-sortie) both;
+    }
+
+    .hero h1 span {
+      display: inline-block;
+    }
+
+    .hero__texte > :nth-child(1) {
+      animation-delay: 80ms;
+    }
+
+    /* Le titre lui-même ne bouge pas : ses trois verbes arrivent l'un après l'autre */
+    .hero__texte > h1 {
+      animation: none;
+    }
+
+    .hero h1 span:nth-child(1) {
+      animation-delay: 160ms;
+    }
+
+    .hero h1 span:nth-child(2) {
+      animation-delay: 260ms;
+    }
+
+    .hero h1 span:nth-child(3) {
+      animation-delay: 360ms;
+    }
+
+    .hero__texte > :nth-child(3) {
+      animation-delay: 480ms;
+    }
+
+    .hero__texte > :nth-child(4) {
+      animation-delay: 560ms;
+    }
+
+    .hero__texte > :nth-child(5) {
+      animation-delay: 640ms;
+    }
+
+    /* Photo : affichée immédiatement (image principale de la page), simple léger zoom arrière */
+    .hero__visuel :global(.photo) {
+      animation: hero-photo 1600ms var(--courbe-sortie) both;
+    }
+
+    .hero__cadre {
+      animation: hero-cadre 1200ms var(--courbe-sortie) 400ms both;
+    }
+  }
+
+  @keyframes hero-entree {
+    from {
+      opacity: 0;
+      translate: 0 24px;
+    }
+  }
+
+  @keyframes hero-photo {
+    from {
+      scale: 1.06;
+    }
+  }
+
+  @keyframes hero-cadre {
+    from {
+      opacity: 0;
+      translate: -18px -18px;
+    }
+  }
+
+  @keyframes hero-derive {
+    to {
+      translate: -18% 22%;
+      scale: 1.15;
+    }
   }
 
   /* ---------- Pourquoi ---------- */
@@ -299,6 +434,10 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
 
     .hero__introduction {
       font-size: var(--taille-texte);
+    }
+
+    .hero__cadre {
+      inset: 12px -10px -12px 10px;
     }
 
     .pourquoi__arguments {

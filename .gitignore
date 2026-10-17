@@ -10,3 +10,6 @@ Thumbs.db
 supabase/.temp/
 supabase/.branches/
 .wrangler/
+
+# Photos brutes reçues (copies optimisées dans src/assets/images/poles/)
+image/

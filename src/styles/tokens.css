@@ -65,6 +65,13 @@
   --hauteur-bouton: 52px;
   --hauteur-entete: 76px;
   --transition: 160ms ease;
+
+  /* Mouvement (animations d'apparition, survols, transitions de page) */
+  --courbe-sortie: cubic-bezier(0.16, 1, 0.3, 1);  /* départ vif, arrivée douce */
+  --duree-apparition: 750ms;
+  --duree-survol: 450ms;
+  --decalage-apparition: 28px;
+  --ombre-carte-survol: 0 18px 40px -12px rgba(10, 61, 31, 0.28);
 }
 
 @media (max-width: 640px) {
@@ -76,5 +83,8 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --transition: 0ms;
+    --duree-apparition: 0ms;
+    --duree-survol: 0ms;
+    --decalage-apparition: 0px;
   }
 }

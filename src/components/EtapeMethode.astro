@@ -19,11 +19,37 @@ const numeroAffiche = String(numero).padStart(2, '0');
 
 <style>
   .etape {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--espace-1);
     padding-top: 20px;
     border-top: 3px solid var(--vert-accent);
+  }
+
+  /* Animation : le filet se trace de gauche à droite à l'apparition de l'étape */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.anime) .etape {
+      border-top-color: transparent;
+    }
+
+    :global(.anime) .etape::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--vert-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1000ms var(--courbe-sortie);
+      transition-delay: calc(var(--delai, 0ms) + 150ms);
+    }
+
+    :global(.anime) .etape:global(.est-visible)::before {
+      transform: none;
+    }
   }
 
   .etape__numero {

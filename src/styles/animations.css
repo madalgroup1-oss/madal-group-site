@@ -1,0 +1,125 @@
+/* MADAL GROUP — animations
+   Principes (cahier des charges, section 6) : animations légères, apparition au
+   défilement, survol des cartes, tout est désactivé sous prefers-reduced-motion.
+   Seules les propriétés composées par le GPU (opacity, transform, translate, scale,
+   clip-path) sont animées, pour préserver la fluidité sur les téléphones modestes. */
+
+/* ---------- Transitions entre les pages (API View Transitions, sans JavaScript) ----------
+   Navigateurs récents : fondu enchaîné entre deux pages. Les autres naviguent normalement. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root) {
+    animation: 200ms ease-out both transition-page-sortie;
+  }
+
+  ::view-transition-new(root) {
+    animation: 420ms var(--courbe-sortie) both transition-page-entree;
+  }
+}
+
+@keyframes transition-page-sortie {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes transition-page-entree {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* ---------- Apparition au défilement ----------
+   Le script src/scripts/animations.ts ajoute la classe « anime » sur <html> puis
+   « est-visible » sur chaque élément quand il entre à l'écran. Sans JavaScript,
+   ou si l'utilisateur réduit les animations, tout reste visible d'emblée.
+
+   [data-apparition]          un élément seul
+   [data-apparition="image"]  une photo, dévoilée en rideau
+   [data-apparition-groupe]   ses enfants directs apparaissent l'un après l'autre */
+@media (prefers-reduced-motion: no-preference) {
+  .anime [data-apparition],
+  .anime [data-apparition-groupe] > * {
+    opacity: 0;
+    translate: 0 var(--decalage-apparition);
+    transition:
+      opacity var(--duree-apparition) var(--courbe-sortie),
+      translate var(--duree-apparition) var(--courbe-sortie);
+    transition-delay: var(--delai, 0ms);
+  }
+
+  .anime [data-apparition='image'] {
+    opacity: 1;
+    translate: none;
+    clip-path: inset(10% 6% 10% 6% round var(--rayon-carte));
+    scale: 1.04;
+    transition:
+      clip-path 1100ms var(--courbe-sortie),
+      scale 1400ms var(--courbe-sortie);
+  }
+
+  .anime [data-apparition].est-visible,
+  .anime [data-apparition-groupe] > .est-visible {
+    opacity: 1;
+    translate: none;
+  }
+
+  .anime [data-apparition='image'].est-visible {
+    clip-path: inset(0 round var(--rayon-carte));
+    scale: 1;
+  }
+}
+
+/* ---------- Ombre de l'en-tête au défilement (animation pilotée par le défilement) ----------
+   Navigateurs qui ne la gèrent pas : en-tête fixe sans ombre, comme sur la maquette. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .entete {
+      animation: entete-ombre linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 140px;
+    }
+  }
+}
+
+@keyframes entete-ombre {
+  to {
+    border-bottom-color: transparent;
+    box-shadow: 0 10px 30px -14px rgba(10, 61, 31, 0.3);
+  }
+}
+
+/* ---------- Léger parallaxe des photos de fond (piloté par le défilement) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-parallaxe] {
+      animation: parallaxe linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes parallaxe {
+  from {
+    transform: translateY(-6%) scale(1.14);
+  }
+
+  to {
+    transform: translateY(6%) scale(1.14);
+  }
+}
+
+/* ---------- Impression : tout le contenu, sans état intermédiaire ---------- */
+@media print {
+  .anime [data-apparition],
+  .anime [data-apparition-groupe] > * {
+    opacity: 1 !important;
+    translate: none !important;
+    clip-path: none !important;
+    scale: none !important;
+  }
+}
