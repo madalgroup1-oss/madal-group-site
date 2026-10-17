@@ -86,7 +86,7 @@ supabase/
 - HTML sémantique, navigation clavier, contrastes WCAG AA, un seul `<h1>` par page.
 - SEO : `<title>` et description uniques par page, Open Graph, sitemap, robots.txt, JSON-LD (Organization, LocalBusiness, Article).
 - Secrets : jamais dans le dépôt. La clé `service_role`, la clé Resend et le deploy hook vivent uniquement dans les secrets des Edge Functions. Côté client, seules les variables `PUBLIC_*` (URL et clé anonyme Supabase, URL du site, numéro WhatsApp).
-- Toute nouvelle table a RLS activé et ses politiques dans une migration.
+- Toute nouvelle table a RLS activé, ses politiques **et ses droits `grant` explicites** dans une migration : aucun droit n'est accordé automatiquement aux rôles `anon` et `authenticated` (voir `0002_droits_api.sql` et `0003_droits_restreints.sql`). Après une modification du schéma, régénérer `src/lib/database.types.ts` (`npx supabase gen types typescript --linked --schema public`).
 - Le corps des articles (Markdown) est converti puis **assaini** avant affichage.
 - En-têtes de sécurité dans `public/_headers` (CSP, X-Content-Type-Options, Referrer-Policy, etc.).
 

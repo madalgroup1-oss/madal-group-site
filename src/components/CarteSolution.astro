@@ -1,33 +1,53 @@
 ---
 import { Image } from 'astro:assets';
-import type { SolutionResume } from '../data/provisoire';
+import { urlMedia, type Solution } from '../lib/supabase';
+import { NOM_POLE, TYPE_SOLUTION } from '../lib/libelles';
+import { VISUELS_SOLUTIONS_PROVISOIRES } from '../data/visuels';
 
 interface Props {
-  solution: SolutionResume;
+  solution: Solution;
 }
 
 const { solution } = Astro.props;
+// Logo téléversé dans /admin, sinon visuel local provisoire, sinon contenu à fournir
+const visuelLocal = VISUELS_SOLUTIONS_PROVISOIRES[solution.slug];
+const altVisuel = `Logo ${solution.nom}`;
 ---
 
 <article class="carte-solution">
-  <div class:list={['carte-solution__visuel', { 'carte-solution__visuel--vide': !solution.image }]}>
+  <div
+    class:list={[
+      'carte-solution__visuel',
+      { 'carte-solution__visuel--vide': !solution.logo_path && !visuelLocal },
+    ]}
+  >
     {
-      solution.image ? (
+      solution.logo_path ? (
         <Image
-          src={solution.image}
-          alt={solution.altImage ?? solution.nom}
+          src={urlMedia(solution.logo_path)}
+          alt={altVisuel}
+          inferSize
+          widths={[320, 480, 800]}
+          sizes="(min-width: 900px) 400px, 86vw"
+        />
+      ) : visuelLocal ? (
+        <Image
+          src={visuelLocal.src}
+          alt={visuelLocal.alt}
           widths={[320, 480, 800]}
           sizes="(min-width: 900px) 400px, 86vw"
         />
       ) : (
-        <span>{solution.imageAFournir}</span>
+        <span>[À FOURNIR : capture d'écran {solution.nom}]</span>
       )
     }
   </div>
   <div class="carte-solution__corps">
-    <p class="carte-solution__pole">{solution.pole}{' · '}{solution.type}</p>
+    <p class="carte-solution__pole">
+      {NOM_POLE[solution.pole]}{' · '}{TYPE_SOLUTION[solution.type]}
+    </p>
     <h3 class="carte-solution__nom">{solution.nom}</h3>
-    <p class="carte-solution__texte">{solution.description}</p>
+    <p class="carte-solution__texte">{solution.resume}</p>
     <a class="lien-fleche carte-solution__lien" href={`/solutions/${solution.slug}`}>
       Voir la fiche<span class="visuellement-cache"> {solution.nom}</span>
     </a>

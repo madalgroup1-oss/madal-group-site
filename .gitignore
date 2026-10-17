@@ -13,3 +13,6 @@ supabase/.branches/
 
 # Photos brutes reçues (copies optimisées dans src/assets/images/poles/)
 image/
+
+# Fichier local contenant un mot de passe : ne jamais versionner
+mdp.txt
