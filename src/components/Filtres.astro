@@ -1,0 +1,79 @@
+---
+// Barre de filtres d'une liste (JavaScript natif, sans rechargement).
+// Utilisation : un conteneur [data-filtres] englobe une ou plusieurs <Filtres>
+// et les éléments filtrables [data-element] portant data-f-<nom>="valeur".
+// Sans JavaScript, la barre reste masquée et toute la liste est visible.
+
+interface Option {
+  valeur: string;
+  libelle: string;
+}
+
+interface Props {
+  /** Nom du critère (lettres minuscules), ex. « pole », « type », « famille ». */
+  nom: string;
+  /** Intitulé lu par les lecteurs d'écran, ex. « Filtrer par pôle ». */
+  libelle: string;
+  options: Option[];
+  /** Libellé du bouton qui retire le filtre. */
+  tous?: string;
+}
+
+const { nom, libelle, options, tous = 'Tous' } = Astro.props;
+---
+
+<div class="filtres" role="group" aria-label={libelle} data-filtre={nom} hidden>
+  <button type="button" class="filtres__bouton" aria-pressed="true" data-valeur="">
+    {tous}
+  </button>
+  {
+    options.map((option) => (
+      <button type="button" class="filtres__bouton" aria-pressed="false" data-valeur={option.valeur}>
+        {option.libelle}
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espace-1);
+  }
+
+  .filtres[hidden] {
+    display: none;
+  }
+
+  .filtres__bouton {
+    min-height: var(--cible-tactile);
+    padding: 0 var(--espace-3);
+    border: 1px solid var(--bordure-champ);
+    border-radius: 999px;
+    background: var(--blanc);
+    color: var(--vert-fonce);
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      background-color var(--transition),
+      border-color var(--transition),
+      color var(--transition);
+  }
+
+  .filtres__bouton:hover {
+    border-color: var(--vert-fonce);
+  }
+
+  .filtres__bouton[aria-pressed='true'] {
+    border-color: var(--vert-fonce);
+    background: var(--vert-fonce);
+    color: var(--blanc);
+  }
+</style>
+
+<script>
+  import '../scripts/filtres';
+</script>

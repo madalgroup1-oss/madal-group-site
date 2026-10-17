@@ -204,7 +204,7 @@ const [solutions, articles] = await Promise.all([
             ))}
           </ul>
         ) : (
-          <p class="mag-vide" data-apparition>
+          <p class="bloc-a-fournir" data-apparition>
             <span class="a-fournir">
               [À FOURNIR : 3 premiers articles du Mag, un par pôle, saisis dans /admin]
             </span>
@@ -479,22 +479,6 @@ const [solutions, articles] = await Promise.all([
     position: absolute;
     inset: 0;
     z-index: -1;
-  }
-
-  .mag-vide {
-    padding: var(--espace-5);
-    border: 1px dashed var(--bordure-champ);
-    border-radius: var(--rayon-carte);
-    text-align: center;
-  }
-
-  /* ---------- En-tête de section avec lien à droite ---------- */
-  .entete-ligne {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--espace-3);
   }
 
   /* ---------- Tablette et téléphone : la façade passe en fond plein écran ---------- */

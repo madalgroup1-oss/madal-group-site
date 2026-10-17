@@ -1,0 +1,132 @@
+---
+import Icone from './Icone.astro';
+import type { Offre } from '../lib/supabase';
+import { formatPrix } from '../lib/format';
+import { lienDevis } from '../lib/coordonnees';
+
+interface Props {
+  offre: Offre;
+}
+
+const { offre } = Astro.props;
+const avecTarif = offre.tarif_fcfa !== null;
+---
+
+<article class:list={['carte-offre', { 'carte-offre--avant fond-fonce': offre.mise_en_avant }]}>
+  <h3 class="carte-offre__nom">{offre.nom}</h3>
+  {offre.description && <p class="carte-offre__description">{offre.description}</p>}
+  <p class="carte-offre__tarif">
+    <span class="carte-offre__montant">{formatPrix(offre.tarif_fcfa)}</span>
+    {avecTarif && <span class="carte-offre__periode">/ {offre.periodicite}</span>}
+  </p>
+  {
+    offre.prestations.length > 0 && (
+      <ul class="carte-offre__prestations">
+        {offre.prestations.map((prestation) => (
+          <li>
+            <Icone nom="coche" taille={16} epaisseur={2.5} />
+            <span>{prestation}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <a
+    class:list={['bouton', 'carte-offre__bouton', { 'bouton--contour': !offre.mise_en_avant }]}
+    href={lienDevis('consulting', `Offre ${offre.nom}`)}
+  >
+    Choisir cette offre<span class="visuellement-cache"> : {offre.nom}</span>
+  </a>
+</article>
+
+<style>
+  .carte-offre {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    height: 100%;
+    padding: var(--espace-5);
+    background: var(--blanc);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  .carte-offre--avant {
+    border-color: var(--vert-fonce);
+    background: var(--vert-fonce);
+  }
+
+  .fond-fonce .carte-offre__description {
+    color: var(--sur-fonce-texte);
+  }
+
+  .carte-offre__nom {
+    font-size: var(--taille-h3);
+    font-weight: var(--graisse-demi);
+  }
+
+  .carte-offre__description {
+    color: var(--texte-secondaire);
+  }
+
+  .carte-offre__tarif {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .carte-offre__montant {
+    font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+    font-weight: var(--graisse-gras);
+    letter-spacing: -0.02em;
+    color: var(--vert-fonce);
+  }
+
+  .fond-fonce .carte-offre__montant {
+    color: var(--blanc);
+  }
+
+  .carte-offre__periode {
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    color: var(--texte-secondaire);
+  }
+
+  .fond-fonce .carte-offre__periode {
+    color: var(--sur-fonce-texte);
+  }
+
+  .carte-offre__prestations {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: var(--espace-3) 0 0;
+    list-style: none;
+    border-top: 1px solid var(--bordure);
+  }
+
+  .fond-fonce .carte-offre__prestations {
+    border-color: var(--sur-fonce-filet);
+  }
+
+  .carte-offre__prestations li {
+    display: flex;
+    gap: 10px;
+  }
+
+  .carte-offre__prestations :global(svg) {
+    flex-shrink: 0;
+    margin-top: 4px;
+    color: var(--vert-texte);
+  }
+
+  .fond-fonce .carte-offre__prestations :global(svg) {
+    color: var(--vert-accent);
+  }
+
+  .carte-offre__bouton {
+    margin-top: auto;
+  }
+</style>

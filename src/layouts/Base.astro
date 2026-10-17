@@ -15,8 +15,8 @@ interface Props {
   description: string;
   /** Nom lisible de la page, repris dans le message WhatsApp pré-rempli. */
   page: string;
-  /** Image de partage (1200 × 630) ; par défaut l'enseigne du siège. */
-  imagePartage?: ImageMetadata;
+  /** Image de partage (1200 × 630) ; par défaut l'enseigne du siège. URL distante acceptée (Supabase). */
+  imagePartage?: ImageMetadata | string;
   /** Type Open Graph : « website » ou « article ». */
   typeOG?: 'website' | 'article';
   /** Exclut la page des moteurs de recherche (ex. /admin). */

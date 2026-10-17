@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import EntetePage from '../../components/EntetePage.astro';
+import CarteSolution from '../../components/CarteSolution.astro';
+import Filtres from '../../components/Filtres.astro';
+import { NOM_POLE, TYPE_SOLUTION } from '../../lib/libelles';
+import { listerSolutions } from '../../lib/supabase';
+import type { Enums } from '../../lib/database.types';
+
+const solutions = await listerSolutions();
+
+// Filtres : uniquement les pôles et types présents dans les solutions publiées
+const poles = [...new Set(solutions.map((solution) => solution.pole))] as Enums<'pole'>[];
+const types = [...new Set(solutions.map((solution) => solution.type))] as Enums<'type_solution'>[];
+---
+
+<Base
+  titre="Nos solutions — Logiciels et réalisations de MADAL GROUP"
+  description="Les solutions développées par MADAL GROUP : BMVT GESTION PRO, solution de gestion administrative, commerciale et comptable, et Madal RH, gestion des ressources humaines."
+  page="Nos solutions"
+>
+  <EntetePage
+    etiquette="Nos solutions"
+    titre="Ce que nous avons déjà construit"
+  />
+
+  <section class="section" aria-labelledby="liste-titre" data-filtres>
+    <div class="conteneur section__contenu">
+      <h2 id="liste-titre" class="visuellement-cache">Liste des solutions</h2>
+      {
+        solutions.length > 0 ? (
+          <>
+            <div class="barre-filtres">
+              {poles.length > 1 && (
+                <Filtres
+                  nom="pole"
+                  libelle="Filtrer par pôle"
+                  tous="Tous les pôles"
+                  options={poles.map((pole) => ({ valeur: pole, libelle: NOM_POLE[pole] }))}
+                />
+              )}
+              {types.length > 1 && (
+                <Filtres
+                  nom="type"
+                  libelle="Filtrer par type"
+                  tous="Tous les types"
+                  options={types.map((type) => ({ valeur: type, libelle: TYPE_SOLUTION[type] }))}
+                />
+              )}
+            </div>
+            <p class="visuellement-cache" aria-live="polite" data-filtres-compte></p>
+            <ul class="grille grille--large" data-apparition-groupe>
+              {solutions.map((solution) => (
+                <li data-element data-f-pole={solution.pole} data-f-type={solution.type}>
+                  <CarteSolution solution={solution} />
+                </li>
+              ))}
+            </ul>
+            <p class="bloc-a-fournir" data-filtres-vide hidden>
+              Aucune solution ne correspond à ces filtres.
+            </p>
+          </>
+        ) : (
+          <p class="bloc-a-fournir">
+            <span class="a-fournir">[À FOURNIR : solutions et réalisations, saisies dans /admin]</span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .barre-filtres {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-2);
+  }
+</style>

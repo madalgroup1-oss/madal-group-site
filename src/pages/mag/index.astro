@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import EntetePage from '../../components/EntetePage.astro';
+import CarteArticle from '../../components/CarteArticle.astro';
+import Filtres from '../../components/Filtres.astro';
+import { NOM_POLE_COURT } from '../../lib/libelles';
+import { listerArticles } from '../../lib/supabase';
+import type { Enums } from '../../lib/database.types';
+
+// Du plus récent au plus ancien (cahier des charges 4.7)
+const articles = await listerArticles();
+const poles = [...new Set(articles.map((article) => article.pole))] as Enums<'pole'>[];
+---
+
+<Base
+  titre="Le Mag MADAL — Actualités et conseils de MADAL GROUP"
+  description="Le Mag MADAL : actualité fiscale ivoirienne, conseils comptables, cybersécurité, logiciels, transformation digitale, promotions et nouveaux produits."
+  page="Le Mag MADAL"
+>
+  <EntetePage etiquette="Le Mag MADAL" titre="Actualités et conseils" />
+
+  <section class="section" aria-labelledby="articles-titre" data-filtres>
+    <div class="conteneur section__contenu">
+      <h2 id="articles-titre" class="visuellement-cache">Articles</h2>
+      {
+        articles.length > 0 ? (
+          <>
+            {poles.length > 1 && (
+              <Filtres
+                nom="pole"
+                libelle="Filtrer par pôle"
+                tous="Tous les pôles"
+                options={poles.map((pole) => ({ valeur: pole, libelle: NOM_POLE_COURT[pole] }))}
+              />
+            )}
+            <p class="visuellement-cache" aria-live="polite" data-filtres-compte></p>
+            <ul class="grille" data-apparition-groupe>
+              {articles.map((article) => (
+                <li data-element data-f-pole={article.pole}>
+                  <CarteArticle article={article} />
+                </li>
+              ))}
+            </ul>
+            <p class="bloc-a-fournir" data-filtres-vide hidden>
+              Aucun article pour ce pôle pour le moment.
+            </p>
+          </>
+        ) : (
+          <p class="bloc-a-fournir">
+            <span class="a-fournir">
+              [À FOURNIR : 3 premiers articles du Mag, un par pôle, saisis dans /admin]
+            </span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Base>

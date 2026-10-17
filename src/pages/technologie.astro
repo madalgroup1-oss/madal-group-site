@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import CarteService from '../components/CarteService.astro';
+import CarteSolution from '../components/CarteSolution.astro';
+import EtapeMethode from '../components/EtapeMethode.astro';
+import Icone from '../components/Icone.astro';
+import { POLES_DETAILS } from '../data/groupe';
+import { METHODE_TECHNOLOGIE, SERVICES_TECHNOLOGIE } from '../data/landings';
+import { lienDevis } from '../lib/coordonnees';
+import { listerSolutions } from '../lib/supabase';
+
+const pole = POLES_DETAILS.find((element) => element.cle === 'technologie');
+if (!pole) throw new Error('Pôle technologie introuvable dans data/groupe.ts');
+
+// Nos logiciels : solutions publiées du pôle Technologie
+const logiciels = (await listerSolutions()).filter((solution) => solution.pole === 'technologie');
+---
+
+<Base
+  titre="Madal Technologie — Logiciels, réseaux, cybersécurité et vidéo IP à Abidjan"
+  description="Madal Technologie, pôle de MADAL GROUP : développement logiciel, applications web et mobile, maintenance informatique, réseaux, cybersécurité et vidéosurveillance IP à Abidjan."
+  page="Madal Technologie"
+  lienDevis={lienDevis('technologie')}
+>
+  <!-- 1. Hero -->
+  <EntetePage
+    etiquette="03 / Madal Technologie"
+    verbe="Innover."
+    titre={pole.nom}
+    domaines={pole.domaines}
+    texte={pole.texte}
+  >
+    <a class="bouton" href={lienDevis('technologie')}>Soumettre un projet</a>
+    <a class="bouton bouton--contour" href="#logiciels">Nos logiciels</a>
+  </EntetePage>
+
+  <!-- 2. Services -->
+  <section class="section" aria-labelledby="services-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Nos services</p>
+        <h2 id="services-titre">Neuf domaines d'intervention</h2>
+      </div>
+      <ul class="grille-technique services" data-apparition-groupe>
+        {
+          SERVICES_TECHNOLOGIE.map((service, index) => (
+            <li>
+              <CarteService service={service} numero={index + 1} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Nos logiciels -->
+  <section class="section section--grise" id="logiciels" aria-labelledby="logiciels-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-ligne">
+        <div class="entete-section" data-apparition>
+          <p class="etiquette">Nos logiciels</p>
+          <h2 id="logiciels-titre">Des solutions développées par Madal Technologie</h2>
+        </div>
+        <a class="lien-fleche" href="/solutions">
+          Toutes les solutions
+          <Icone nom="fleche" taille={18} />
+        </a>
+      </div>
+      <ul class="grille grille--large" data-apparition-groupe>
+        {
+          logiciels.map((solution) => (
+            <li>
+              <CarteSolution solution={solution} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. Méthode projet -->
+  <section class="section" aria-labelledby="methode-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Méthode projet</p>
+        <h2 id="methode-titre">Du cadrage à la maintenance</h2>
+      </div>
+      <ol class="grille methode" data-apparition-groupe>
+        {
+          METHODE_TECHNOLOGIE.map((etape, index) => (
+            <EtapeMethode numero={index + 1} titre={etape.titre} texte={etape.texte} />
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Demande de projet : bloc commun du layout, pôle Technologie pré-sélectionné -->
+</Base>
+
+<style>
+  .services {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .methode {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  }
+
+  @media (max-width: 999px) {
+    .services {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

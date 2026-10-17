@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import type { Service } from '../data/landings';
+
+interface Props {
+  service: Service;
+  numero: number;
+}
+
+const { service, numero } = Astro.props;
+const rang = String(numero).padStart(2, '0');
+---
+
+<!-- Cellule d'une .grille-technique : numéro, photo à angle coupé, titre, présentation -->
+<article class="carte-service">
+  <p class="etiquette">{rang}</p>
+  <div class="carte-service__visuel angle-coupe">
+    <Image
+      src={service.visuel.src}
+      alt={service.visuel.alt}
+      widths={[240, 360, 560]}
+      sizes="(min-width: 1000px) 340px, (min-width: 641px) 45vw, calc(100vw - 80px)"
+      class="carte-service__photo"
+    />
+  </div>
+  <h3 class="carte-service__titre">{service.titre}</h3>
+  <p class="carte-service__texte">
+    {
+      service.texte ?? (
+        <span class="a-fournir">[À FOURNIR : présentation du service en 2 lignes]</span>
+      )
+    }
+  </p>
+</article>
+
+<style>
+  .carte-service {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    height: 100%;
+    padding: var(--espace-5);
+    background: var(--blanc);
+  }
+
+  /* Croix de repère aux angles */
+  .carte-service::before,
+  .carte-service::after {
+    content: '+';
+    position: absolute;
+    z-index: 1;
+    font-family: var(--police-mono);
+    font-size: 18px;
+    line-height: 1;
+    color: var(--sur-fonce-bordure-bouton);
+    pointer-events: none;
+  }
+
+  .carte-service::before {
+    top: -10px;
+    left: -6px;
+  }
+
+  .carte-service::after {
+    right: -6px;
+    bottom: -10px;
+  }
+
+  .carte-service__visuel {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .carte-service__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--courbe-sortie);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carte-service:hover .carte-service__photo {
+      scale: 1.06;
+    }
+  }
+
+  .carte-service__titre {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.02em;
+  }
+
+  .carte-service__texte {
+    color: var(--texte-secondaire);
+  }
+
+  @media (max-width: 640px) {
+    .carte-service {
+      padding: var(--espace-4) var(--espace-3);
+    }
+  }
+</style>

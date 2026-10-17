@@ -21,8 +21,18 @@ export const WHATSAPP = import.meta.env.PUBLIC_WHATSAPP || '2250787457618';
 /**
  * Lien WhatsApp avec un message pré-rempli indiquant la page d'origine.
  * @param page nom lisible de la page (ex. « Accueil », « Madal Consulting »)
+ * @param demande précision ajoutée au message (ex. « Je souhaite commander : Lapin frais. »)
  */
-export function lienWhatsApp(page: string): string {
-  const message = `Bonjour MADAL GROUP, je vous écris depuis la page « ${page} » du site madalgroup.ci.`;
+export function lienWhatsApp(page: string, demande?: string): string {
+  const message = `Bonjour MADAL GROUP, je vous écris depuis la page « ${page} » du site madalgroup.ci.${
+    demande ? ` ${demande}` : ''
+  }`;
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
+
+/** Lien vers la demande de devis, pôle pré-sélectionné (formulaire de la phase 4). */
+export function lienDevis(pole: 'consulting' | 'distribution' | 'technologie' | 'groupe', objet?: string): string {
+  const parametres = new URLSearchParams({ pole });
+  if (objet) parametres.set('objet', objet);
+  return `/devis?${parametres.toString()}`;
 }

@@ -2,7 +2,8 @@
 interface Props {
   numero: number;
   titre: string;
-  texte: string;
+  /** Description de l'étape ; null tant qu'elle n'est pas fournie. */
+  texte: string | null;
 }
 
 const { numero, titre, texte } = Astro.props;
@@ -14,7 +15,9 @@ const numeroAffiche = String(numero).padStart(2, '0');
   <h3 class="etape__titre">
     <span class="visuellement-cache">Étape {numero} : </span>{titre}
   </h3>
-  <p class="etape__texte">{texte}</p>
+  <p class="etape__texte">
+    {texte ?? <span class="a-fournir">[À FOURNIR : description de l'étape]</span>}
+  </p>
 </li>
 
 <style>
