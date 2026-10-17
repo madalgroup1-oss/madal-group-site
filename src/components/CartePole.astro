@@ -7,92 +7,127 @@ import { insecablePuces } from '../lib/format';
 
 interface Props {
   pole: Pole;
-  /** Fond de la carte : gris sur section blanche, blanc sur section grise. */
-  fond?: 'gris' | 'blanc';
+  /** Rang du pôle (1, 2, 3), affiché « 01 / Structurer ». */
+  numero: number;
 }
 
-const { pole, fond = 'gris' } = Astro.props;
+const { pole, numero } = Astro.props;
 const visuel = VISUELS_POLES[pole.cle];
+const rang = String(numero).padStart(2, '0');
 ---
 
-<article class:list={['carte-pole', { 'carte-pole--blanche': fond === 'blanc' }]}>
-  <div class="carte-pole__visuel">
-    <div class="carte-pole__cadre">
-      <Image
-        src={visuel.src}
-        alt={visuel.alt}
-        widths={[360, 560]}
-        sizes="(min-width: 1000px) 370px, (min-width: 700px) 50vw, calc(100vw - 48px)"
-        class="carte-pole__photo"
-      />
-    </div>
+<!-- Cellule d'une .grille-technique : croix « + » aux angles, photo à angle coupé -->
+<article class="carte-pole">
+  <div class="carte-pole__haut">
+    <p class="etiquette">{rang} / {pole.verbe}</p>
     <span class="carte-pole__icone">
-      <Icone nom={pole.icone} taille={26} />
+      <Icone nom={pole.icone} taille={22} />
     </span>
   </div>
-  <div class="carte-pole__corps">
-    <p class="etiquette">{pole.verbe}</p>
+  <div class="carte-pole__visuel angle-coupe">
+    <Image
+      src={visuel.src}
+      alt={visuel.alt}
+      widths={[240, 360, 560]}
+      sizes="(min-width: 1000px) 330px, (min-width: 641px) 40vw, 112px"
+      class="carte-pole__photo"
+    />
+  </div>
+  <div class="carte-pole__texte">
     <h3 class="carte-pole__nom">{pole.nom}</h3>
     <p class="carte-pole__domaines">{insecablePuces(pole.domaines)}</p>
-    <p class="carte-pole__texte">{pole.texte}</p>
-    <a class="lien-fleche carte-pole__lien" href={pole.href}>
-      Découvrir {pole.nom}
-      <Icone nom="fleche" taille={18} />
-    </a>
+    <p class="carte-pole__description">{pole.texte}</p>
   </div>
+  <a class="lien-fleche carte-pole__lien" href={pole.href}>
+    Découvrir <span class="visuellement-cache">{pole.nom}</span>
+    <Icone nom="fleche" taille={18} />
+  </a>
 </article>
 
 <style>
   .carte-pole {
-    --fond-carte: var(--gris-fond);
     position: relative;
     display: flex;
     flex-direction: column;
+    gap: 20px;
     height: 100%;
-    overflow: hidden;
-    background: var(--fond-carte);
-    border-radius: var(--rayon-carte);
-    transition:
-      translate var(--duree-survol) var(--courbe-sortie),
-      box-shadow var(--duree-survol) var(--courbe-sortie);
+    padding: var(--espace-5);
+    background: var(--blanc);
+    transition: background-color var(--duree-survol) var(--courbe-sortie);
   }
 
-  .carte-pole--blanche {
-    --fond-carte: var(--blanc);
-    box-shadow: var(--ombre-carte);
+  /* Croix de repère aux angles */
+  .carte-pole::before,
+  .carte-pole::after {
+    content: '+';
+    position: absolute;
+    z-index: 1;
+    font-family: var(--police-mono);
+    font-size: 18px;
+    line-height: 1;
+    color: var(--sur-fonce-bordure-bouton);
+    pointer-events: none;
+  }
+
+  .carte-pole::before {
+    top: -10px;
+    left: -6px;
+  }
+
+  .carte-pole::after {
+    right: -6px;
+    bottom: -10px;
   }
 
   .carte-pole:hover {
-    box-shadow: var(--ombre-carte-survol);
+    background: var(--gris-fond);
   }
 
-  /* La carte entière est cliquable : son contour suit le focus clavier du lien */
   .carte-pole:has(.carte-pole__lien:focus-visible) {
     outline: 3px solid var(--vert-texte);
-    outline-offset: 3px;
+    outline-offset: -3px;
   }
 
   .carte-pole__lien:focus-visible {
     outline: none;
   }
 
+  /* Toute la cellule est cliquable */
   .carte-pole__lien::after {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: var(--rayon-carte);
   }
 
-  /* ---------- Photo ---------- */
+  .carte-pole__haut {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espace-2);
+  }
+
+  .carte-pole__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-bouton);
+    color: var(--vert-texte);
+    transition:
+      background-color var(--duree-survol) var(--courbe-sortie),
+      color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .carte-pole:hover .carte-pole__icone {
+    background: var(--vert-fonce);
+    border-color: var(--vert-fonce);
+    color: var(--vert-accent);
+  }
+
   .carte-pole__visuel {
-    position: relative;
-    aspect-ratio: 16 / 10;
-  }
-
-  /* Le cadre rogne la photo (zoom au survol) sans rogner la pastille d'icône */
-  .carte-pole__cadre {
-    position: absolute;
-    inset: 0;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
   }
 
@@ -103,61 +138,23 @@ const visuel = VISUELS_POLES[pole.cle];
     transition: scale 900ms var(--courbe-sortie);
   }
 
-  /* Voile dégradé : la photo se fond dans la carte */
-  .carte-pole__cadre::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(10, 61, 31, 0.55), rgba(10, 61, 31, 0) 55%);
-    transition: opacity var(--duree-survol) var(--courbe-sortie);
-  }
-
-  .carte-pole__icone {
-    position: absolute;
-    z-index: 1;
-    left: var(--espace-5);
-    bottom: -26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border: 4px solid var(--fond-carte);
-    border-radius: 14px;
-    background: var(--vert-fonce);
-    color: var(--vert-accent);
-    transition: rotate var(--duree-survol) var(--courbe-sortie);
-  }
-
   @media (prefers-reduced-motion: no-preference) {
-    .carte-pole:hover {
-      translate: 0 -6px;
-    }
-
     .carte-pole:hover .carte-pole__photo {
-      scale: 1.07;
-    }
-
-    .carte-pole:hover .carte-pole__icone {
-      rotate: -6deg;
+      scale: 1.06;
     }
   }
 
-  .carte-pole:hover .carte-pole__cadre::after {
-    opacity: 0.6;
-  }
-
-  /* ---------- Texte ---------- */
-  .carte-pole__corps {
+  .carte-pole__texte {
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 14px;
-    padding: 46px var(--espace-5) var(--espace-5);
+    gap: var(--espace-1);
   }
 
   .carte-pole__nom {
-    font-size: var(--taille-h3);
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+    font-weight: var(--graisse-demi);
+    letter-spacing: -0.02em;
   }
 
   .carte-pole__domaines {
@@ -166,25 +163,75 @@ const visuel = VISUELS_POLES[pole.cle];
     color: var(--texte);
   }
 
-  .carte-pole__texte {
+  .carte-pole__description {
     color: var(--texte-secondaire);
   }
 
-  .carte-pole__lien {
-    margin-top: auto;
-  }
-
-  @media (max-width: 640px) {
-    .carte-pole__icone {
-      left: var(--espace-4);
-      bottom: -22px;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+  /* ---------- Tablette : cellule horizontale, photo à gauche ---------- */
+  @media (max-width: 999px) {
+    .carte-pole {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      grid-template-areas:
+        'haut haut'
+        'visuel texte'
+        'visuel lien';
+      gap: var(--espace-3) var(--espace-5);
     }
 
-    .carte-pole__corps {
-      padding: 38px var(--espace-4) var(--espace-4);
+    .carte-pole__haut {
+      grid-area: haut;
+    }
+
+    .carte-pole__visuel {
+      grid-area: visuel;
+      aspect-ratio: 4 / 3;
+    }
+
+    .carte-pole__texte {
+      grid-area: texte;
+    }
+
+    .carte-pole__lien {
+      grid-area: lien;
+      align-self: end;
+    }
+  }
+
+  /* ---------- Téléphone : cellule compacte ---------- */
+  @media (max-width: 640px) {
+    .carte-pole {
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: var(--espace-2) var(--espace-3);
+      padding: 20px var(--espace-3);
+    }
+
+    .carte-pole__icone {
+      width: 40px;
+      height: 40px;
+    }
+
+    .carte-pole__visuel {
+      aspect-ratio: 1;
+      --angle-coupe: 18px;
+    }
+
+    .carte-pole__texte {
+      gap: 4px;
+    }
+
+    .carte-pole__nom {
+      font-size: 1.3125rem;
+    }
+
+    .carte-pole__domaines {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--texte-secondaire);
+    }
+
+    .carte-pole__description {
+      display: none;
     }
   }
 </style>

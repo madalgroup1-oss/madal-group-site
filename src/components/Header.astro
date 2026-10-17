@@ -7,7 +7,7 @@ const chemin = Astro.url.pathname;
 ---
 
 <header class="entete" data-entete>
-  <div class="conteneur entete__barre">
+  <div class="entete__barre">
     <a class="entete__logo" href="/" aria-label="MADAL GROUP, retour à l'accueil">
       <Image
         src={logoDisque}
@@ -130,12 +130,15 @@ const chemin = Astro.url.pathname;
 </header>
 
 <style>
+  /* Barre flottante (style « plan technique ») : elle reste collée en haut,
+     à 12 px du bord, et le contenu passe dessous (voir main > :first-child). */
   .entete {
     position: sticky;
-    top: 0;
+    top: var(--marge-entete);
     z-index: 100;
-    background: var(--blanc);
-    border-bottom: 1px solid var(--bordure);
+    margin-top: var(--marge-entete);
+    margin-bottom: calc(-1 * var(--decalage-entete));
+    pointer-events: none;
   }
 
   .entete__barre {
@@ -143,7 +146,27 @@ const chemin = Astro.url.pathname;
     align-items: center;
     justify-content: space-between;
     gap: var(--espace-3);
+    width: calc(100% - 2 * var(--marge-laterale));
+    max-width: calc(var(--largeur-contenu) - 2 * var(--marge-laterale));
     min-height: var(--hauteur-entete);
+    margin-inline: auto;
+    padding-inline: 20px 12px;
+    background: color-mix(in srgb, var(--vert-fonce) 82%, transparent);
+    border: 1px solid var(--sur-fonce-filet);
+    border-radius: 16px;
+    pointer-events: auto;
+    transition: background-color var(--transition);
+  }
+
+  .entete.est-ouvert .entete__barre {
+    background: var(--vert-fonce);
+  }
+
+  .entete__logo:focus-visible,
+  .nav__lien:focus-visible,
+  .entete__hamburger:focus-visible,
+  .entete__devis:focus-visible {
+    outline-color: var(--vert-accent);
   }
 
   .entete__logo {
@@ -151,22 +174,26 @@ const chemin = Astro.url.pathname;
     align-items: center;
     gap: var(--espace-2);
     min-height: var(--cible-tactile);
-    color: var(--vert-fonce);
+    color: var(--blanc);
     text-decoration: none;
     flex-shrink: 0;
   }
 
+  .entete__logo:hover {
+    color: var(--blanc);
+  }
+
   .entete__symbole {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     object-fit: cover;
   }
 
   .entete__nom {
-    font-size: 1.25rem;
-    font-weight: var(--graisse-gras);
-    letter-spacing: 0.04em;
+    font-size: 1.1875rem;
+    font-weight: var(--graisse-demi);
+    letter-spacing: 0.02em;
     white-space: nowrap;
   }
 
@@ -191,18 +218,16 @@ const chemin = Astro.url.pathname;
     padding: 0;
     background: none;
     border: 0;
-    color: var(--texte);
-    font-size: var(--taille-texte-petit);
-    font-weight: var(--graisse-demi);
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    color: var(--sur-fonce-texte);
+    font-size: 1rem;
+    font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
   }
 
   .nav__lien:hover,
   .nav__lien.est-actif {
-    color: var(--vert-texte);
+    color: var(--vert-accent);
   }
 
   .nav__chevron {
@@ -215,7 +240,7 @@ const chemin = Astro.url.pathname;
 
   .sous-menu {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 18px);
     left: -20px;
     z-index: 10;
     display: flex;
@@ -284,10 +309,10 @@ const chemin = Astro.url.pathname;
     width: var(--cible-tactile);
     height: var(--cible-tactile);
     padding: 0;
-    background: var(--blanc);
-    border: 1px solid var(--bordure-champ);
+    background: transparent;
+    border: 1px solid var(--sur-fonce-bordure-bouton);
     border-radius: var(--rayon-bouton);
-    color: var(--vert-fonce);
+    color: var(--blanc);
   }
 
   .entete__icone-fermer {
@@ -344,12 +369,13 @@ const chemin = Astro.url.pathname;
     .nav {
       display: none;
       position: fixed;
-      inset: var(--hauteur-entete) 0 0 0;
-      z-index: 99;
+      inset: 0;
+      z-index: -1;
       overflow-y: auto;
       overscroll-behavior: contain;
-      padding: var(--espace-4) var(--marge-laterale) var(--espace-6);
-      background: var(--blanc);
+      padding: calc(var(--decalage-entete) + var(--espace-4)) var(--marge-laterale) var(--espace-6);
+      background: var(--vert-fonce-2);
+      pointer-events: auto;
     }
 
     .entete.est-ouvert .nav {
@@ -363,14 +389,16 @@ const chemin = Astro.url.pathname;
     }
 
     .nav__item {
-      border-bottom: 1px solid var(--bordure);
+      border-bottom: 1px solid var(--sur-fonce-filet);
     }
 
     .nav__lien {
       width: 100%;
       justify-content: space-between;
-      min-height: 56px;
-      font-size: var(--taille-texte-grand);
+      min-height: 60px;
+      color: var(--blanc);
+      font-size: 1.375rem;
+      font-weight: var(--graisse-demi);
     }
 
     .sous-menu {
@@ -378,20 +406,37 @@ const chemin = Astro.url.pathname;
       min-width: 0;
       margin-bottom: var(--espace-2);
       padding: 0;
+      background: transparent;
       border: 0;
       box-shadow: none;
     }
 
     .sous-menu__lien {
       padding: var(--espace-2) var(--espace-3);
-      background: var(--gris-fond);
+      background: var(--sur-fonce-filet);
+      color: var(--blanc);
+    }
+
+    .sous-menu__lien:hover,
+    .sous-menu__lien[aria-current='page'] {
+      background: var(--sur-fonce-bordure);
+      color: var(--blanc);
+    }
+
+    .sous-menu__lien .etiquette {
+      color: var(--vert-accent);
     }
   }
 
   @media (max-width: 640px) {
+    .entete__barre {
+      width: calc(100% - 2 * var(--marge-entete));
+      padding-inline: 12px 8px;
+    }
+
     .entete__symbole {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
     }
 
     .entete__nom {

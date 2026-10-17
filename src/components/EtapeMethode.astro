@@ -53,15 +53,17 @@ const numeroAffiche = String(numero).padStart(2, '0');
   }
 
   .etape__numero {
-    font-size: 2rem;
-    font-weight: var(--graisse-gras);
-    line-height: 1.2;
-    color: var(--vert-fonce);
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    letter-spacing: var(--interlettrage-etiquette);
+    line-height: 1.6;
+    color: var(--vert-texte);
   }
 
   .etape__titre {
-    font-size: 1.25rem;
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
     font-weight: var(--graisse-demi);
+    letter-spacing: -0.02em;
   }
 
   .etape__texte {

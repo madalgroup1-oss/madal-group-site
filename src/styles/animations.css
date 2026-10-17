@@ -78,8 +78,13 @@
    Navigateurs qui ne la gèrent pas : en-tête fixe sans ombre, comme sur la maquette. */
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
-    .entete {
+    /* Timeline dans une règle séparée : le minifieur fusionnerait sinon les deux
+       déclarations en un raccourci « animation » que Chrome rejette. */
+    .entete__barre {
       animation: entete-ombre linear both;
+    }
+
+    .entete .entete__barre {
       animation-timeline: scroll(root);
       animation-range: 0 140px;
     }
@@ -88,8 +93,8 @@
 
 @keyframes entete-ombre {
   to {
-    border-bottom-color: transparent;
-    box-shadow: 0 10px 30px -14px rgba(10, 61, 31, 0.3);
+    background-color: var(--vert-fonce);
+    box-shadow: 0 14px 34px -14px rgba(7, 44, 22, 0.55);
   }
 }
 
@@ -98,6 +103,9 @@
   @media (prefers-reduced-motion: no-preference) {
     [data-parallaxe] {
       animation: parallaxe linear both;
+    }
+
+    img[data-parallaxe] {
       animation-timeline: view();
     }
   }

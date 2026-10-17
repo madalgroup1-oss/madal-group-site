@@ -3,17 +3,17 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import CartePole from '../components/CartePole.astro';
 import Icone from '../components/Icone.astro';
-import Argument from '../components/Argument.astro';
+import Manifeste from '../components/Manifeste.astro';
 import Synergie from '../components/Synergie.astro';
 import EtapeMethode from '../components/EtapeMethode.astro';
 import CarteSolution from '../components/CarteSolution.astro';
 import CarteArticle from '../components/CarteArticle.astro';
-import facade from '../assets/images/facade.jpg';
+import facade from '../assets/images/facade-madal.jpg';
 import equipe from '../assets/images/equipe.jpg';
 import logoDisque from '../assets/images/logo-disque.jpg';
 import { ACCROCHE } from '../lib/coordonnees';
 import { jsonLd, organisation } from '../lib/seo';
-import { ARGUMENTS, INTRODUCTION, METHODE, POLES_DETAILS } from '../data/groupe';
+import { ARGUMENTS, INTRODUCTION, METHODE, POLES_DETAILS, POSITIONNEMENT } from '../data/groupe';
 // Provisoire (phase 1) : remplacé par Supabase en phase 2
 import { ARTICLES_PROVISOIRES, SOLUTIONS_PROVISOIRES } from '../data/provisoire';
 
@@ -28,53 +28,53 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
 >
   <script type="application/ld+json" slot="head" set:html={jsonLd(donneesOrganisation)} />
 
-  <!-- 1. Hero -->
+  <!-- 1. Hero : trame « plan technique », façade du siège
+       (ordinateur : photo à droite ; téléphone : photo en fond plein écran) -->
   <section class="hero fond-fonce" aria-labelledby="hero-titre">
-    <div class="hero__decor" aria-hidden="true"></div>
+    <div class="hero__trame trame" aria-hidden="true"></div>
+
     <div class="conteneur hero__grille">
-      <div class="hero__texte">
-        <p class="etiquette">MADAL GROUP SARL · Abidjan</p>
-        <h1 id="hero-titre">
-          <span>Structurer.</span>{' '}<span>Distribuer.</span>{' '}<span>Innover.</span>
+      <div class="hero__contenu">
+        <p class="etiquette hero__etiquette">[ MADAL GROUP SARL — Abidjan ]</p>
+        <h1 id="hero-titre" class="hero__titre">
+          <span>Structurer.</span>{' '}<span>Distribuer.</span>{' '}<span class="hero__accent">Innover.</span>
         </h1>
-        <p class="hero__accroche">{ACCROCHE}</p>
-        <p class="hero__introduction">{INTRODUCTION}</p>
-        <div class="groupe-boutons hero__boutons">
-          <a class="bouton" href="/le-groupe">Découvrir MADAL GROUP</a>
-          <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+        <div class="hero__pied">
+          <div class="hero__textes">
+            <p class="hero__accroche">{ACCROCHE}</p>
+            <p class="hero__introduction">{INTRODUCTION}</p>
+          </div>
+          <div class="groupe-boutons">
+            <a class="bouton" href="/le-groupe">Découvrir le groupe</a>
+            <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+          </div>
         </div>
       </div>
-      <div class="hero__visuel">
-        <span class="hero__cadre" aria-hidden="true"></span>
+
+      <figure class="hero__visuel">
         <Image
           src={facade}
-          alt="Façade du siège de MADAL GROUP"
-          widths={[360, 560, 720, 1120, 1240]}
-          sizes="(min-width: 1200px) 560px, (min-width: 1000px) 46vw, calc(100vw - 48px)"
+          alt="Façade du siège de MADAL GROUP à Yopougon"
+          widths={[480, 720, 897]}
+          sizes="(min-width: 1000px) 480px, 100vw"
           loading="eager"
           fetchpriority="high"
-          class="photo"
+          class="hero__photo"
         />
-      </div>
+        <figcaption class="etiquette hero__legende">Siège — Yopougon Camp Militaire</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- 2. Les trois expertises -->
-  <section class="section" id="expertises" aria-labelledby="expertises-titre">
-    <div class="conteneur section__contenu">
-      <div class="entete-section" data-apparition>
-        <p class="etiquette">Nos expertises</p>
-        <h2 id="expertises-titre">Trois pôles complémentaires</h2>
-        <p>
-          Chaque pôle a sa page, son équipe et sa demande de devis. Choisissez celui qui
-          correspond à votre besoin.
-        </p>
-      </div>
-      <ul class="grille" data-apparition-groupe>
+  <!-- 2. Les trois pôles, en cellules qui chevauchent le bas du hero -->
+  <section class="poles" id="expertises" aria-labelledby="expertises-titre">
+    <div class="conteneur">
+      <h2 id="expertises-titre" class="visuellement-cache">Nos trois pôles</h2>
+      <ul class="grille-technique grille-technique--trois poles__grille" data-apparition-groupe>
         {
-          POLES_DETAILS.map((pole) => (
+          POLES_DETAILS.map((pole, index) => (
             <li>
-              <CartePole pole={pole} />
+              <CartePole pole={pole} numero={index + 1} />
             </li>
           ))
         }
@@ -82,32 +82,49 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     </div>
   </section>
 
-  <!-- 3. Pourquoi MADAL GROUP -->
+  <!-- 3. Positionnement : le texte s'allume au défilement -->
+  <Manifeste etiquette="Notre positionnement" texte={POSITIONNEMENT} />
+
+  <!-- 4. Pourquoi MADAL GROUP -->
   <section class="section section--grise" aria-labelledby="pourquoi-titre">
-    <div class="conteneur section__contenu">
-      <div class="entete-section" data-apparition>
-        <p class="etiquette">Pourquoi MADAL GROUP</p>
-        <h2 id="pourquoi-titre">Plus qu'une entreprise, une référence</h2>
+    <div class="conteneur pourquoi">
+      <div class="pourquoi__texte">
+        <div class="entete-section" data-apparition>
+          <p class="etiquette">Pourquoi MADAL GROUP</p>
+          <h2 id="pourquoi-titre">Plus qu'une entreprise, une référence.</h2>
+        </div>
+        <ol class="arguments" data-apparition-groupe>
+          {
+            ARGUMENTS.map((argument, index) => (
+              <li class="argument">
+                <span class="argument__numero" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <p>
+                  <strong class="argument__titre">{argument.titre}.</strong>{' '}
+                  <span class="argument__texte">{argument.texte}</span>
+                </p>
+              </li>
+            ))
+          }
+        </ol>
       </div>
-      <div class="pourquoi">
-        <div class="pourquoi__visuel" data-apparition="image">
-          <Image
-            src={equipe}
-            alt="L'équipe MADAL GROUP au travail"
-            widths={[360, 560, 720, 1080, 1400]}
-            sizes="(min-width: 1000px) 460px, calc(100vw - 48px)"
-            class="photo"
-          />
-        </div>
-        <div class="pourquoi__arguments" data-apparition-groupe>
-          {ARGUMENTS.map((argument) => <Argument titre={argument.titre} texte={argument.texte} />)}
-        </div>
+      <div class="pourquoi__visuel" data-apparition="image">
+        <Image
+          src={equipe}
+          alt="L'équipe MADAL GROUP au travail"
+          widths={[360, 560, 720, 1080]}
+          sizes="(min-width: 1000px) 520px, calc(100vw - 48px)"
+          class="pourquoi__photo"
+        />
+        <p class="etiquette pourquoi__badge">Yopougon — Abidjan</p>
       </div>
     </div>
   </section>
 
-  <!-- 4. Synergie -->
-  <section class="section fond-fonce" aria-labelledby="synergie-titre">
+  <!-- 5. Synergie -->
+  <section class="section fond-fonce section-trame" aria-labelledby="synergie-titre">
+    <div class="trame section-trame__fond" aria-hidden="true"></div>
     <div class="conteneur section__contenu">
       <div class="entete-section" data-apparition>
         <p class="etiquette">La synergie du groupe</p>
@@ -117,7 +134,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     </div>
   </section>
 
-  <!-- 5. Notre méthode -->
+  <!-- 6. Notre méthode -->
   <section class="section" aria-labelledby="methode-titre">
     <div class="conteneur section__contenu">
       <div class="entete-section" data-apparition>
@@ -134,7 +151,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     </div>
   </section>
 
-  <!-- 6. Nos solutions -->
+  <!-- 7. Nos solutions -->
   <section class="section section--grise" aria-labelledby="solutions-titre">
     <div class="conteneur section__contenu">
       <div class="entete-ligne">
@@ -159,7 +176,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     </div>
   </section>
 
-  <!-- 7. Le Mag MADAL -->
+  <!-- 8. Le Mag MADAL -->
   <section class="section" aria-labelledby="mag-titre">
     <div class="conteneur section__contenu">
       <div class="entete-ligne">
@@ -184,7 +201,7 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     </div>
   </section>
 
-  <!-- 8. Appel à l'action : bloc commun ajouté par le layout -->
+  <!-- Appel à l'action : bloc commun ajouté par le layout -->
 </Base>
 
 <style>
@@ -193,155 +210,146 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    background: var(--vert-fonce-2);
   }
 
-  /* Décor : halo vert qui dérive lentement et trame de points estompée */
-  .hero__decor {
+  .hero__trame {
     position: absolute;
     inset: 0;
     z-index: -1;
-    pointer-events: none;
-  }
-
-  .hero__decor::before {
-    content: '';
-    position: absolute;
-    top: -30%;
-    right: -20%;
-    width: 80%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(
-      closest-side,
-      color-mix(in srgb, var(--vert-accent) 30%, transparent),
-      transparent
-    );
-  }
-
-  .hero__decor::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(var(--sur-fonce-filet) 1.2px, transparent 1.2px);
-    background-size: 26px 26px;
-    mask-image: radial-gradient(ellipse 70% 80% at 15% 30%, #000, transparent 70%);
   }
 
   .hero__grille {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    align-items: end;
     gap: var(--espace-7);
-    min-height: 600px;
-    padding-block: 72px;
+    /* Réserve l'espace des cellules de pôles qui chevauchent le bas */
+    padding-block: var(--espace-6) 168px;
   }
 
-  .hero__texte {
+  .hero__contenu {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--espace-5);
   }
 
-  .hero h1 {
-    font-size: var(--taille-h1);
-    line-height: 1.06;
-  }
-
-  .hero__accroche {
-    font-size: var(--taille-accroche);
-    font-weight: var(--graisse-demi);
-    line-height: 1.3;
-  }
-
-  .fond-fonce .hero__accroche {
+  .hero__etiquette {
     color: var(--vert-accent);
   }
 
-  .hero__introduction {
-    max-width: 520px;
-    font-size: var(--taille-texte-grand);
+  .hero__titre {
+    /* Bornée aussi par la hauteur d'écran pour tenir sur un portable */
+    font-size: clamp(3.25rem, min(1rem + 6.6vw, 15svh), 7.5rem);
+    font-weight: var(--graisse-demi);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
   }
 
-  .hero__boutons {
-    margin-top: var(--espace-2);
+  .hero__titre span {
+    display: block;
   }
 
+  .fond-fonce .hero__accent {
+    color: var(--vert-accent);
+  }
+
+  .hero__pied {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-4);
+    padding-top: var(--espace-4);
+    border-top: 1px solid var(--sur-fonce-bordure);
+  }
+
+  .hero__textes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+    max-width: 580px;
+  }
+
+  .fond-fonce .hero__accroche {
+    font-size: var(--taille-accroche);
+    font-weight: var(--graisse-demi);
+    color: var(--blanc);
+  }
+
+  /* Photo de la façade, entière, à angle coupé */
   .hero__visuel {
     position: relative;
-    height: 440px;
+    height: clamp(420px, 62svh, 600px);
   }
 
-  /* Cadre décalé derrière la photo */
-  .hero__cadre {
-    position: absolute;
-    inset: 18px -18px -18px 18px;
-    z-index: -1;
-    border: 2px solid var(--sur-fonce-bordure);
+  .hero__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
     border-radius: var(--rayon-carte);
+    --angle-coupe: 56px;
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--angle-coupe)) 0,
+      100% var(--angle-coupe),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .etiquette.hero__legende {
+    position: absolute;
+    left: var(--espace-3);
+    bottom: var(--espace-3);
+    padding: 8px 12px;
+    border-radius: var(--rayon-champ);
+    background: var(--vert-fonce-2);
+    color: var(--vert-accent);
+    font-size: 0.75rem;
   }
 
   /* ---------- Entrée du hero au chargement ---------- */
   @media (prefers-reduced-motion: no-preference) {
-    .hero__decor::before {
-      animation: hero-derive 14s ease-in-out 2 alternate;
+    .hero__etiquette,
+    .hero__titre span,
+    .hero__pied {
+      animation: hero-entree 1000ms var(--courbe-sortie) both;
     }
 
-    .hero__texte > *,
-    .hero h1 span {
-      animation: hero-entree 900ms var(--courbe-sortie) both;
+    .hero__titre span:nth-child(1) {
+      animation-delay: 120ms;
     }
 
-    .hero h1 span {
-      display: inline-block;
+    .hero__titre span:nth-child(2) {
+      animation-delay: 220ms;
     }
 
-    .hero__texte > :nth-child(1) {
-      animation-delay: 80ms;
+    .hero__titre span:nth-child(3) {
+      animation-delay: 320ms;
     }
 
-    /* Le titre lui-même ne bouge pas : ses trois verbes arrivent l'un après l'autre */
-    .hero__texte > h1 {
-      animation: none;
-    }
-
-    .hero h1 span:nth-child(1) {
-      animation-delay: 160ms;
-    }
-
-    .hero h1 span:nth-child(2) {
-      animation-delay: 260ms;
-    }
-
-    .hero h1 span:nth-child(3) {
-      animation-delay: 360ms;
-    }
-
-    .hero__texte > :nth-child(3) {
+    .hero__pied {
       animation-delay: 480ms;
     }
 
-    .hero__texte > :nth-child(4) {
-      animation-delay: 560ms;
+    /* La photo est l'image principale : visible tout de suite, léger recul */
+    .hero__photo {
+      animation: hero-photo 2400ms var(--courbe-sortie) both;
     }
 
-    .hero__texte > :nth-child(5) {
-      animation-delay: 640ms;
+    .hero__legende {
+      animation: hero-entree 1000ms var(--courbe-sortie) 700ms both;
     }
 
-    /* Photo : affichée immédiatement (image principale de la page), simple léger zoom arrière */
-    .hero__visuel :global(.photo) {
-      animation: hero-photo 1600ms var(--courbe-sortie) both;
-    }
-
-    .hero__cadre {
-      animation: hero-cadre 1200ms var(--courbe-sortie) 400ms both;
+    .hero__trame {
+      animation: hero-trame 1600ms ease-out 200ms both;
     }
   }
 
   @keyframes hero-entree {
     from {
       opacity: 0;
-      translate: 0 24px;
+      translate: 0 32px;
     }
   }
 
@@ -351,37 +359,113 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     }
   }
 
-  @keyframes hero-cadre {
+  @keyframes hero-trame {
     from {
       opacity: 0;
-      translate: -18px -18px;
     }
   }
 
-  @keyframes hero-derive {
-    to {
-      translate: -18% 22%;
-      scale: 1.15;
-    }
+  /* ---------- Pôles ---------- */
+  .poles {
+    position: relative;
+    z-index: 1;
+    margin-top: -120px;
+  }
+
+  .poles__grille {
+    background: var(--blanc);
+    box-shadow: 0 30px 60px -30px rgba(7, 44, 22, 0.35);
   }
 
   /* ---------- Pourquoi ---------- */
   .pourquoi {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: var(--espace-6);
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: var(--espace-7);
+  }
+
+  .pourquoi__texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-5);
+  }
+
+  .arguments {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--bordure-champ);
+  }
+
+  .argument {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: var(--espace-2);
+    padding-block: 18px;
+    border-bottom: 1px solid var(--bordure-champ);
+  }
+
+  .argument__numero {
+    padding-top: 5px;
+    font-family: var(--police-mono);
+    font-size: var(--taille-mono);
+    color: var(--vert-texte);
+  }
+
+  .argument p {
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .argument__titre {
+    font-weight: var(--graisse-demi);
+    color: var(--vert-fonce);
+  }
+
+  .argument__texte {
+    color: var(--texte-secondaire);
   }
 
   .pourquoi__visuel {
-    min-height: 460px;
+    position: relative;
+    height: 100%;
+    min-height: 520px;
   }
 
-  .pourquoi__arguments {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px var(--espace-5);
-    align-content: center;
+  /* Angle coupé en bas à gauche */
+  .pourquoi__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--rayon-carte);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 88px 100%, 0 calc(100% - 88px));
+  }
+
+  .etiquette.pourquoi__badge {
+    position: absolute;
+    top: var(--espace-3);
+    right: var(--espace-3);
+    padding: 8px 12px;
+    border-radius: var(--rayon-champ);
+    background: var(--vert-fonce);
+    color: var(--vert-accent);
+    font-size: 0.75rem;
+  }
+
+  /* ---------- Section foncée avec trame ---------- */
+  .section-trame {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .section-trame__fond {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
   }
 
   /* ---------- En-tête de section avec lien à droite ---------- */
@@ -393,56 +477,88 @@ const donneesOrganisation = organisation(new URL(logoJsonLd.src, Astro.site).hre
     gap: var(--espace-3);
   }
 
-  /* ---------- Tablette ---------- */
+  /* ---------- Tablette et téléphone : la façade passe en fond plein écran ---------- */
   @media (max-width: 999px) {
+    /* La façade s'affiche entière en haut, pleine largeur (ratio de la photo 897 × 835),
+       puis se fond dans le vert ; le texte commence sur la partie fondue. */
+    .hero {
+      --hauteur-photo: min(calc(100vw * 0.93), 60svh);
+    }
+
     .hero__grille {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--espace-6);
-      min-height: 0;
-      padding-block: var(--espace-6);
+      padding-block: calc(var(--hauteur-photo) - 84px) 140px;
     }
 
     .hero__visuel {
-      height: clamp(236px, 50vw, 420px);
+      position: absolute;
+      inset: var(--decalage-entete) 0 auto;
+      z-index: -2;
+      height: var(--hauteur-photo);
+    }
+
+    .hero__photo {
+      border-radius: 0;
+      clip-path: none;
+      object-position: 50% 0;
+    }
+
+    .hero__visuel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(7, 44, 22, 0.25) 0%,
+        rgba(7, 44, 22, 0) 30%,
+        rgba(7, 44, 22, 0.7) 72%,
+        var(--vert-fonce-2) 100%
+      );
+    }
+
+    .hero__legende {
+      display: none;
     }
 
     .pourquoi {
       grid-template-columns: minmax(0, 1fr);
+      gap: var(--espace-6);
     }
 
     .pourquoi__visuel {
       min-height: 0;
-      height: clamp(200px, 45vw, 400px);
+      height: clamp(260px, 60vw, 480px);
     }
   }
 
   /* ---------- Mobile ---------- */
   @media (max-width: 640px) {
     .hero__grille {
-      padding-block: 40px;
-      gap: var(--espace-5);
+      padding-bottom: 96px;
     }
 
-    .hero__texte {
-      gap: var(--espace-3);
+    .hero__contenu {
+      gap: var(--espace-4);
     }
 
-    /* Un verbe par ligne, comme sur la maquette mobile */
-    .hero h1 span {
-      display: block;
+    .hero__titre {
+      line-height: 0.95;
+    }
+
+    .hero__pied {
+      padding-top: var(--espace-4);
     }
 
     .hero__introduction {
-      font-size: var(--taille-texte);
+      display: none;
     }
 
-    .hero__cadre {
-      inset: 12px -10px -12px 10px;
+    .poles {
+      margin-top: -64px;
     }
 
-    .pourquoi__arguments {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 20px;
+    .pourquoi__photo {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 56px 100%, 0 calc(100% - 56px));
     }
   }
 </style>

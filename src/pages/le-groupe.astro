@@ -24,6 +24,7 @@ import {
 >
   <!-- 1. En-tête -->
   <section class="entete-page fond-fonce" aria-labelledby="groupe-titre">
+    <div class="trame entete-page__trame" aria-hidden="true"></div>
     <div class="conteneur entete-page__grille">
       <div class="entete-page__texte">
         <p class="etiquette">Le Groupe</p>
@@ -129,11 +130,11 @@ import {
         <p class="etiquette">Nos expertises</p>
         <h2 id="poles-titre">Trois pôles complémentaires</h2>
       </div>
-      <ul class="grille" data-apparition-groupe>
+      <ul class="grille-technique grille-technique--trois" data-apparition-groupe>
         {
-          POLES_DETAILS.map((pole) => (
+          POLES_DETAILS.map((pole, index) => (
             <li>
-              <CartePole pole={pole} fond="blanc" />
+              <CartePole pole={pole} numero={index + 1} />
             </li>
           ))
         }
@@ -148,6 +149,17 @@ import {
 
 <style>
   /* ---------- En-tête ---------- */
+  .entete-page {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .entete-page__trame {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
   .entete-page__grille {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 360px;
@@ -163,7 +175,9 @@ import {
   }
 
   .entete-page h1 {
-    font-size: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+    font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
   }
 
   .entete-page__positionnement {

@@ -74,7 +74,8 @@ supabase/
 - Couleurs : uniquement celles de `tokens.css`. `#22C55E` ne porte jamais de texte blanc et n'est jamais une couleur de texte sur fond clair (utiliser `--vert-texte`). Bouton vert = texte `--vert-fonce`.
 - Logo : fichiers fournis, **jamais redessinés, déformés ni recolorés**. `logo-disque.jpg` est provisoire (recadrage d'un rendu) en attendant le fichier officiel.
 - Mobile d'abord : tout doit fonctionner à 360 px. Cibles tactiles ≥ 44 px. Largeur de contenu ≤ 1 200 px.
-- Police Barlow, auto-hébergée (pas d'appel à Google Fonts en production).
+- Police Barlow, auto-hébergée (pas d'appel à Google Fonts en production). JetBrains Mono (graisse 500, auto-hébergée) pour les étiquettes et les boutons uniquement.
+- Direction visuelle « D — plan technique » validée le 17/10/2026 (remplace l'aspect des maquettes `docs/maquettes/`, dont la structure reste la référence) : en-tête flottant vert foncé, titres serrés, étiquettes en chasse fixe, trame `.trame`, `.grille-technique` à croix « + », photos `.angle-coupe`.
 - Icônes au trait, en SVG en ligne, une seule famille. Pas d'emoji.
 - Animations légères, désactivées sous `prefers-reduced-motion`.
 
@@ -95,6 +96,8 @@ supabase/
 - Encodage UTF-8 partout (fichiers, `<meta charset>`, SQL).
 - Filtrer par identifiant avec `===`, jamais avec `.includes()`.
 - Cache navigateur : les fichiers générés par Astro sont hachés ; ne pas ajouter de ressources non hachées dans `public/` sans raison.
+- En-tête flottant : la première section de chaque page passe dessous (`main > :first-child` reçoit `padding-top: var(--decalage-entete)`) et doit être sur fond foncé (`.fond-fonce`).
+- Animations pilotées par le défilement : écrire `animation-timeline` dans une règle séparée de `animation`, sinon le minifieur fusionne les deux en un raccourci que Chrome rejette.
 
 ## Méthode de travail
 

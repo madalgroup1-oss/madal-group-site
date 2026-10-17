@@ -34,7 +34,9 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | --- | --- | --- |
 | `logo-disque.jpg` | Symbole MADAL GROUP sur disque gris (provisoire) | En-tête, pied de page (affiché en rond) |
 | `logo-sceau.jpg` | Sceau complet avec slogan | Non utilisé ; réserve pour la page Le Groupe |
-| `facade.jpg` | Façade du siège | Hero de l'accueil |
+| `facade.jpg` | Façade du siège avec les bâtiments voisins (original) | Non utilisé |
+| `facade-madal.jpg` | Façade recadrée sur le seul bâtiment MADAL GROUP | Hero de l'accueil |
+| `partage-accueil.jpg` | Enseigne du siège au format 1200 × 630 | Image de partage par défaut (WhatsApp, Facebook) |
 | `equipe.jpg` | Bureau, deux collaboratrices | Section Pourquoi, hero Consulting |
 | `bureau-direction.jpg` | Bureau de direction | Réserve pour la page Le Groupe |
 | `accueil-reception.jpg` | Banque d'accueil | Réserve pour la page Contact |
