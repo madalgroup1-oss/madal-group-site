@@ -1,0 +1,78 @@
+---
+// Section de texte long (mentions légales, politique de confidentialité) : colonne de lecture
+// étroite, intertitres h2 et listes mis en forme.
+interface Props {
+  /** Date de dernière mise à jour affichée en tête, ex. « 19 octobre 2026 ». */
+  miseAJour?: string;
+}
+
+const { miseAJour } = Astro.props;
+---
+
+<section class="section">
+  <div class="conteneur texte-long">
+    {miseAJour && <p class="etiquette texte-long__date">Mise à jour : {miseAJour}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .texte-long {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-3);
+    max-width: 760px;
+  }
+
+  .texte-long :global(h2) {
+    margin-top: var(--espace-4);
+    font-size: var(--taille-h3);
+  }
+
+  .texte-long :global(p),
+  .texte-long :global(li) {
+    color: var(--texte);
+  }
+
+  .texte-long :global(ul) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding-left: 1.25em;
+  }
+
+  .texte-long :global(dl) {
+    margin: 0;
+    border-top: 1px solid var(--bordure);
+  }
+
+  .texte-long :global(dl > div) {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--espace-2);
+    padding-block: var(--espace-2);
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  @media (max-width: 560px) {
+    .texte-long :global(dl > div) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+  }
+
+  .texte-long :global(dt) {
+    font-weight: var(--graisse-demi);
+    color: var(--vert-fonce);
+  }
+
+  .texte-long :global(dd) {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .texte-long :global(a) {
+    color: var(--vert-texte);
+  }
+</style>

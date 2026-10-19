@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import SectionTexte from '../components/SectionTexte.astro';
+import { EMAIL, RAISON_SOCIALE, SIEGE_SOCIAL, TELEPHONES } from '../lib/coordonnees';
+
+// Loi ivoirienne n° 2013-450 du 19 juin 2013 relative à la protection des données à caractère personnel.
+// Durée de conservation (3 ans) : proposition à faire valider par MADAL GROUP (docs/contenus-en-attente.md).
+---
+
+<Base
+  titre="Politique de confidentialité — MADAL GROUP"
+  description="Comment MADAL GROUP SARL collecte, utilise et protège les informations transmises par les formulaires de contact et de devis du site madalgroup.ci."
+  page="Politique de confidentialité"
+>
+  <EntetePage etiquette="Informations légales" titre="Politique de confidentialité" />
+
+  <SectionTexte miseAJour="19 octobre 2026">
+    <p>
+      {RAISON_SOCIALE} ({SIEGE_SOCIAL}) est responsable des informations que vous transmettez sur ce site.
+      Elles sont traitées conformément à la loi ivoirienne n° 2013-450 du 19 juin 2013 relative à la protection
+      des données à caractère personnel.
+    </p>
+
+    <h2>Informations collectées</h2>
+    <p>Lorsque vous envoyez le formulaire de contact ou de demande de devis, nous enregistrons :</p>
+    <ul>
+      <li>votre nom ou celui de votre entreprise, votre téléphone et, si vous l'indiquez, votre email ;</li>
+      <li>le pôle concerné, l'objet et la description de votre besoin, et la pièce jointe éventuelle ;</li>
+      <li>la page du site depuis laquelle vous avez écrit et la date d'envoi ;</li>
+      <li>
+        une empreinte chiffrée de votre adresse IP, qui ne permet pas de la retrouver et sert uniquement à
+        limiter les envois abusifs (trois par heure).
+      </li>
+    </ul>
+    <p>Aucune information n'est collectée si vous vous contentez de consulter le site.</p>
+
+    <h2>Utilisation</h2>
+    <p>
+      Ces informations servent uniquement à répondre à votre demande, à établir un devis et à assurer le suivi
+      de la relation commerciale. Elles ne sont ni vendues ni cédées. Leur traitement repose sur votre
+      consentement, donné en cochant la case du formulaire.
+    </p>
+
+    <h2>Destinataires et prestataires</h2>
+    <p>
+      Seule l'équipe de {RAISON_SOCIALE} a accès à vos demandes. Nos prestataires techniques les hébergent ou
+      les transmettent pour notre compte, sans pouvoir les utiliser à d'autres fins :
+    </p>
+    <ul>
+      <li>Supabase (stockage des demandes et des pièces jointes, serveurs dans l'Union européenne) ;</li>
+      <li>Resend (envoi des emails de notification et d'accusé de réception, États-Unis) ;</li>
+      <li>Cloudflare (hébergement du site, États-Unis).</li>
+    </ul>
+
+    <h2>Durée de conservation</h2>
+    <p>
+      Les demandes sont conservées trois ans après notre dernier échange, puis supprimées. Les empreintes
+      d'adresse IP ne servent que pendant une heure au contrôle des envois.
+    </p>
+
+    <h2>Cookies et mesure d'audience</h2>
+    <p>
+      Le site ne dépose aucun cookie publicitaire ni de suivi. La fréquentation est mesurée par Cloudflare Web
+      Analytics, sans cookie et sans identification des visiteurs. La carte Google Maps de la page Contact n'est
+      chargée que si vous cliquez sur « Afficher la carte » ; Google applique alors sa propre politique de
+      confidentialité.
+    </p>
+
+    <h2>Vos droits</h2>
+    <p>
+      Vous pouvez à tout moment demander l'accès à vos informations, leur rectification ou leur suppression, ou
+      vous opposer à leur traitement, en écrivant à <a href={`mailto:${EMAIL}`}>{EMAIL}</a> ou en appelant le{' '}
+      <a href={TELEPHONES[0].lien}>{TELEPHONES[0].affiche}</a>. Nous répondons dans un délai d'un mois.
+    </p>
+    <p>
+      En cas de difficulté, vous pouvez saisir l'Autorité de Régulation des Télécommunications/TIC de Côte
+      d'Ivoire (ARTCI), autorité de protection des données personnelles.
+    </p>
+  </SectionTexte>
+</Base>

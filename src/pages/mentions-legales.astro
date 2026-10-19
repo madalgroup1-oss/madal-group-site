@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import SectionTexte from '../components/SectionTexte.astro';
+import {
+  BOITE_POSTALE,
+  CAPITAL,
+  COMPTE_CONTRIBUABLE,
+  EMAIL,
+  FORME_JURIDIQUE,
+  PAYS,
+  RAISON_SOCIALE,
+  RCCM,
+  SIEGE_SOCIAL,
+  TELEPHONES,
+} from '../lib/coordonnees';
+
+// Mentions exigées par le cahier des charges (section 7 « Conformité »)
+---
+
+<Base
+  titre="Mentions légales — MADAL GROUP SARL"
+  description="Mentions légales du site madalgroup.ci : éditeur MADAL GROUP SARL, siège social, RCCM, compte contribuable, directeur de la publication et hébergeur."
+  page="Mentions légales"
+>
+  <EntetePage etiquette="Informations légales" titre="Mentions légales" />
+
+  <SectionTexte miseAJour="19 octobre 2026">
+    <h2>Éditeur du site</h2>
+    <dl>
+      <div><dt>Dénomination</dt><dd>{RAISON_SOCIALE}</dd></div>
+      <div><dt>Forme juridique</dt><dd>{FORME_JURIDIQUE}</dd></div>
+      <div><dt>Capital social</dt><dd>{CAPITAL}</dd></div>
+      <div><dt>Siège social</dt><dd>{SIEGE_SOCIAL}, {PAYS}<br />{BOITE_POSTALE}</dd></div>
+      <div><dt>RCCM</dt><dd>{RCCM}</dd></div>
+      <div><dt>Compte contribuable</dt><dd>{COMPTE_CONTRIBUABLE}</dd></div>
+      <div>
+        <dt>Téléphone</dt>
+        <dd>{TELEPHONES.map((telephone, index) => <>{index > 0 && ' · '}<a href={telephone.lien}>{telephone.affiche}</a></>)}</dd>
+      </div>
+      <div><dt>Email</dt><dd><a href={`mailto:${EMAIL}`}>{EMAIL}</a></dd></div>
+      <div>
+        <dt>Directeur de la publication</dt>
+        <dd><span class="a-fournir">[À FOURNIR : nom du gérant]</span>, gérant de {RAISON_SOCIALE}</dd>
+      </div>
+    </dl>
+
+    <h2>Hébergement</h2>
+    <dl>
+      <div>
+        <dt>Site</dt>
+        <dd>Cloudflare, Inc. — 101 Townsend Street, San Francisco, CA 94107, États-Unis — cloudflare.com</dd>
+      </div>
+      <div>
+        <dt>Contenus et demandes</dt>
+        <dd>Supabase, Inc. (serveurs situés dans l'Union européenne) — supabase.com</dd>
+      </div>
+    </dl>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>
+      Les textes, logos, marques (MADAL GROUP, Madal Consulting, Madal Distribution, Madal Technologie, Madal RH,
+      BMVT GESTION PRO, Allô Lapins &amp; Volailles by MG) et visuels de ce site sont la propriété de {RAISON_SOCIALE} ou de leurs auteurs. Toute reproduction sans autorisation écrite est interdite.
+    </p>
+
+    <h2>Données personnelles</h2>
+    <p>
+      Le traitement des informations transmises par les formulaires est décrit dans la <a href="/confidentialite">politique de confidentialité</a>.
+    </p>
+  </SectionTexte>
+</Base>
