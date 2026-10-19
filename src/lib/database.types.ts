@@ -288,6 +288,30 @@ export type Database = {
           },
         ]
       }
+      publications: {
+        Row: {
+          demandee_le: string
+          demandee_par: string | null
+          id: string
+          message: string | null
+          reussie: boolean
+        }
+        Insert: {
+          demandee_le?: string
+          demandee_par?: string | null
+          id?: string
+          message?: string | null
+          reussie: boolean
+        }
+        Update: {
+          demandee_le?: string
+          demandee_par?: string | null
+          id?: string
+          message?: string | null
+          reussie?: boolean
+        }
+        Relationships: []
+      }
       solutions: {
         Row: {
           captures: string[]

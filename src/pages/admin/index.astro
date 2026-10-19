@@ -1,0 +1,116 @@
+---
+// Espace d'administration (cahier des charges, section 5 « Espace d'administration »).
+// Page statique : le script se connecte à Supabase Auth et écrit directement dans les tables
+// (RLS : écriture réservée aux membres de la table admins). Absente du menu et du sitemap,
+// noindex (balise et en-tête X-Robots-Tag de public/_headers).
+import { getImage } from 'astro:assets';
+import '../../styles/global.css';
+import '../../styles/admin.css';
+import logoDisque from '../../assets/images/logo-disque.jpg';
+
+const favicon = await getImage({ src: logoDisque, width: 48, height: 48, format: 'png' });
+const symbole = await getImage({ src: logoDisque, width: 80, height: 80, format: 'webp' });
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0A3D1F" />
+    <title>Administration — MADAL GROUP</title>
+    <link rel="icon" type="image/png" sizes="48x48" href={favicon.src} />
+  </head>
+  <body class="admin">
+    <header class="admin-entete fond-fonce">
+      <div class="admin-entete__marque">
+        <img src={symbole.src} alt="" width="40" height="40" class="admin-entete__symbole" />
+        <span class="admin-entete__nom">MADAL GROUP <span class="etiquette">Administration</span></span>
+      </div>
+      <div class="admin-entete__compte" data-compte hidden>
+        <span class="admin-entete__email" data-compte-email></span>
+        <button class="bouton bouton--contour bouton--compact" type="button" data-deconnexion>
+          Se déconnecter
+        </button>
+      </div>
+    </header>
+
+    <main class="admin-principal" id="contenu" tabindex="-1">
+      <!-- Chargement de la session -->
+      <p class="admin-chargement" data-vue="chargement">Chargement…</p>
+
+      <!-- Connexion -->
+      <section class="admin-connexion" data-vue="connexion" hidden aria-labelledby="connexion-titre">
+        <h1 id="connexion-titre">Connexion</h1>
+        <form class="admin-formulaire" data-connexion novalidate>
+          <div class="champ">
+            <label for="connexion-email">Email</label>
+            <input id="connexion-email" name="email" type="email" autocomplete="username" required />
+          </div>
+          <div class="champ">
+            <label for="connexion-mdp">Mot de passe</label>
+            <input
+              id="connexion-mdp"
+              name="mot_de_passe"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <p class="admin-alerte" role="alert" data-connexion-alerte hidden></p>
+          <button class="bouton" type="submit">Se connecter</button>
+          <button class="admin-lien" type="button" data-oubli>Mot de passe oublié ?</button>
+        </form>
+      </section>
+
+      <!-- Nouveau mot de passe (lien reçu par email) -->
+      <section class="admin-connexion" data-vue="nouveau-mdp" hidden aria-labelledby="mdp-titre">
+        <h1 id="mdp-titre">Nouveau mot de passe</h1>
+        <form class="admin-formulaire" data-nouveau-mdp novalidate>
+          <!-- Identifiant attendu par les gestionnaires de mots de passe -->
+          <input type="text" name="identifiant" autocomplete="username" hidden />
+          <div class="champ">
+            <label for="nouveau-mdp">Nouveau mot de passe (10 caractères minimum)</label>
+            <input
+              id="nouveau-mdp"
+              name="mot_de_passe"
+              type="password"
+              autocomplete="new-password"
+              minlength="10"
+              required
+            />
+          </div>
+          <p class="admin-alerte" role="alert" data-mdp-alerte hidden></p>
+          <button class="bouton" type="submit">Enregistrer le mot de passe</button>
+        </form>
+      </section>
+
+      <!-- Espace connecté -->
+      <div class="admin-espace" data-vue="espace" hidden>
+        <h1 class="visuellement-cache">Administration du site</h1>
+
+        <section class="admin-publication" aria-labelledby="publication-titre" data-publication>
+          <div>
+            <h2 id="publication-titre" class="etiquette">Site public</h2>
+            <p class="admin-publication__etat" data-publication-etat>Lecture de l'état…</p>
+          </div>
+          <button class="bouton" type="button" data-publier>Publier sur le site</button>
+        </section>
+
+        <nav class="admin-onglets" aria-label="Rubriques">
+          <ul data-onglets></ul>
+        </nav>
+
+        <section class="admin-rubrique" data-rubrique aria-live="polite"></section>
+      </div>
+    </main>
+
+    <!-- Messages courts (enregistré, erreur…) -->
+    <div class="admin-message" role="status" aria-live="polite" data-message hidden></div>
+
+    <script>
+      import '../../scripts/admin/principal';
+    </script>
+  </body>
+</html>

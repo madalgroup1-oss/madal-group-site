@@ -390,6 +390,11 @@ deno_version = 2
 [functions.submit-demande]
 verify_jwt = false
 
+# Publication depuis /admin : le jeton de session est vérifié dans la fonction
+# (auth.getUser), puis l'appartenance à la table admins
+[functions.rebuild]
+verify_jwt = false
+
 [analytics]
 enabled = true
 port = 54327
