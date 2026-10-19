@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import SectionDemande from '../components/SectionDemande.astro';
+---
+
+<!-- Pôle et objet pré-sélectionnés par l'adresse : /devis?pole=technologie&objet=… (lienDevis) -->
+<Base
+  titre="Demander un devis — MADAL GROUP, Abidjan"
+  description="Demandez un devis à MADAL GROUP, à Abidjan : Madal Consulting, Madal Distribution ou Madal Technologie. Votre demande arrive directement au pôle concerné."
+  page="Demander un devis"
+  blocCTA={false}
+>
+  <EntetePage etiquette="Devis" titre="Demander un devis" />
+
+  <SectionDemande
+    page="Demander un devis"
+    etiquette="Votre demande"
+    texte="Décrivez votre besoin. Votre demande arrive directement à l'équipe du pôle concerné."
+    lireAdresse
+  />
+</Base>

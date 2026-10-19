@@ -1,0 +1,435 @@
+---
+// Formulaire de contact et de devis (cahier des charges, section 5, F1 et F2).
+// Envoi à l'Edge Function submit-demande (src/scripts/formulaire.ts) ; sans JavaScript,
+// un message invite à appeler ou à écrire sur WhatsApp.
+import Icone from './Icone.astro';
+import { lienWhatsApp } from '../lib/coordonnees';
+import { NOM_POLE } from '../lib/libelles';
+import type { Enums } from '../lib/database.types';
+
+interface Props {
+  /** Pôle pré-sélectionné ; sur /devis, le paramètre ?pole= de l'adresse a priorité. */
+  pole?: Enums<'pole'>;
+  /** Objet pré-rempli ; sur /devis, le paramètre ?objet= de l'adresse a priorité. */
+  objet?: string;
+  /** Nom lisible de la page, enregistré avec la demande et repris dans le message WhatsApp. */
+  page: string;
+  /** Lit ?pole= et ?objet= dans l'adresse (page /devis). */
+  lireAdresse?: boolean;
+  /** Libellé du bouton d'envoi. */
+  libelleEnvoi?: string;
+}
+
+const {
+  pole = 'groupe',
+  objet = '',
+  page,
+  lireAdresse = false,
+  libelleEnvoi = 'Envoyer ma demande',
+} = Astro.props;
+
+const POLES: Enums<'pole'>[] = ['consulting', 'distribution', 'technologie', 'groupe'];
+const pageOrigine = `${page} (${Astro.url.pathname})`;
+const urlFonction = `${import.meta.env.PUBLIC_SUPABASE_URL}/functions/v1/submit-demande`;
+---
+
+<div class="demande" data-demande>
+  <form
+    class="formulaire"
+    action={urlFonction}
+    method="post"
+    enctype="multipart/form-data"
+    novalidate
+    data-formulaire
+    data-lire-adresse={lireAdresse ? '' : undefined}
+  >
+    <p class="formulaire__legende">Les champs marqués d'un * sont obligatoires.</p>
+
+    <div class="formulaire__ligne">
+      <div class="champ">
+        <label for="f-nom">Nom / entreprise *</label>
+        <input
+          id="f-nom"
+          name="nom"
+          type="text"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="100"
+          aria-describedby="f-nom-erreur"
+        />
+        <p class="champ__erreur" id="f-nom-erreur" data-erreur="nom"></p>
+      </div>
+      <div class="champ">
+        <label for="f-telephone">Téléphone *</label>
+        <input
+          id="f-telephone"
+          name="telephone"
+          type="tel"
+          inputmode="tel"
+          autocomplete="tel"
+          placeholder="07 00 00 00 00"
+          required
+          maxlength="20"
+          aria-describedby="f-telephone-erreur"
+        />
+        <p class="champ__erreur" id="f-telephone-erreur" data-erreur="telephone"></p>
+      </div>
+    </div>
+
+    <div class="formulaire__ligne">
+      <div class="champ">
+        <label for="f-email">Email</label>
+        <input
+          id="f-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          maxlength="254"
+          aria-describedby="f-email-erreur"
+        />
+        <p class="champ__erreur" id="f-email-erreur" data-erreur="email"></p>
+      </div>
+      <div class="champ">
+        <label for="f-pole">Département concerné *</label>
+        <select id="f-pole" name="pole" required aria-describedby="f-pole-erreur">
+          {
+            POLES.map((valeur) => (
+              <option value={valeur} selected={valeur === pole}>
+                {NOM_POLE[valeur]}
+              </option>
+            ))
+          }
+        </select>
+        <p class="champ__erreur" id="f-pole-erreur" data-erreur="pole"></p>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label for="f-objet">Objet *</label>
+      <input
+        id="f-objet"
+        name="objet"
+        type="text"
+        required
+        minlength="3"
+        maxlength="150"
+        value={objet}
+        aria-describedby="f-objet-erreur"
+      />
+      <p class="champ__erreur" id="f-objet-erreur" data-erreur="objet"></p>
+    </div>
+
+    <div class="champ">
+      <label for="f-description">Description du besoin *</label>
+      <textarea
+        id="f-description"
+        name="description"
+        rows="5"
+        required
+        minlength="20"
+        maxlength="2000"
+        aria-describedby="f-description-aide f-description-erreur"></textarea>
+      <p class="champ__aide" id="f-description-aide" data-compteur>20 caractères minimum, 2 000 maximum.</p>
+      <p class="champ__erreur" id="f-description-erreur" data-erreur="description"></p>
+    </div>
+
+    <div class="champ">
+      <label for="f-piece">
+        Pièce jointe <span class="champ__precision">(PDF, JPG, PNG, DOCX — 5 Mo max)</span>
+      </label>
+      <input
+        id="f-piece"
+        name="piece_jointe"
+        type="file"
+        accept=".pdf,.jpg,.jpeg,.png,.docx,application/pdf,image/jpeg,image/png,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        aria-describedby="f-piece-erreur"
+      />
+      <p class="champ__erreur" id="f-piece-erreur" data-erreur="piece_jointe"></p>
+    </div>
+
+    <!-- Champ piège : masqué aux visiteurs et aux lecteurs d'écran, rempli par les robots -->
+    <div class="formulaire__piege" aria-hidden="true">
+      <label for="f-site-web">Site web</label>
+      <input id="f-site-web" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <input type="hidden" name="page_origine" value={pageOrigine} />
+
+    <div class="champ">
+      <div class="case">
+        <input
+          id="f-consentement"
+          name="consentement"
+          type="checkbox"
+          value="oui"
+          required
+          aria-describedby="f-consentement-erreur"
+        />
+        <label for="f-consentement">
+          J'accepte la <a href="/confidentialite">politique de confidentialité</a> de MADAL GROUP. *
+        </label>
+      </div>
+      <p class="champ__erreur" id="f-consentement-erreur" data-erreur="consentement"></p>
+    </div>
+
+    <p class="formulaire__alerte" role="alert" data-alerte hidden></p>
+
+    <button class="bouton formulaire__envoi" type="submit" data-envoi>
+      <span data-envoi-libelle>{libelleEnvoi}</span>
+    </button>
+
+    <noscript>
+      <p class="formulaire__alerte">
+        Le formulaire nécessite JavaScript. Vous pouvez nous appeler au 07 87 45 76 18 ou nous écrire sur
+        WhatsApp.
+      </p>
+    </noscript>
+  </form>
+
+  <div class="confirmation" role="status" tabindex="-1" data-confirmation hidden>
+    <span class="confirmation__icone"><Icone nom="coche" taille={28} /></span>
+    <h3 class="confirmation__titre">Votre demande a bien été envoyée.</h3>
+    <p>
+      Merci. Notre équipe vous recontacte dans les meilleurs délais. Si vous avez indiqué votre email, un
+      accusé de réception vient de vous être envoyé.
+    </p>
+    <p>Pour aller plus vite, poursuivez la conversation sur WhatsApp.</p>
+    <div class="groupe-boutons">
+      <a
+        class="bouton"
+        href={lienWhatsApp(page, 'Je viens de vous envoyer une demande depuis le formulaire.')}
+        target="_blank"
+        rel="noopener"
+      >
+        <Icone nom="whatsapp" taille={18} />
+        Continuer sur WhatsApp<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+      </a>
+      <button class="bouton bouton--contour" type="button" data-nouvelle>Nouvelle demande</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .demande {
+    padding: clamp(20px, 4vw, 32px);
+    background: var(--gris-fond);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+  }
+
+  .formulaire {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .formulaire__legende {
+    font-size: var(--taille-texte-petit);
+    color: var(--texte-secondaire);
+  }
+
+  .formulaire__ligne {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 18px;
+  }
+
+  .champ {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .champ label {
+    font-size: var(--taille-texte-petit);
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+  }
+
+  .champ__precision {
+    font-weight: var(--graisse-normal);
+    color: var(--texte-secondaire);
+  }
+
+  .champ input:not([type='checkbox'], [type='file']),
+  .champ select,
+  .champ textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--bordure-champ);
+    border-radius: var(--rayon-champ);
+    background: var(--blanc);
+    color: var(--texte);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .champ textarea {
+    min-height: 132px;
+    padding-block: 12px;
+    resize: vertical;
+  }
+
+  .champ input[type='file'] {
+    min-height: var(--cible-tactile);
+    font: inherit;
+    font-size: var(--taille-texte-petit);
+  }
+
+  .champ input[type='file']::file-selector-button {
+    min-height: var(--cible-tactile);
+    margin-right: var(--espace-2);
+    padding: 0 var(--espace-3);
+    border: 1px solid var(--vert-fonce);
+    border-radius: var(--rayon-champ);
+    background: var(--blanc);
+    color: var(--vert-fonce);
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .champ input:focus-visible,
+  .champ select:focus-visible,
+  .champ textarea:focus-visible {
+    outline: none;
+    border-color: var(--vert-fonce);
+    box-shadow: 0 0 0 3px var(--vert-pale);
+  }
+
+  .champ [aria-invalid='true'] {
+    border-color: var(--texte) !important;
+    border-width: 2px !important;
+  }
+
+  .champ__aide {
+    font-size: 0.875rem;
+    color: var(--texte-secondaire);
+  }
+
+  /* Erreurs : texte foncé précédé d'un repère, pas de rouge (palette de tokens.css) */
+  .champ__erreur {
+    font-size: 0.875rem;
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+  }
+
+  .champ__erreur:empty {
+    display: none;
+  }
+
+  .champ__erreur::before {
+    content: '! ';
+    font-family: var(--police-mono);
+    color: var(--vert-fonce);
+  }
+
+  .case {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .case input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin: 1px 0 0;
+    accent-color: var(--vert-fonce);
+  }
+
+  .case label {
+    font-weight: var(--graisse-normal);
+    line-height: 1.45;
+    color: var(--texte-secondaire);
+  }
+
+  .case a {
+    color: var(--vert-texte);
+  }
+
+  .formulaire__piege {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .formulaire__alerte {
+    padding: var(--espace-2) var(--espace-3);
+    border-left: 4px solid var(--vert-fonce);
+    border-radius: var(--rayon-champ);
+    background: var(--blanc);
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+  }
+
+  .formulaire__alerte[hidden] {
+    display: none;
+  }
+
+  .formulaire__envoi {
+    align-self: flex-start;
+    cursor: pointer;
+  }
+
+  .formulaire__envoi[aria-disabled='true'] {
+    cursor: progress;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 640px) {
+    .formulaire__envoi {
+      align-self: stretch;
+    }
+  }
+
+  .confirmation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-2);
+  }
+
+  .confirmation[hidden] {
+    display: none;
+  }
+
+  .confirmation:focus {
+    outline: none;
+  }
+
+  .confirmation__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--vert-pale);
+    color: var(--vert-fonce);
+  }
+
+  .confirmation__titre {
+    font-size: var(--taille-h3);
+    color: var(--vert-fonce);
+  }
+
+  .confirmation p {
+    color: var(--texte-secondaire);
+  }
+
+  .confirmation .groupe-boutons {
+    margin-top: var(--espace-1);
+  }
+</style>
+
+<script>
+  import '../scripts/formulaire';
+</script>

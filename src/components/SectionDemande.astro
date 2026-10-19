@@ -1,0 +1,115 @@
+---
+// Section « Demande de devis » des pages de pôle et de /devis (maquette consulting-ordinateur.html) :
+// texte et coordonnées à gauche, formulaire à droite.
+import FormulaireDemande from './FormulaireDemande.astro';
+import Icone from './Icone.astro';
+import { ADRESSE, EMAIL, TELEPHONES, lienWhatsApp } from '../lib/coordonnees';
+import { NOM_POLE } from '../lib/libelles';
+import type { Enums } from '../lib/database.types';
+
+interface Props {
+  pole?: Enums<'pole'>;
+  objet?: string;
+  page: string;
+  etiquette?: string;
+  titre?: string;
+  texte?: string;
+  /** Lit ?pole= et ?objet= dans l'adresse (page /devis). */
+  lireAdresse?: boolean;
+}
+
+const {
+  pole = 'groupe',
+  objet,
+  page,
+  etiquette = 'Demande de devis',
+  titre = 'Parlons de votre projet',
+  texte = `Décrivez votre besoin. Votre demande arrive directement à l'équipe ${NOM_POLE[pole]}.`,
+  lireAdresse = false,
+} = Astro.props;
+---
+
+<section class="section section-demande" id="demande" aria-labelledby="demande-titre">
+  <div class="conteneur section-demande__grille">
+    <div class="entete-section section-demande__texte" data-apparition>
+      <p class="etiquette">{etiquette}</p>
+      <h2 id="demande-titre">{titre}</h2>
+      <p>{texte}</p>
+      <ul class="coordonnees">
+        <li>
+          <a class="coordonnees__ligne" href={lienWhatsApp(page)} target="_blank" rel="noopener">
+            <Icone nom="whatsapp" taille={22} />
+            WhatsApp · {TELEPHONES[0].affiche}<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+          </a>
+        </li>
+        <li>
+          <a class="coordonnees__ligne" href={TELEPHONES[1].lien}>
+            <Icone nom="telephone" taille={22} />
+            {TELEPHONES[1].affiche}
+          </a>
+        </li>
+        <li>
+          <a class="coordonnees__ligne" href={`mailto:${EMAIL}`}>
+            <Icone nom="email" taille={22} />
+            {EMAIL}
+          </a>
+        </li>
+        <li>
+          <span class="coordonnees__ligne">
+            <Icone nom="lieu" taille={22} />
+            {ADRESSE}
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="section-demande__formulaire">
+      <FormulaireDemande pole={pole} objet={objet} page={page} lireAdresse={lireAdresse} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-demande__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    align-items: start;
+    gap: var(--espace-7);
+  }
+
+  @media (max-width: 899px) {
+    .section-demande__grille {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--espace-5);
+    }
+  }
+
+  .coordonnees {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: var(--espace-1) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .coordonnees__ligne {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espace-2);
+    min-height: 48px;
+    font-size: 1.0625rem;
+    font-weight: var(--graisse-demi);
+    color: var(--vert-fonce);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  a.coordonnees__ligne:hover {
+    color: var(--vert-texte);
+  }
+
+  .coordonnees :global(svg) {
+    flex: none;
+    color: var(--vert-texte);
+  }
+</style>

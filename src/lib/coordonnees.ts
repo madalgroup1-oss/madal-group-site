@@ -15,6 +15,12 @@ export const TELEPHONES = [
 
 export const EMAIL = 'madalgroup1@gmail.com';
 
+// Carte et itinéraire : recherche de l'adresse en attendant le lien Google Maps exact
+// des locaux (docs/contenus-en-attente.md).
+const RECHERCHE_CARTE = encodeURIComponent(`${ADRESSE}, ${PAYS}`);
+export const CARTE_INTEGREE = `https://www.google.com/maps?q=${RECHERCHE_CARTE}&output=embed`;
+export const ITINERAIRE = `https://www.google.com/maps/dir/?api=1&destination=${RECHERCHE_CARTE}`;
+
 /** Numéro WhatsApp au format international, sans « + » ni espace. */
 export const WHATSAPP = import.meta.env.PUBLIC_WHATSAPP || '2250787457618';
 

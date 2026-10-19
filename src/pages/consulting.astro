@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import EntetePage from '../components/EntetePage.astro';
+import SectionDemande from '../components/SectionDemande.astro';
 import CarteService from '../components/CarteService.astro';
 import CarteOffre from '../components/CarteOffre.astro';
 import CarteSolution from '../components/CarteSolution.astro';
@@ -24,7 +25,7 @@ const madalRh = solutions.find((solution) => solution.slug === 'madal-rh');
   titre="Madal Consulting — Comptabilité, fiscalité et gestion sociale à Abidjan"
   description="Madal Consulting, pôle de MADAL GROUP : comptabilité, fiscalité, gestion sociale, accompagnement administratif et conseil aux entreprises à Abidjan."
   page="Madal Consulting"
-  lienDevis={lienDevis('consulting')}
+  lienDevis="#demande"
 >
   <!-- 1. Hero -->
   <EntetePage
@@ -35,7 +36,7 @@ const madalRh = solutions.find((solution) => solution.slug === 'madal-rh');
     texte={pole.texte}
     visuel={{ src: equipe, alt: "L'équipe MADAL GROUP au travail dans les bureaux" }}
   >
-    <a class="bouton" href={lienDevis('consulting')}>Demander un devis</a>
+    <a class="bouton" href="#demande">Demander un devis</a>
     <a class="bouton bouton--contour" href="#offres">Voir nos offres</a>
   </EntetePage>
 
@@ -132,7 +133,8 @@ const madalRh = solutions.find((solution) => solution.slug === 'madal-rh');
     )
   }
 
-  <!-- 6. Demande de devis : bloc commun du layout, pôle Consulting pré-sélectionné -->
+  <!-- 6. Demande de devis : formulaire, pôle Consulting pré-sélectionné -->
+  <SectionDemande pole="consulting" page="Madal Consulting" />
 </Base>
 
 <style>
