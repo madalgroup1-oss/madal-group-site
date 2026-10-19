@@ -24,6 +24,7 @@ export const SIEGE_SOCIAL = 'Yopougon Petit Toit Rouge, carrefour ancienne pharm
 export const BOITE_POSTALE = '05 BP 2008 Abidjan 05';
 export const RCCM = 'CI-ABJ-03-2024-B13-00374';
 export const COMPTE_CONTRIBUABLE = '240 0148 C';
+export const GERANT = 'Mathieu Dali';
 
 // Carte et itinéraire : recherche de l'adresse en attendant le lien Google Maps exact
 // des locaux (docs/contenus-en-attente.md).

@@ -8,6 +8,7 @@ import {
   COMPTE_CONTRIBUABLE,
   EMAIL,
   FORME_JURIDIQUE,
+  GERANT,
   PAYS,
   RAISON_SOCIALE,
   RCCM,
@@ -41,7 +42,7 @@ import {
       <div><dt>Email</dt><dd><a href={`mailto:${EMAIL}`}>{EMAIL}</a></dd></div>
       <div>
         <dt>Directeur de la publication</dt>
-        <dd><span class="a-fournir">[À FOURNIR : nom du gérant]</span>, gérant de {RAISON_SOCIALE}</dd>
+        <dd>{GERANT}, gérant de {RAISON_SOCIALE}</dd>
       </div>
     </dl>
 
