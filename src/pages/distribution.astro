@@ -2,12 +2,13 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import EntetePage from '../components/EntetePage.astro';
+import SectionDemande from '../components/SectionDemande.astro';
 import CarteProduit from '../components/CarteProduit.astro';
 import Filtres from '../components/Filtres.astro';
 import Icone from '../components/Icone.astro';
 import { POLES_DETAILS } from '../data/groupe';
 import { VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
-import { lienDevis, lienWhatsApp } from '../lib/coordonnees';
+import { lienWhatsApp } from '../lib/coordonnees';
 import { formatDate, formatPrix } from '../lib/format';
 import { listerFamilles, listerProduits, promotionsEnCours } from '../lib/supabase';
 
@@ -29,7 +30,7 @@ const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite
   titre="Madal Distribution — Produits alimentaires, lapins, volailles et fournitures à Abidjan"
   description="Madal Distribution, pôle de MADAL GROUP : produits alimentaires, lapins et volailles, produits carnés, fournitures de bureau et équipements informatiques à Abidjan."
   page="Madal Distribution"
-  lienDevis={lienDevis('distribution')}
+  lienDevis="#demande"
 >
   <!-- 1. Hero -->
   <EntetePage
@@ -186,7 +187,13 @@ const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite
     </div>
   </section>
 
-  <!-- 6. Demande de devis ou commande : bloc commun du layout, pôle Distribution pré-sélectionné -->
+  <!-- 6. Demande de devis ou commande : formulaire, pôle Distribution pré-sélectionné -->
+  <SectionDemande
+    pole="distribution"
+    page="Madal Distribution"
+    etiquette="Devis ou commande"
+    texte="Décrivez votre besoin ou votre commande. Votre demande arrive directement à l'équipe Madal Distribution."
+  />
 </Base>
 
 <style>

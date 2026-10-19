@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import EntetePage from '../components/EntetePage.astro';
+import SectionDemande from '../components/SectionDemande.astro';
 import CarteService from '../components/CarteService.astro';
 import CarteSolution from '../components/CarteSolution.astro';
 import EtapeMethode from '../components/EtapeMethode.astro';
 import Icone from '../components/Icone.astro';
 import { POLES_DETAILS } from '../data/groupe';
 import { METHODE_TECHNOLOGIE, SERVICES_TECHNOLOGIE } from '../data/landings';
-import { lienDevis } from '../lib/coordonnees';
 import { listerSolutions } from '../lib/supabase';
 
 const pole = POLES_DETAILS.find((element) => element.cle === 'technologie');
@@ -21,7 +21,7 @@ const logiciels = (await listerSolutions()).filter((solution) => solution.pole =
   titre="Madal Technologie — Logiciels, réseaux, cybersécurité et vidéo IP à Abidjan"
   description="Madal Technologie, pôle de MADAL GROUP : développement logiciel, applications web et mobile, maintenance informatique, réseaux, cybersécurité et vidéosurveillance IP à Abidjan."
   page="Madal Technologie"
-  lienDevis={lienDevis('technologie')}
+  lienDevis="#demande"
 >
   <!-- 1. Hero -->
   <EntetePage
@@ -31,7 +31,7 @@ const logiciels = (await listerSolutions()).filter((solution) => solution.pole =
     domaines={pole.domaines}
     texte={pole.texte}
   >
-    <a class="bouton" href={lienDevis('technologie')}>Soumettre un projet</a>
+    <a class="bouton" href="#demande">Soumettre un projet</a>
     <a class="bouton bouton--contour" href="#logiciels">Nos logiciels</a>
   </EntetePage>
 
@@ -96,7 +96,8 @@ const logiciels = (await listerSolutions()).filter((solution) => solution.pole =
     </div>
   </section>
 
-  <!-- 5. Demande de projet : bloc commun du layout, pôle Technologie pré-sélectionné -->
+  <!-- 5. Demande de projet : formulaire, pôle Technologie pré-sélectionné -->
+  <SectionDemande pole="technologie" page="Madal Technologie" etiquette="Demande de projet" />
 </Base>
 
 <style>

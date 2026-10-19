@@ -11,13 +11,13 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | [ ] | Textes des 5 services Consulting | /consulting | 2 lignes par service |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
 | [ ] | Textes des 9 services Technologie | /technologie | 2 lignes par service |
-| [ ] | Catalogue Distribution : nom, famille, conditionnement, photo, prix | /distribution | Saisie dans /admin |
+| [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
 | [ ] | Texte et visuel Allô Lapins & Volailles by MG | /distribution | Logo + 3 lignes |
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
 | [ ] | Fiche Madal RH : problème traité, fonctionnalités, captures | /solutions/madal-rh | Texte + 3 captures |
 | [ ] | 3 premiers articles du Mag (un par pôle) | /mag | Saisie dans /admin |
 | [ ] | Informations légales : RCCM, compte contribuable, capital, gérant | /mentions-legales | Texte |
-| [ ] | Position exacte des locaux (lien Google Maps) | /contact | URL |
+| [ ] | Position exacte des locaux (lien Google Maps) ; en attendant, carte et itinéraire cherchent l'adresse « Yopougon Camp Militaire – Abidjan » (`src/lib/coordonnees.ts`) | /contact | URL |
 
 ## Points ouverts
 
