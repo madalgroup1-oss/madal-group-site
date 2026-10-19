@@ -1,0 +1,30 @@
+# Republication du site chaque nuit : retire les promotions échues et publie les articles
+# programmés, sans intervention de l'administrateur.
+# Secret à créer dans GitHub (Settings > Secrets and variables > Actions) :
+#   CLOUDFLARE_DEPLOY_HOOK  URL du deploy hook Cloudflare Pages (même valeur que le secret Supabase)
+
+name: Republication nocturne
+
+on:
+  schedule:
+    # 01:00 à Abidjan (UTC+0)
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  republier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Appel du deploy hook Cloudflare Pages
+        env:
+          HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::warning::Secret CLOUDFLARE_DEPLOY_HOOK absent : republication ignorée."
+            exit 0
+          fi
+          curl --fail --silent --show-error --max-time 30 -X POST "$HOOK" > /dev/null
+          echo "Republication lancée."
