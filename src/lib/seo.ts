@@ -22,9 +22,9 @@ export function organisation(urlLogo: string): Record<string, unknown> {
       addressCountry: 'CI',
     },
     department: [
-      { '@type': 'Organization', name: 'Madal Consulting', url: `${URL_SITE}/consulting` },
-      { '@type': 'Organization', name: 'Madal Distribution', url: `${URL_SITE}/distribution` },
-      { '@type': 'Organization', name: 'Madal Technologie', url: `${URL_SITE}/technologie` },
+      { '@type': 'Organization', name: 'Madal Consulting', url: `${URL_SITE}/consulting/` },
+      { '@type': 'Organization', name: 'Madal Distribution', url: `${URL_SITE}/distribution/` },
+      { '@type': 'Organization', name: 'Madal Technologie', url: `${URL_SITE}/technologie/` },
     ],
   };
 }
@@ -36,7 +36,7 @@ export function etablissement(urlImage: string): Record<string, unknown> {
     '@type': 'LocalBusiness',
     name: 'MADAL GROUP',
     legalName: RAISON_SOCIALE,
-    url: `${URL_SITE}/contact`,
+    url: `${URL_SITE}/contact/`,
     image: urlImage,
     email: EMAIL,
     telephone: TELEPHONES[0].lien.replace('tel:', ''),
