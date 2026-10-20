@@ -47,6 +47,13 @@ export function etablissement(urlImage: string): Record<string, unknown> {
       addressCountry: 'CI',
     },
     areaServed: { '@type': 'Country', name: "Côte d'Ivoire" },
+    // Lundi au vendredi, 8 h – 18 h ; fermé les jours fériés
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
     parentOrganization: { '@type': 'Organization', name: RAISON_SOCIALE, url: URL_SITE },
   };
 }
