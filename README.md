@@ -11,10 +11,14 @@ Kit de démarrage du site www.madalgroup.ci, à développer avec Claude Code.
 | `docs/plan-de-developpement.md` | Les 7 phases et le premier message à donner à Claude Code |
 | `docs/brief-strategique.md` | Textes officiels du site |
 | `docs/contenus-en-attente.md` | Ce qu'il reste à fournir et à décider |
+| `docs/guide-publication.md` | Mode d'emploi de l'espace d'administration (/admin) |
+| `docs/mise-en-ligne.md` | Procédure Cloudflare Pages, domaine, Resend, Supabase |
+| `docs/recette.md` | Rapport de recette (Lighthouse, formulaires, téléphones) |
+| `supabase/functions/` | Fonctions serveur : `submit-demande` (formulaires), `rebuild` (publication) |
 | `docs/maquettes/` | Maquettes validées, à ouvrir dans un navigateur |
 | `src/assets/images/` | Visuels fournis, compressés |
 | `src/styles/tokens.css` | Couleurs, typographie, espacements |
-| `supabase/migrations/0001_init.sql` | Base de données, droits d'accès, stockage |
+| `supabase/migrations/` | Base de données, droits d'accès, stockage, données de départ |
 | `.env.example` | Variables d'environnement à renseigner |
 
 ## Démarrage sous Windows

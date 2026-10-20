@@ -50,8 +50,9 @@ const mots = texte.split(/\s+/);
 
   /* Sans JavaScript, ou animations réduites : tout le texte est affiché en vert foncé */
   @media (prefers-reduced-motion: no-preference) {
+    /* Mots pas encore allumés : gris lisible (contraste AA), le vert foncé marque la lecture */
     :global(.anime) .manifeste__mot {
-      color: var(--bordure-champ);
+      color: var(--texte-secondaire);
       transition: color 300ms ease;
     }
 

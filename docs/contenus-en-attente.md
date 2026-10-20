@@ -16,7 +16,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
 | [ ] | Fiche Madal RH : problème traité, fonctionnalités, captures | /solutions/madal-rh | Texte + 3 captures |
 | [ ] | 3 premiers articles du Mag (un par pôle) | /mag | Saisie dans /admin |
-| [ ] | Informations légales : RCCM, compte contribuable, capital, gérant | /mentions-legales | Texte |
+| [x] | Informations légales : gérant (Mathieu Dali), RCCM, compte contribuable, capital et siège social, reçus le 19/10/2026 | /mentions-legales | Texte |
 | [ ] | Position exacte des locaux (lien Google Maps) ; en attendant, carte et itinéraire cherchent l'adresse « Yopougon Camp Militaire – Abidjan » (`src/lib/coordonnees.ts`) | /contact | URL |
 
 ## Points ouverts
@@ -30,6 +30,9 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | 5 | /distribution : le bandeau « Promotions » est 5e dans le cahier des charges ; un bandeau se lit mieux en haut de page | Placé juste sous le hero (masqué tant qu'aucune promotion n'est en cours) |
 | 6 | Textes des méthodes : /technologie n'a que les noms des 5 étapes (cadrage, maquette, développement, déploiement, maintenance) | Descriptions affichées en `[À FOURNIR]` |
 | 7 | Photos de banque d'images (`src/assets/images/poles/`) utilisées pour illustrer les services et les familles de produits | Hors hero uniquement ; heros Distribution et Technologie typographiques, hero Consulting avec la photo réelle de l'équipe |
+| 8 | Siège social (« Yopougon Petit Toit Rouge, carrefour ancienne pharmacie Noya ») différent des locaux (Camp Militaire) | Siège dans les mentions légales et la politique de confidentialité ; Camp Militaire partout ailleurs (décision du 19/10/2026) |
+| 9 | Politique de confidentialité : durée de conservation des demandes et délai de réponse aux demandes d'accès | 3 ans après le dernier échange ; réponse sous un mois (validé le 19/10/2026) |
+| 10 | Déclaration du traitement « demandes de contact » auprès de l'ARTCI (loi n° 2013-450) | Non effectuée au 19/10/2026 : à faire par MADAL GROUP |
 
 ## Images disponibles
 

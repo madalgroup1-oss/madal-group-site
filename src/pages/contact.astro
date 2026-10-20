@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import EntetePage from '../components/EntetePage.astro';
 import FormulaireDemande from '../components/FormulaireDemande.astro';
@@ -13,8 +14,12 @@ import {
   TELEPHONES,
   lienWhatsApp,
 } from '../lib/coordonnees';
+import { etablissement, jsonLd } from '../lib/seo';
 
 // Texte officiel : docs/brief-strategique.md, section 13 « Page Contact »
+
+const photoAccueil = await getImage({ src: accueilReception, width: 1200, format: 'jpg' });
+const donneesEtablissement = etablissement(new URL(photoAccueil.src, Astro.site).href);
 ---
 
 <Base
@@ -23,6 +28,8 @@ import {
   page="Contact"
   blocCTA={false}
 >
+  <script type="application/ld+json" slot="head" set:html={jsonLd(donneesEtablissement)} />
+
   <EntetePage
     etiquette="Contact"
     titre="Parlons de votre projet"

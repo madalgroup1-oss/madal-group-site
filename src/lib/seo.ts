@@ -29,6 +29,28 @@ export function organisation(urlLogo: string): Record<string, unknown> {
   };
 }
 
+/** LocalBusiness : page Contact (locaux où recevoir les clients). */
+export function etablissement(urlImage: string): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'MADAL GROUP',
+    legalName: RAISON_SOCIALE,
+    url: `${URL_SITE}/contact`,
+    image: urlImage,
+    email: EMAIL,
+    telephone: TELEPHONES[0].lien.replace('tel:', ''),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: ADRESSE.split(' – ')[0],
+      addressLocality: 'Abidjan',
+      addressCountry: 'CI',
+    },
+    areaServed: { '@type': 'Country', name: "Côte d'Ivoire" },
+    parentOrganization: { '@type': 'Organization', name: RAISON_SOCIALE, url: URL_SITE },
+  };
+}
+
 /** Sérialise un objet JSON-LD sans permettre de fermer la balise <script>. */
 export function jsonLd(donnees: Record<string, unknown>): string {
   return JSON.stringify(donnees).replace(/</g, '\\u003c');

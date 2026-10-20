@@ -1,0 +1,41 @@
+---
+// Page introuvable (cahier des charges, section 3) : renvoie vers les trois pôles et le contact.
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import CartePole from '../components/CartePole.astro';
+import { POLES_DETAILS } from '../data/groupe';
+---
+
+<Base
+  titre="Page introuvable — MADAL GROUP"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez les pôles de MADAL GROUP ou contactez-nous."
+  page="Page introuvable"
+  noindex
+>
+  <EntetePage
+    etiquette="Erreur 404"
+    titre="Page introuvable"
+    texte="Cette page n'existe pas ou a été déplacée. Choisissez un pôle ci-dessous ou contactez-nous."
+  >
+    <a class="bouton" href="/">Retour à l'accueil</a>
+    <a class="bouton bouton--contour" href="/contact">Nous contacter</a>
+  </EntetePage>
+
+  <section class="section" aria-labelledby="poles-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section">
+        <p class="etiquette">Nos expertises</p>
+        <h2 id="poles-titre">Un groupe, trois pôles</h2>
+      </div>
+      <ul class="grille-technique grille-technique--trois">
+        {
+          POLES_DETAILS.map((pole, index) => (
+            <li>
+              <CartePole pole={pole} numero={index + 1} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>

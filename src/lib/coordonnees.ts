@@ -5,6 +5,7 @@ export const RAISON_SOCIALE = 'MADAL GROUP SARL';
 export const SIGNATURE = 'STRUCTURER • DISTRIBUER • INNOVER';
 export const ACCROCHE = 'Un groupe, trois expertises, une même ambition.';
 
+/** Locaux où recevoir les clients (contact, carte, pied de page). */
 export const ADRESSE = 'Yopougon Camp Militaire – Abidjan';
 export const PAYS = "Côte d'Ivoire";
 
@@ -14,6 +15,16 @@ export const TELEPHONES = [
 ] as const;
 
 export const EMAIL = 'madalgroup1@gmail.com';
+
+// Informations légales (en-tête officiel de MADAL GROUP SARL, fourni le 19/10/2026).
+// Le siège social diffère des locaux : il n'apparaît que dans les mentions légales.
+export const FORME_JURIDIQUE = 'Société à responsabilité limitée (SARL)';
+export const CAPITAL = '1 000 000 FCFA';
+export const SIEGE_SOCIAL = 'Yopougon Petit Toit Rouge, carrefour ancienne pharmacie Noya – Abidjan';
+export const BOITE_POSTALE = '05 BP 2008 Abidjan 05';
+export const RCCM = 'CI-ABJ-03-2024-B13-00374';
+export const COMPTE_CONTRIBUABLE = '240 0148 C';
+export const GERANT = 'Mathieu Dali';
 
 // Carte et itinéraire : recherche de l'adresse en attendant le lien Google Maps exact
 // des locaux (docs/contenus-en-attente.md).
