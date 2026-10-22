@@ -16,6 +16,11 @@ export const TELEPHONES = [
 
 export const EMAIL = 'madalgroup1@gmail.com';
 
+// Horaires d'ouverture (fournis par MADAL GROUP le 20/10/2026)
+export const HORAIRES = 'Du lundi au vendredi, de 8 h à 18 h';
+export const HORAIRES_COURTS = 'Lun. – ven. : 8 h – 18 h';
+export const FERMETURE = 'Fermé les jours fériés';
+
 // Informations légales (en-tête officiel de MADAL GROUP SARL, fourni le 19/10/2026).
 // Le siège social diffère des locaux : il n'apparaît que dans les mentions légales.
 export const FORME_JURIDIQUE = 'Société à responsabilité limitée (SARL)';

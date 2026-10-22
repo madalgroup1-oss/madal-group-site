@@ -22,9 +22,9 @@ export function organisation(urlLogo: string): Record<string, unknown> {
       addressCountry: 'CI',
     },
     department: [
-      { '@type': 'Organization', name: 'Madal Consulting', url: `${URL_SITE}/consulting` },
-      { '@type': 'Organization', name: 'Madal Distribution', url: `${URL_SITE}/distribution` },
-      { '@type': 'Organization', name: 'Madal Technologie', url: `${URL_SITE}/technologie` },
+      { '@type': 'Organization', name: 'Madal Consulting', url: `${URL_SITE}/consulting/` },
+      { '@type': 'Organization', name: 'Madal Distribution', url: `${URL_SITE}/distribution/` },
+      { '@type': 'Organization', name: 'Madal Technologie', url: `${URL_SITE}/technologie/` },
     ],
   };
 }
@@ -36,7 +36,7 @@ export function etablissement(urlImage: string): Record<string, unknown> {
     '@type': 'LocalBusiness',
     name: 'MADAL GROUP',
     legalName: RAISON_SOCIALE,
-    url: `${URL_SITE}/contact`,
+    url: `${URL_SITE}/contact/`,
     image: urlImage,
     email: EMAIL,
     telephone: TELEPHONES[0].lien.replace('tel:', ''),
@@ -47,6 +47,13 @@ export function etablissement(urlImage: string): Record<string, unknown> {
       addressCountry: 'CI',
     },
     areaServed: { '@type': 'Country', name: "Côte d'Ivoire" },
+    // Lundi au vendredi, 8 h – 18 h ; fermé les jours fériés
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
     parentOrganization: { '@type': 'Organization', name: RAISON_SOCIALE, url: URL_SITE },
   };
 }

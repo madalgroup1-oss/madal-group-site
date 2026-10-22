@@ -9,6 +9,8 @@ import {
   ADRESSE,
   CARTE_INTEGREE,
   EMAIL,
+  FERMETURE,
+  HORAIRES,
   ITINERAIRE,
   PAYS,
   TELEPHONES,
@@ -92,6 +94,10 @@ const donneesEtablissement = etablissement(new URL(photoAccueil.src, Astro.site)
           <div class="fiche__ligne">
             <dt class="etiquette">Email</dt>
             <dd><a href={`mailto:${EMAIL}`}>{EMAIL}</a></dd>
+          </div>
+          <div class="fiche__ligne">
+            <dt class="etiquette">Horaires</dt>
+            <dd>{HORAIRES}<br />{FERMETURE}</dd>
           </div>
         </dl>
       </div>
