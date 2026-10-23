@@ -7,7 +7,7 @@ import CarteProduit from '../components/CarteProduit.astro';
 import Filtres from '../components/Filtres.astro';
 import Icone from '../components/Icone.astro';
 import { POLES_DETAILS } from '../data/groupe';
-import { VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
+import { TEXTE_ALLO_LAPINS, VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
 import { lienWhatsApp } from '../lib/coordonnees';
 import { formatDate, formatPrix } from '../lib/format';
 import { listerFamilles, listerProduits, promotionsEnCours } from '../lib/supabase';
@@ -134,9 +134,7 @@ const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite
       <div class="entete-section allo__texte" data-apparition>
         <p class="etiquette">Une marque de Madal Distribution</p>
         <h2 id="allo-titre">Allô Lapins &amp; Volailles by MG</h2>
-        <p>
-          <span class="a-fournir">[À FOURNIR : présentation de la marque en 3 lignes et logo]</span>
-        </p>
+        {TEXTE_ALLO_LAPINS.map((paragraphe) => <p>{paragraphe}</p>)}
         <div class="groupe-boutons allo__boutons">
           <a class="bouton" href={commandeAllo} target="_blank" rel="noopener">
             <Icone nom="whatsapp" taille={18} />

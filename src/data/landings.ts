@@ -483,13 +483,33 @@ export const SERVICES_TECHNOLOGIE: ServiceDetaille[] = [
   },
 ];
 
-/** Méthode projet (cahier des charges, section 4.5) : descriptions à fournir. */
+/** Méthode projet (cahier des charges, section 4.5) : textes fournis par MADAL GROUP le 23/10/2026. */
 export const METHODE_TECHNOLOGIE: Etape[] = [
-  { titre: 'Cadrage', texte: null },
-  { titre: 'Maquette', texte: null },
-  { titre: 'Développement', texte: null },
-  { titre: 'Déploiement', texte: null },
-  { titre: 'Maintenance', texte: null },
+  {
+    titre: 'Cadrage du projet',
+    texte:
+      'Nous analysons vos besoins, vos objectifs et vos contraintes pour définir le périmètre, les fonctionnalités, les priorités et les résultats attendus.',
+  },
+  {
+    titre: 'Maquette et conception',
+    texte:
+      "Une maquette présente l'organisation, les écrans et le parcours des utilisateurs : vous validez l'expérience et les fonctionnalités avant le développement.",
+  },
+  {
+    titre: 'Développement',
+    texte:
+      'Nous réalisons la solution selon les spécifications validées, avec une exigence de fiabilité, de sécurité et de simplicité, et la testons à chaque étape.',
+  },
+  {
+    titre: 'Déploiement',
+    texte:
+      'Nous installons et mettons en service la solution, vérifions les fonctionnalités essentielles et accompagnons vos utilisateurs dans la prise en main.',
+  },
+  {
+    titre: 'Maintenance et évolution',
+    texte:
+      'Selon les modalités convenues, nous assurons le suivi technique, les corrections et les mises à jour, et faisons évoluer la solution avec vos besoins.',
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -518,6 +538,13 @@ export const VISUELS_FAMILLES: Record<string, { visuel?: Visuel; icone: NomIcone
     icone: 'ordinateur',
   },
 };
+
+/** Présentation de la marque (textes fournis par MADAL GROUP le 23/10/2026). */
+export const TEXTE_ALLO_LAPINS: string[] = [
+  'Allô Lapins & Volailles by MG est la marque de Madal Distribution dédiée à la vente de lapins et de volailles, pour les particuliers comme pour les professionnels.',
+  "Nous mettons l'accent sur la qualité des produits, la proximité avec nos clients et un achat simple et pratique.",
+  'Notre ambition : devenir une marque de confiance, accessible et engagée pour la satisfaction de chaque client.',
+];
 
 /** Illustration provisoire de l'encart Allô Lapins & Volailles by MG (logo à fournir). */
 export const VISUEL_ALLO_LAPINS: Visuel = {
