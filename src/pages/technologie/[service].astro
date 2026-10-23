@@ -1,0 +1,44 @@
+---
+import CarteSolution from '../../components/CarteSolution.astro';
+import PageService from '../../components/PageService.astro';
+import { SERVICES_TECHNOLOGIE, type ServiceDetaille } from '../../data/landings';
+import { listerSolutions } from '../../lib/supabase';
+
+export function getStaticPaths() {
+  return SERVICES_TECHNOLOGIE.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: ServiceDetaille;
+}
+
+const { service } = Astro.props;
+
+// Page « Logiciels de gestion » : logiciels publiés du pôle Technologie (saisis dans /admin)
+const logiciels =
+  service.slug === 'logiciels-de-gestion'
+    ? (await listerSolutions()).filter((solution) => solution.pole === 'technologie' && solution.type === 'logiciel')
+    : [];
+---
+
+<PageService service={service} services={SERVICES_TECHNOLOGIE} pole="technologie">
+  {
+    logiciels.length > 0 && (
+      <section class="section" aria-labelledby="logiciels-titre">
+        <div class="conteneur section__contenu">
+          <div class="entete-section" data-apparition>
+            <p class="etiquette">Nos logiciels</p>
+            <h2 id="logiciels-titre">Des solutions développées par Madal Technologie</h2>
+          </div>
+          <ul class="grille grille--large" data-apparition-groupe>
+            {logiciels.map((solution) => (
+              <li>
+                <CarteSolution solution={solution} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</PageService>

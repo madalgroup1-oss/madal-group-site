@@ -51,7 +51,7 @@ src/
   components/         Header, Footer, BoutonWhatsApp, BlocCTA, CartePole, FormulaireDemande, …
   layouts/            Base.astro (head, SEO, Open Graph, données structurées)
   lib/                supabase.ts, format.ts (prix FCFA), seo.ts
-  pages/              index, le-groupe, consulting, consulting/[service], distribution, technologie,
+  pages/              index, le-groupe, consulting, consulting/[service], distribution, technologie, technologie/[service],
                       solutions/index, solutions/[slug], mag/index, mag/[slug],
                       contact, devis, mentions-legales, confidentialite, 404, admin/
   styles/             tokens.css, global.css

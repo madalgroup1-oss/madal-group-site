@@ -246,51 +246,240 @@ export const METHODE_CONSULTING: Etape[] = [
 // ---------------------------------------------------------------------------
 // Madal Technologie
 // ---------------------------------------------------------------------------
-export const SERVICES_TECHNOLOGIE: Service[] = [
+export const SERVICES_TECHNOLOGIE: ServiceDetaille[] = [
   {
+    slug: 'developpement-logiciel',
     titre: 'Développement logiciel',
-    texte: null,
+    titreComplet: 'Conception et développement de logiciels',
+    texte:
+      "De l'analyse des besoins à la maintenance, nous concevons des logiciels fiables, sécurisés et évolutifs, adaptés à l'organisation de votre entreprise.",
+    description:
+      'Madal Technologie, Abidjan : analyse des besoins, architecture, développement, gestion des accès, intégration, tests et maintenance de logiciels.',
+    introduction: [
+      "Un logiciel bien conçu fait gagner du temps, réduit les erreurs et donne une vision claire de l'activité.",
+      "Madal Technologie conçoit et réalise des solutions logicielles adaptées aux réalités opérationnelles de chaque entreprise, avec une attention constante portée à la fiabilité, à la sécurité et à l'évolutivité.",
+    ],
+    prestations: [
+      { titre: 'Analyse des besoins', texte: 'Recueil et formalisation de vos besoins fonctionnels et techniques.' },
+      { titre: 'Architecture', texte: 'Conception de la structure du logiciel, pensée pour durer et évoluer.' },
+      { titre: 'Fonctionnalités métier', texte: 'Développement des fonctions propres à votre activité.' },
+      { titre: "Utilisateurs et droits d'accès", texte: 'Comptes, rôles et autorisations adaptés à votre organisation.' },
+      { titre: 'Intégration', texte: 'Raccordement à vos bases de données et à vos outils existants.' },
+      { titre: 'Tests et déploiement', texte: 'Contrôle de chaque fonctionnalité avant la mise en service.' },
+      { titre: 'Maintenance évolutive', texte: 'Corrections, mises à jour et nouvelles fonctionnalités dans la durée.' },
+    ],
+    objectif: "Des logiciels fiables, sécurisés et capables d'accompagner la croissance de votre entreprise.",
     visuel: { src: codeDeveloppement, alt: "Code informatique à l'écran d'un ordinateur portable" },
   },
   {
+    slug: 'applications-sur-mesure',
     titre: 'Applications sur mesure',
-    texte: null,
-    visuel: { src: equipeNumerique, alt: "Équipe travaillant sur des ordinateurs dans un espace numérique" },
+    titreComplet: 'Applications métier sur mesure',
+    texte:
+      'Quand les logiciels standards ne suffisent pas, nous développons des applications conçues pour vos procédures, vos contraintes et vos objectifs.',
+    description:
+      'Madal Technologie, Abidjan : applications métier sur mesure, analyse des processus, interfaces, modules métier, gestion des accès et mise en production.',
+    introduction: [
+      'Chaque entreprise a ses propres procédures, contraintes et objectifs, que les solutions standards couvrent rarement en totalité.',
+      "Madal Technologie développe des applications personnalisées qui s'adaptent à votre fonctionnement, au lieu de vous obliger à vous adapter à un outil.",
+    ],
+    prestations: [
+      { titre: 'Analyse des processus', texte: 'Étude de votre fonctionnement pour identifier ce qui doit être numérisé.' },
+      { titre: 'Définition des fonctionnalités', texte: 'Cahier des charges clair, validé avec vous avant le développement.' },
+      { titre: 'Interfaces', texte: 'Écrans simples et intuitifs, pensés pour vos utilisateurs.' },
+      { titre: 'Modules métier', texte: 'Développement des fonctions spécifiques à votre activité.' },
+      { titre: 'Gestion des accès', texte: 'Droits définis selon le rôle de chaque utilisateur.' },
+      {
+        titre: 'Intégration à vos outils',
+        texte: 'Connexion avec les logiciels déjà en place, sous réserve de leur compatibilité technique.',
+      },
+      { titre: 'Mise en production', texte: 'Installation, mise en service et prise en main par vos équipes.' },
+    ],
+    objectif: 'Transformer vos besoins opérationnels en outils numériques concrets, pratiques et adaptés à votre organisation.',
+    visuel: { src: equipeNumerique, alt: 'Équipe travaillant sur des ordinateurs dans un espace numérique' },
   },
   {
+    slug: 'web-et-mobile',
     titre: 'Web et mobile',
-    texte: null,
+    titreComplet: 'Sites web et applications mobiles',
+    texte:
+      'Sites vitrines, plateformes web, applications mobiles et espaces clients : une présence numérique professionnelle, accessible sur tous les écrans.',
+    description:
+      'Madal Technologie, Abidjan : création de sites vitrines, plateformes web, applications web métier et applications mobiles adaptées à tous les écrans.',
+    introduction: [
+      'Votre site et vos applications sont souvent le premier contact avec vos clients, vos collaborateurs et vos partenaires.',
+      "Madal Technologie conçoit des solutions web et mobiles qui renforcent votre présence numérique, facilitent l'accès à vos services et simplifient les échanges.",
+    ],
+    prestations: [
+      { titre: 'Sites vitrines', texte: 'Sites professionnels qui présentent votre entreprise et vos offres.' },
+      { titre: 'Plateformes web', texte: 'Services en ligne interactifs pour vos clients et partenaires.' },
+      { titre: 'Applications web métier', texte: 'Outils de travail accessibles depuis un simple navigateur.' },
+      { titre: 'Applications mobiles', texte: 'Applications pour smartphones, selon les besoins du projet.' },
+      { titre: 'Adaptation à tous les écrans', texte: 'Affichage optimisé sur ordinateur, tablette et smartphone.' },
+      {
+        titre: 'Formulaires et espaces clients',
+        texte: 'Demandes en ligne, comptes clients et fonctionnalités métier intégrées.',
+      },
+      { titre: 'Performance et ergonomie', texte: 'Pages rapides, navigation claire et accessible.' },
+    ],
+    objectif: 'Des interfaces cohérentes, accessibles et au service des objectifs de chaque projet.',
     visuel: { src: appareilsConnectes, alt: 'Ordinateur, tablette et téléphone connectés' },
   },
   {
+    slug: 'logiciels-de-gestion',
     titre: 'Logiciels de gestion',
-    texte: null,
+    titreComplet: "Logiciels de gestion d'entreprise",
+    texte:
+      'Ventes, stocks, achats, finances, ressources humaines : des logiciels qui centralisent vos informations et simplifient votre gestion quotidienne.',
+    description:
+      "Madal Technologie, Abidjan : logiciels de gestion commerciale, de stocks, d'achats, de suivi financier et de ressources humaines, avec tableaux de bord.",
+    introduction: [
+      'Des informations dispersées entre cahiers, fichiers et messages font perdre du temps et rendent le pilotage difficile.',
+      'Madal Technologie développe et propose des solutions qui centralisent les données utiles à votre activité et facilitent la gestion au quotidien.',
+    ],
+    prestations: [
+      { titre: 'Gestion commerciale', texte: 'Devis, commandes, ventes et facturation.' },
+      { titre: 'Gestion des stocks', texte: 'Entrées, sorties, inventaires et alertes de réapprovisionnement.' },
+      { titre: 'Achats et fournisseurs', texte: 'Suivi des commandes, des fournisseurs et des règlements.' },
+      { titre: 'Suivi financier', texte: 'Indicateurs de gestion et vision claire de votre activité.' },
+      { titre: 'Ressources humaines et paie', texte: 'Dossiers du personnel, pointage et paie.' },
+      { titre: 'Tableaux de bord', texte: "Pilotage de vos activités d'un seul coup d'œil." },
+      { titre: 'Multi-utilisateur', texte: 'Accès partagé et, selon la solution, gestion de plusieurs sites.' },
+    ],
+    objectif: 'Une gestion centralisée, des informations fiables et un pilotage simplifié de votre activité.',
     visuel: { src: transformationDigitale, alt: "Appareils numériques au service de l'entreprise" },
   },
   {
+    slug: 'maintenance-informatique',
     titre: 'Maintenance informatique',
-    texte: null,
+    titreComplet: 'Maintenance et assistance informatique',
+    texte:
+      "Diagnostic, dépannage, maintenance préventive et contrats adaptés à votre parc : un matériel disponible pour que votre activité ne s'arrête pas.",
+    description:
+      'Madal Technologie, Abidjan : diagnostic de pannes, dépannage matériel et logiciel, maintenance préventive, assistance utilisateurs et contrats de maintenance.',
+    introduction: [
+      "Un poste en panne ou un serveur indisponible, et c'est toute une équipe qui s'arrête.",
+      'Madal Technologie prévient les incidents et rétablit rapidement le fonctionnement de vos équipements informatiques.',
+    ],
+    prestations: [
+      { titre: 'Diagnostic des pannes', texte: "Identification rapide de l'origine du problème." },
+      { titre: 'Maintenance préventive', texte: 'Contrôles réguliers pour éviter les incidents.' },
+      { titre: 'Dépannage', texte: 'Réparation des problèmes matériels et logiciels.' },
+      { titre: 'Installation des systèmes', texte: 'Installation et mise à jour des systèmes et logiciels.' },
+      { titre: 'Configuration des postes', texte: 'Préparation des ordinateurs de vos collaborateurs.' },
+      { titre: 'Optimisation', texte: 'Amélioration des performances de vos équipements.' },
+      { titre: 'Assistance aux utilisateurs', texte: 'Aide au quotidien pour vos équipes.' },
+      {
+        titre: 'Contrats de maintenance',
+        texte: "Formules adaptées à votre parc, avec des modalités d'intervention définies à l'avance.",
+      },
+    ],
+    objectif: 'Un parc informatique disponible, entretenu et performant.',
     visuel: { src: maintenanceOrdinateur, alt: "Technicien réparant l'unité centrale d'un ordinateur" },
   },
   {
+    slug: 'reseaux',
     titre: 'Réseaux',
-    texte: null,
+    titreComplet: "Réseaux informatiques d'entreprise",
+    texte:
+      'Câblage, Wi-Fi, routeurs, partage de fichiers et accès à distance : des réseaux stables, sécurisés et documentés, à la taille de votre entreprise.',
+    description:
+      'Madal Technologie, Abidjan : installation de réseaux locaux, câblage, Wi-Fi, configuration de routeurs et commutateurs, réseaux multisites et dépannage.',
+    introduction: [
+      "Un réseau fiable est la base de tout le système informatique : partage des fichiers, impression, accès à Internet et aux logiciels.",
+      'Madal Technologie conçoit, installe et administre votre infrastructure réseau selon vos besoins de connectivité, de partage et de sécurité.',
+    ],
+    prestations: [
+      { titre: 'Réseaux locaux', texte: 'Installation et configuration de votre réseau.' },
+      { titre: 'Câblage', texte: 'Câblage informatique et raccordement des équipements.' },
+      { titre: 'Équipements réseau', texte: "Configuration des routeurs, commutateurs et points d'accès Wi-Fi." },
+      { titre: 'Partage des ressources', texte: 'Partage sécurisé des imprimantes et des fichiers.' },
+      { titre: 'Plusieurs bureaux ou sites', texte: 'Réseaux reliant vos différentes implantations.' },
+      { titre: 'Accès à distance', texte: "Connexion sécurisée depuis l'extérieur, lorsque l'architecture le permet." },
+      { titre: 'Dépannage', texte: 'Diagnostic et résolution des problèmes de connexion.' },
+    ],
+    objectif: 'Des infrastructures stables, documentées et évolutives, adaptées à la taille de votre entreprise.',
     visuel: { src: cablageReseau, alt: 'Câbles réseau et outils de sertissage' },
   },
   {
+    slug: 'cybersecurite',
     titre: 'Cybersécurité',
-    texte: null,
+    titreComplet: 'Cybersécurité et protection des données',
+    texte:
+      'Évaluation des risques, sauvegardes, sécurisation des postes, des serveurs et des accès : protégez vos données et la continuité de votre activité.',
+    description:
+      "Madal Technologie, Abidjan : évaluation de la sécurité, droits d'accès, sauvegardes, sécurisation des postes, serveurs et réseaux, sensibilisation des équipes.",
+    introduction: [
+      'Perte de données, piratage ou panne prolongée : les conséquences peuvent être lourdes pour toute organisation.',
+      'Madal Technologie identifie vos risques et renforce vos dispositifs de sécurité. Aucune solution ne garantit une protection absolue, mais de bonnes pratiques réduisent fortement les risques.',
+    ],
+    prestations: [
+      { titre: 'Évaluation', texte: 'État des lieux de vos pratiques de sécurité informatique.' },
+      { titre: "Comptes et droits d'accès", texte: 'Chaque utilisateur accède uniquement à ce dont il a besoin.' },
+      { titre: 'Postes et serveurs', texte: 'Renforcement de la sécurité de vos équipements.' },
+      { titre: 'Sauvegardes', texte: 'Stratégie de sauvegarde pour protéger vos données contre la perte.' },
+      { titre: 'Réseaux et accès distants', texte: 'Sécurisation des connexions internes et externes.' },
+      { titre: 'Mises à jour', texte: 'Systèmes et logiciels maintenus à jour.' },
+      { titre: 'Sensibilisation', texte: 'Formation de vos équipes aux risques numériques.' },
+      { titre: 'Continuité informatique', texte: "Aide à la préparation d'un plan de continuité." },
+    ],
+    objectif: "Réduire les risques d'accès non autorisé, de perte de données et d'interruption de vos activités.",
     visuel: { src: salleServeurs, alt: 'Allée de serveurs dans une salle informatique' },
   },
   {
+    slug: 'video-ip',
     titre: 'Vidéo IP',
-    texte: null,
-    visuel: { src: interventionBaieReseau, alt: "Technicien intervenant sur une baie de brassage" },
+    titreComplet: 'Vidéo IP et vidéosurveillance',
+    texte:
+      'Étude, installation et configuration de caméras IP pour bureaux, commerces et entrepôts, avec consultation à distance et accès sécurisés.',
+    description:
+      "Madal Technologie, Abidjan : vidéosurveillance IP pour bureaux, commerces et entrepôts, de l'étude à la maintenance, avec consultation à distance.",
+    introduction: [
+      'Bureaux, commerces, entrepôts : la vidéosurveillance protège vos biens et vos équipes.',
+      'Madal Technologie installe des systèmes de vidéo IP en tenant compte de la sécurité des accès, de la confidentialité des images et des obligations légales applicables.',
+    ],
+    prestations: [
+      { titre: 'Étude des besoins', texte: 'Analyse des zones à surveiller et des contraintes du site.' },
+      { titre: 'Emplacement des caméras', texte: 'Positionnement pour une couverture optimale.' },
+      { titre: 'Installation', texte: 'Pose et raccordement des caméras IP.' },
+      { titre: 'Enregistrement vidéo', texte: "Configuration de l'enregistrement et de la conservation des images." },
+      { titre: 'Accès autorisés', texte: 'Consultation réservée aux personnes habilitées.' },
+      { titre: 'Consultation à distance', texte: 'Accès aux images depuis un ordinateur ou un smartphone.' },
+      { titre: 'Tests et maintenance', texte: 'Vérification du fonctionnement et entretien du système.' },
+    ],
+    objectif: 'Une surveillance fiable de vos locaux, dans le respect de la confidentialité et de la réglementation.',
+    visuel: { src: interventionBaieReseau, alt: 'Technicien intervenant sur une baie de brassage' },
   },
   {
+    slug: 'accompagnement-digital',
     titre: 'Accompagnement digital',
-    texte: null,
-    visuel: { src: intelligenceArtificielle, alt: 'Illustration de services numériques et d’intelligence artificielle' },
+    titreComplet: 'Accompagnement à la transformation digitale',
+    texte:
+      'Numérisation des processus, automatisation, outils collaboratifs et intelligence artificielle : une transformation numérique progressive et mesurée.',
+    description:
+      'Madal Technologie, Abidjan : transformation digitale, numérisation des processus, automatisation, outils collaboratifs, intelligence artificielle et formation.',
+    introduction: [
+      "Les outils numériques simplifient les opérations, améliorent la productivité et facilitent la prise de décision, à condition d'être bien choisis.",
+      'Madal Technologie suit une démarche progressive : comprendre vos besoins, sélectionner les solutions adaptées, accompagner leur mise en œuvre et mesurer les améliorations.',
+    ],
+    prestations: [
+      { titre: 'Analyse des processus', texte: 'Repérage des tâches et des circuits qui gagnent à être numérisés.' },
+      { titre: 'Choix des outils', texte: 'Sélection et déploiement des solutions adaptées.' },
+      { titre: 'Automatisation', texte: 'Suppression des tâches répétitives.' },
+      { titre: 'Outils collaboratifs', texte: 'Travail en équipe facilité, au bureau comme à distance.' },
+      { titre: 'Intelligence artificielle', texte: "Intégration d'outils d'IA lorsque cela est pertinent." },
+      { titre: 'Données et indicateurs', texte: 'Meilleure exploitation de vos données pour piloter votre activité.' },
+      { titre: 'Formation', texte: 'Prise en main des outils par vos équipes.' },
+      { titre: 'Suivi des résultats', texte: "Mesure de l'adoption et des améliorations obtenues." },
+    ],
+    objectif: 'Une transformation numérique utile, progressive et mesurable.',
+    renvoi: {
+      texte:
+        'En amont, Madal Consulting analyse votre organisation et vos procédures, pour que les outils numériques répondent à de vrais besoins.',
+      libelle: 'Découvrir le conseil aux entreprises',
+      href: '/consulting/conseil',
+    },
+    visuel: { src: intelligenceArtificielle, alt: "Illustration de services numériques et d'intelligence artificielle" },
   },
 ];
 
