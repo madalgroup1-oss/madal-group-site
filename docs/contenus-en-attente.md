@@ -6,14 +6,14 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 
 | Fait | Contenu | Utilisé sur | Format attendu |
 | --- | --- | --- | --- |
-| [ ] | Logo officiel à plat | Toutes les pages | SVG ou PNG fond transparent, versions fond clair et fond foncé |
-| [ ] | Logo Madal RH sans filigrane | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
+| [ ] | Logo officiel à plat : le fichier reçu le 23/10/2026 (sceau, 200 × 200 px, rendu 3D sur fond gris) est moins net que `logo-sceau.jpg` (720 px) : non utilisé, original haute définition demandé | Toutes les pages | SVG ou PNG fond transparent, versions fond clair et fond foncé |
+| [x] | Logo Madal RH sans filigrane, reçu le 23/10/2026 (`madal-rh.jpg`, 1536 × 1024) | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
 | [x] | Textes des 5 services Consulting, reçus le 23/10/2026 (résumé + description détaillée) | /consulting et /consulting/<service> (5 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
 | [x] | Textes des 9 services Technologie, reçus le 23/10/2026 (résumé + description détaillée) | /technologie et /technologie/<service> (9 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
 | [x] | Texte Allô Lapins & Volailles by MG, reçu le 23/10/2026 | /distribution | 3 lignes |
-| [ ] | Logo Allô Lapins & Volailles by MG (photo de lapin provisoire en attendant) | /distribution | SVG ou PNG fond transparent |
+| [ ] | Logo Allô Lapins & Volailles by MG : reçu le 23/10/2026 en 200 × 200 px seulement (`logo-allo-lapins.jpg`, affiché en médaillon de 112 px) ; version haute définition à fournir | /distribution | SVG ou PNG ≥ 600 px |
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
 | [ ] | Fiche Madal RH : problème traité, fonctionnalités, captures | /solutions/madal-rh | Texte + 3 captures |
 | [ ] | 3 premiers articles du Mag (un par pôle) | /mag | Saisie dans /admin |

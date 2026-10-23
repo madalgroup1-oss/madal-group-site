@@ -7,7 +7,7 @@ import CarteProduit from '../components/CarteProduit.astro';
 import Filtres from '../components/Filtres.astro';
 import Icone from '../components/Icone.astro';
 import { POLES_DETAILS } from '../data/groupe';
-import { TEXTE_ALLO_LAPINS, VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
+import { LOGO_ALLO_LAPINS, TEXTE_ALLO_LAPINS, VISUEL_ALLO_LAPINS, VISUELS_FAMILLES } from '../data/landings';
 import { lienWhatsApp } from '../lib/coordonnees';
 import { formatDate, formatPrix } from '../lib/format';
 import { listerFamilles, listerProduits, promotionsEnCours } from '../lib/supabase';
@@ -130,6 +130,7 @@ const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite
           sizes="(min-width: 900px) 460px, calc(100vw - 48px)"
           class="allo__photo"
         />
+        <Image src={LOGO_ALLO_LAPINS.src} alt={LOGO_ALLO_LAPINS.alt} width={112} height={112} densities={[1, 2]} class="allo__logo" />
       </div>
       <div class="entete-section allo__texte" data-apparition>
         <p class="etiquette">Une marque de Madal Distribution</p>
@@ -326,7 +327,20 @@ const commandeAllo = lienWhatsApp('Allô Lapins & Volailles by MG', 'Je souhaite
   }
 
   .allo__visuel {
+    position: relative;
     height: clamp(240px, 36vw, 420px);
+  }
+
+  /* Logo de la marque en médaillon, en bas à gauche de la photo */
+  .allo__logo {
+    position: absolute;
+    bottom: var(--espace-3);
+    left: var(--espace-3);
+    width: 112px;
+    height: 112px;
+    border: 4px solid var(--blanc);
+    border-radius: var(--rayon-carte);
+    box-shadow: var(--ombre-carte);
   }
 
   .allo__photo {

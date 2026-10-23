@@ -22,6 +22,7 @@ import poulesPondeuses from '../assets/images/poles/distribution/poules-pondeuse
 import viandeDeBoeuf from '../assets/images/poles/distribution/viande-de-boeuf.jpg';
 import pouletsDeChair from '../assets/images/poles/distribution/poulets-de-chair.jpg';
 import serveursTour from '../assets/images/poles/technologie/serveurs-tour.jpg';
+import logoAlloLapins from '../assets/images/logo-allo-lapins.jpg';
 import type { NomIconeSite } from '../components/Icone.astro';
 import type { Visuel } from './visuels';
 
@@ -546,7 +547,13 @@ export const TEXTE_ALLO_LAPINS: string[] = [
   'Notre ambition : devenir une marque de confiance, accessible et engagée pour la satisfaction de chaque client.',
 ];
 
-/** Illustration provisoire de l'encart Allô Lapins & Volailles by MG (logo à fournir). */
+/** Logo de la marque (fichier fourni le 23/10/2026, 200 × 200 px : à remplacer par une version haute définition). */
+export const LOGO_ALLO_LAPINS: Visuel = {
+  src: logoAlloLapins,
+  alt: 'Logo Allô Lapins & Volailles by MG',
+};
+
+/** Photo de l'encart Allô Lapins & Volailles by MG. */
 export const VISUEL_ALLO_LAPINS: Visuel = {
   src: lapinFrais,
   alt: 'Lapin frais préparé, prêt à la vente',
