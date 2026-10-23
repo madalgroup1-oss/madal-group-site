@@ -6,14 +6,14 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 
 | Fait | Contenu | Utilisé sur | Format attendu |
 | --- | --- | --- | --- |
-| [ ] | Logo officiel à plat | Toutes les pages | SVG ou PNG fond transparent, versions fond clair et fond foncé |
-| [ ] | Logo Madal RH sans filigrane | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
+| [x] | Logo officiel à plat, reçu le 23/10/2026 (`logo simple1.jpeg`, 1080 px, fond blanc) : sceau complet dans `logo-sceau.jpg`, disque central recadré (coins blanchis) dans `logo-disque.jpg`. Une version SVG ou PNG à fond transparent reste souhaitable | Toutes les pages | SVG ou PNG fond transparent |
+| [x] | Logo Madal RH sans filigrane, reçu le 23/10/2026 (`madal-rh.jpg`, 1536 × 1024) | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
 | [x] | Textes des 5 services Consulting, reçus le 23/10/2026 (résumé + description détaillée) | /consulting et /consulting/<service> (5 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
 | [x] | Textes des 9 services Technologie, reçus le 23/10/2026 (résumé + description détaillée) | /technologie et /technologie/<service> (9 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
 | [x] | Texte Allô Lapins & Volailles by MG, reçu le 23/10/2026 | /distribution | 3 lignes |
-| [ ] | Logo Allô Lapins & Volailles by MG (photo de lapin provisoire en attendant) | /distribution | SVG ou PNG fond transparent |
+| [ ] | Logo Allô Lapins & Volailles by MG : reçu le 23/10/2026 en 200 × 200 px seulement (`logo-allo-lapins.jpg`, affiché en médaillon de 112 px) ; version haute définition à fournir | /distribution | SVG ou PNG ≥ 600 px |
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
 | [ ] | Fiche Madal RH : problème traité, fonctionnalités, captures | /solutions/madal-rh | Texte + 3 captures |
 | [ ] | 3 premiers articles du Mag (un par pôle) | /mag | Saisie dans /admin |
@@ -25,7 +25,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | N° | Question | Valeur utilisée en attendant |
 | --- | --- | --- |
 | 1 | Signature officielle : « STRUCTURER • DISTRIBUER • INNOVER » (brief) ou « Plus qu'une entreprise, une référence » (enseigne) ? | La première dans le hero et le pied de page ; la seconde en titre de la section « Pourquoi MADAL GROUP » |
-| 2 | Quelle version du symbole fait foi (blanc et vert, ou deux verts) ? | `src/assets/images/logo-disque.jpg`, recadrage provisoire du sceau |
+| 2 | Quelle version du symbole fait foi (blanc et vert, ou deux verts) ? | Résolu le 23/10/2026 : logo à plat fourni (deux verts sur disque gris) |
 | 3 | Les visuels fournis (façade, bureaux, équipe) sont-ils les photos définitives ? | Utilisés tels quels |
 | 4 | Ordre des sections de /consulting : le bloc « Nos offres » a été déplacé tout en haut dans la maquette en ligne | Ordre du cahier des charges (offres après la méthode) |
 | 5 | /distribution : le bandeau « Promotions » est 5e dans le cahier des charges ; un bandeau se lit mieux en haut de page | Placé juste sous le hero (masqué tant qu'aucune promotion n'est en cours) |

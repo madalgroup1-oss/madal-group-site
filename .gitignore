@@ -16,3 +16,6 @@ image/
 
 # Fichier local contenant un mot de passe : ne jamais versionner
 mdp.txt
+
+# Fichiers sources déposés par MADAL GROUP (copiés dans src/assets/images)
+Dossier du site/
