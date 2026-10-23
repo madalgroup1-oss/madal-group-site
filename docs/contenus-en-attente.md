@@ -33,7 +33,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | 8 | Siège social (« Yopougon Petit Toit Rouge, carrefour ancienne pharmacie Noya ») différent des locaux (Camp Militaire) | Siège dans les mentions légales et la politique de confidentialité ; Camp Militaire partout ailleurs (décision du 19/10/2026) |
 | 9 | Politique de confidentialité : durée de conservation des demandes et délai de réponse aux demandes d'accès | 3 ans après le dernier échange ; réponse sous un mois (validé le 19/10/2026) |
 | 10 | Déclaration du traitement « demandes de contact » auprès de l'ARTCI (loi n° 2013-450) | Non effectuée au 19/10/2026 : à faire par MADAL GROUP |
-| 11 | Services Consulting : mentions SYSCOHADA révisé (comptabilité), FNE (fiscalité) et CNPS (gestion sociale) ajoutées lors de la relecture | À confirmer par MADAL GROUP |
+| 11 | Services Consulting : mentions SYSCOHADA révisé (comptabilité), FNE (fiscalité) et CNPS (gestion sociale) | Validées le 23/10/2026 : ouverture et paramétrage des espaces FNE et CNPS, facturation et déclarations prises en charge à la demande du client |
 
 ## Images disponibles
 

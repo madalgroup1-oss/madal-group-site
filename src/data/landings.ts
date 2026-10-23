@@ -94,9 +94,9 @@ export const SERVICES_CONSULTING: ServiceDetaille[] = [
     titre: 'Fiscalité',
     titreComplet: 'Fiscalité et conformité fiscale',
     texte:
-      'Déclarations, calendrier fiscal, TVA et facture normalisée électronique (FNE) : nous sécurisons vos obligations pour éviter retards et pénalités.',
+      'Déclarations, TVA, mise en place de la facture normalisée électronique (FNE) et gestion de votre facturation : des obligations fiscales maîtrisées, sans retard ni pénalité.',
     description:
-      'Madal Consulting, Abidjan : déclarations fiscales, calendrier des échéances, TVA, facture normalisée électronique (FNE) et assistance au contrôle fiscal.',
+      'Madal Consulting, Abidjan : déclarations fiscales, TVA, mise en place de la facture normalisée électronique (FNE), facturation et assistance au contrôle fiscal.',
     introduction: [
       'Une déclaration tardive, une erreur de calcul ou une obligation mal comprise peut entraîner des pénalités et peser sur votre trésorerie.',
       'Madal Consulting identifie les obligations propres à votre régime et à votre activité, puis vous aide à les respecter dans les délais.',
@@ -112,7 +112,8 @@ export const SERVICES_CONSULTING: ServiceDetaille[] = [
       },
       {
         titre: 'Facture normalisée électronique (FNE)',
-        texte: "Organisation de votre facturation pour répondre aux exigences en vigueur en Côte d'Ivoire.",
+        texte:
+          "Ouverture et paramétrage de votre espace FNE, puis, à votre demande, émission et suivi de vos factures normalisées pour une facturation fiable et conforme.",
       },
       {
         titre: 'Prévention des risques',
@@ -131,7 +132,7 @@ export const SERVICES_CONSULTING: ServiceDetaille[] = [
     titre: 'Gestion sociale',
     titreComplet: 'Gestion sociale et administration du personnel',
     texte:
-      'Paie, dossiers du personnel, congés et déclarations CNPS : une administration du personnel rigoureuse et confidentielle.',
+      'Paie, dossiers du personnel, congés, mise en place de votre espace CNPS et déclarations sociales : une gestion du personnel rigoureuse et confidentielle.',
     description:
       'Madal Consulting, Abidjan : traitement de la paie, dossiers du personnel, congés, déclarations CNPS et documents sociaux pour les entreprises.',
     introduction: [
@@ -144,8 +145,9 @@ export const SERVICES_CONSULTING: ServiceDetaille[] = [
       { titre: 'Absences et congés', texte: 'Suivi des congés, permissions et absences ayant une incidence sur la paie.' },
       { titre: 'Documents sociaux', texte: 'Contrats, attestations et autres documents liés à la relation de travail.' },
       {
-        titre: 'Déclarations sociales',
-        texte: 'Préparation des déclarations et cotisations CNPS et des retenues sur salaires.',
+        titre: 'Déclarations CNPS',
+        texte:
+          'Ouverture et paramétrage de votre espace employeur CNPS, puis, à votre demande, prise en charge de vos déclarations et du suivi de vos cotisations.',
       },
       { titre: 'Entrées et sorties', texte: 'Formalités et documents liés aux embauches et aux départs.' },
       { titre: 'Éléments de rémunération', texte: 'Contrôle des primes, indemnités et retenues.' },
