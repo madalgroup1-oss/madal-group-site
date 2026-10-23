@@ -8,7 +8,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | --- | --- | --- | --- |
 | [ ] | Logo officiel à plat | Toutes les pages | SVG ou PNG fond transparent, versions fond clair et fond foncé |
 | [ ] | Logo Madal RH sans filigrane | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
-| [ ] | Textes des 5 services Consulting | /consulting | 2 lignes par service |
+| [x] | Textes des 5 services Consulting, reçus le 23/10/2026 (résumé + description détaillée) | /consulting et /consulting/<service> (5 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
 | [ ] | Textes des 9 services Technologie | /technologie | 2 lignes par service |
 | [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
@@ -33,6 +33,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | 8 | Siège social (« Yopougon Petit Toit Rouge, carrefour ancienne pharmacie Noya ») différent des locaux (Camp Militaire) | Siège dans les mentions légales et la politique de confidentialité ; Camp Militaire partout ailleurs (décision du 19/10/2026) |
 | 9 | Politique de confidentialité : durée de conservation des demandes et délai de réponse aux demandes d'accès | 3 ans après le dernier échange ; réponse sous un mois (validé le 19/10/2026) |
 | 10 | Déclaration du traitement « demandes de contact » auprès de l'ARTCI (loi n° 2013-450) | Non effectuée au 19/10/2026 : à faire par MADAL GROUP |
+| 11 | Services Consulting : mentions SYSCOHADA révisé (comptabilité), FNE (fiscalité) et CNPS (gestion sociale) ajoutées lors de la relecture | À confirmer par MADAL GROUP |
 
 ## Images disponibles
 

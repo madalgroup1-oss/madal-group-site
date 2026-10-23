@@ -58,6 +58,31 @@ export function etablissement(urlImage: string): Record<string, unknown> {
   };
 }
 
+/** Service : pages des services d'un pôle (ex. /consulting/comptabilite). */
+export function service(donnees: {
+  nom: string;
+  description: string;
+  chemin: string;
+  pole: string;
+  urlPole: string;
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: donnees.nom,
+    description: donnees.description,
+    url: new URL(donnees.chemin, URL_SITE).href,
+    serviceType: donnees.nom,
+    areaServed: { '@type': 'Country', name: "Côte d'Ivoire" },
+    provider: {
+      '@type': 'Organization',
+      name: donnees.pole,
+      url: new URL(donnees.urlPole, URL_SITE).href,
+      parentOrganization: { '@type': 'Organization', name: RAISON_SOCIALE, url: URL_SITE },
+    },
+  };
+}
+
 /** Sérialise un objet JSON-LD sans permettre de fermer la balise <script>. */
 export function jsonLd(donnees: Record<string, unknown>): string {
   return JSON.stringify(donnees).replace(/</g, '\\u003c');

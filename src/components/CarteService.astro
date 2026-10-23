@@ -1,17 +1,20 @@
 ---
 import { Image } from 'astro:assets';
+import Icone from './Icone.astro';
 import type { Service } from '../data/landings';
 
 interface Props {
   service: Service;
   numero: number;
+  /** Page détaillée du service, si elle existe. */
+  href?: string;
 }
 
-const { service, numero } = Astro.props;
+const { service, numero, href } = Astro.props;
 const rang = String(numero).padStart(2, '0');
 ---
 
-<!-- Cellule d'une .grille-technique : numéro, photo à angle coupé, titre, présentation -->
+<!-- Cellule d'une .grille-technique : numéro, photo à angle coupé, titre, présentation, lien éventuel -->
 <article class="carte-service">
   <p class="etiquette">{rang}</p>
   <div class="carte-service__visuel angle-coupe">
@@ -31,6 +34,14 @@ const rang = String(numero).padStart(2, '0');
       )
     }
   </p>
+  {
+    href && (
+      <a class="lien-fleche carte-service__lien" href={href}>
+        En savoir plus<span class="visuellement-cache"> : {service.titre}</span>
+        <Icone nom="fleche" taille={18} />
+      </a>
+    )
+  }
 </article>
 
 <style>
@@ -93,6 +104,10 @@ const rang = String(numero).padStart(2, '0');
 
   .carte-service__texte {
     color: var(--texte-secondaire);
+  }
+
+  .carte-service__lien {
+    margin-top: auto;
   }
 
   @media (max-width: 640px) {
