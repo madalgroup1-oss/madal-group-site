@@ -6,7 +6,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 
 | Fait | Contenu | Utilisé sur | Format attendu |
 | --- | --- | --- | --- |
-| [ ] | Logo officiel à plat : le fichier reçu le 23/10/2026 (sceau, 200 × 200 px, rendu 3D sur fond gris) est moins net que `logo-sceau.jpg` (720 px) : non utilisé, original haute définition demandé | Toutes les pages | SVG ou PNG fond transparent, versions fond clair et fond foncé |
+| [x] | Logo officiel à plat, reçu le 23/10/2026 (`logo simple1.jpeg`, 1080 px, fond blanc) : sceau complet dans `logo-sceau.jpg`, disque central recadré (coins blanchis) dans `logo-disque.jpg`. Une version SVG ou PNG à fond transparent reste souhaitable | Toutes les pages | SVG ou PNG fond transparent |
 | [x] | Logo Madal RH sans filigrane, reçu le 23/10/2026 (`madal-rh.jpg`, 1536 × 1024) | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
 | [x] | Textes des 5 services Consulting, reçus le 23/10/2026 (résumé + description détaillée) | /consulting et /consulting/<service> (5 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
@@ -25,7 +25,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | N° | Question | Valeur utilisée en attendant |
 | --- | --- | --- |
 | 1 | Signature officielle : « STRUCTURER • DISTRIBUER • INNOVER » (brief) ou « Plus qu'une entreprise, une référence » (enseigne) ? | La première dans le hero et le pied de page ; la seconde en titre de la section « Pourquoi MADAL GROUP » |
-| 2 | Quelle version du symbole fait foi (blanc et vert, ou deux verts) ? | `src/assets/images/logo-disque.jpg`, recadrage provisoire du sceau |
+| 2 | Quelle version du symbole fait foi (blanc et vert, ou deux verts) ? | Résolu le 23/10/2026 : logo à plat fourni (deux verts sur disque gris) |
 | 3 | Les visuels fournis (façade, bureaux, équipe) sont-ils les photos définitives ? | Utilisés tels quels |
 | 4 | Ordre des sections de /consulting : le bloc « Nos offres » a été déplacé tout en haut dans la maquette en ligne | Ordre du cahier des charges (offres après la méthode) |
 | 5 | /distribution : le bandeau « Promotions » est 5e dans le cahier des charges ; un bandeau se lit mieux en haut de page | Placé juste sous le hero (masqué tant qu'aucune promotion n'est en cours) |
