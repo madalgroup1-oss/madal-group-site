@@ -1,0 +1,242 @@
+---
+// Page détaillée d'un service de pôle (/consulting/<slug>, /technologie/<slug>).
+// Le contenu facultatif passé en slot s'insère entre les prestations et les autres services.
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import EntetePage from './EntetePage.astro';
+import FilAriane from './FilAriane.astro';
+import Icone from './Icone.astro';
+import SectionDemande from './SectionDemande.astro';
+import type { ServiceDetaille } from '../data/landings';
+import { lienWhatsApp } from '../lib/coordonnees';
+import { NOM_POLE } from '../lib/libelles';
+import { jsonLd, service as donneesService } from '../lib/seo';
+
+interface Props {
+  service: ServiceDetaille;
+  /** Services du pôle, dans l'ordre d'affichage. */
+  services: ServiceDetaille[];
+  pole: 'consulting' | 'technologie';
+}
+
+const { service, services, pole } = Astro.props;
+const nomPole = NOM_POLE[pole];
+const rang = String(services.findIndex((element) => element.slug === service.slug) + 1).padStart(2, '0');
+const page = `${nomPole} — ${service.titreComplet}`;
+const autres = services.filter((autre) => autre.slug !== service.slug);
+const donnees = donneesService({
+  nom: service.titreComplet,
+  description: service.description,
+  chemin: `/${pole}/${service.slug}/`,
+  pole: nomPole,
+  urlPole: `/${pole}/`,
+});
+---
+
+<Base
+  titre={`${service.titreComplet} à Abidjan — ${nomPole}`}
+  description={service.description}
+  page={page}
+  lienDevis="#demande"
+>
+  <EntetePage etiquette={`${nomPole} / Service ${rang}`} titre={service.titreComplet} texte={service.texte}>
+    <FilAriane
+      slot="ariane"
+      etapes={[
+        { libelle: 'Accueil', href: '/' },
+        { libelle: nomPole, href: `/${pole}` },
+        { libelle: service.titre },
+      ]}
+    />
+    <a class="bouton" href="#demande">Demander un devis</a>
+    <a class="bouton bouton--contour" href={lienWhatsApp(page)} target="_blank" rel="noopener">
+      Écrire sur WhatsApp<span class="visuellement-cache"> (nouvelle fenêtre)</span>
+    </a>
+  </EntetePage>
+
+  <!-- Présentation et visuel -->
+  <section class="section" aria-labelledby="presentation-titre">
+    <div class="conteneur presentation">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Pourquoi ce service</p>
+        <h2 id="presentation-titre">{service.titre} : l'essentiel</h2>
+        {service.introduction.map((paragraphe) => <p>{paragraphe}</p>)}
+      </div>
+      <div class="presentation__visuel angle-coupe" data-apparition="image">
+        <Image
+          src={service.visuel.src}
+          alt={service.visuel.alt}
+          widths={[360, 560]}
+          sizes="(min-width: 900px) 480px, calc(100vw - 48px)"
+          class="presentation__photo"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Prestations -->
+  <section class="section section--grise" aria-labelledby="prestations-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">Nos prestations</p>
+        <h2 id="prestations-titre">Selon votre besoin, nous prenons en charge</h2>
+      </div>
+      <ul class="grille-technique prestations" data-apparition-groupe>
+        {
+          service.prestations.map((prestation, index) => (
+            <li class="prestation">
+              <span class="etiquette">{String(index + 1).padStart(2, '0')}</span>
+              <h3 class="prestation__titre">{prestation.titre}</h3>
+              <p class="prestation__texte">{prestation.texte}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="objectif" data-apparition>
+        <Icone nom="coche" taille={24} epaisseur={2.5} />
+        <p><strong>Notre objectif :</strong> {service.objectif}</p>
+      </div>
+      {
+        service.renvoi && (
+          <div class="renvoi" data-apparition>
+            <p>{service.renvoi.texte}</p>
+            <a class="lien-fleche" href={service.renvoi.href}>
+              {service.renvoi.libelle}
+              <Icone nom="fleche" taille={18} />
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <slot />
+
+  <!-- Autres services du pôle -->
+  <section class="section" aria-labelledby="autres-titre">
+    <div class="conteneur section__contenu">
+      <div class="entete-section" data-apparition>
+        <p class="etiquette">{nomPole}</p>
+        <h2 id="autres-titre">Nos autres services</h2>
+      </div>
+      <ul class="autres" data-apparition-groupe>
+        {
+          autres.map((autre) => (
+            <li>
+              <a class="autres__lien" href={`/${pole}/${autre.slug}`}>
+                <span>{autre.titreComplet}</span>
+                <Icone nom="fleche" taille={18} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <SectionDemande pole={pole} objet={service.titreComplet} page={page} />
+
+  <script type="application/ld+json" set:html={jsonLd(donnees)} />
+</Base>
+
+<style>
+  .presentation {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: var(--espace-6);
+  }
+
+  .presentation__visuel {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .presentation__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .prestations {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+
+  .prestation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-2);
+    padding: var(--espace-4);
+    background: var(--blanc);
+  }
+
+  .prestation__titre {
+    font-size: var(--taille-texte-grand);
+    font-weight: var(--graisse-demi);
+  }
+
+  .prestation__texte {
+    color: var(--texte-secondaire);
+  }
+
+  .objectif {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--espace-2);
+    max-width: 60ch;
+    font-size: var(--taille-texte-grand);
+  }
+
+  .objectif :global(svg) {
+    flex-shrink: 0;
+    color: var(--vert-texte);
+  }
+
+  .renvoi {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--espace-1);
+    max-width: 60ch;
+  }
+
+  .autres {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--espace-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .autres__lien {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espace-2);
+    min-height: var(--cible-tactile);
+    height: 100%;
+    padding: var(--espace-4);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-carte);
+    font-weight: var(--graisse-demi);
+    color: var(--texte);
+    text-decoration: none;
+    transition: border-color var(--duree-survol) var(--courbe-sortie);
+  }
+
+  .autres__lien :global(svg) {
+    flex-shrink: 0;
+    color: var(--vert-texte);
+  }
+
+  .autres__lien:hover {
+    border-color: var(--vert-texte);
+  }
+
+  @media (max-width: 899px) {
+    .presentation {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

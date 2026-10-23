@@ -10,7 +10,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | [ ] | Logo Madal RH sans filigrane | Accueil, /consulting, fiche Madal RH | SVG ou PNG |
 | [x] | Textes des 5 services Consulting, reçus le 23/10/2026 (résumé + description détaillée) | /consulting et /consulting/<service> (5 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
-| [ ] | Textes des 9 services Technologie | /technologie | 2 lignes par service |
+| [x] | Textes des 9 services Technologie, reçus le 23/10/2026 (résumé + description détaillée) | /technologie et /technologie/<service> (9 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
 | [ ] | Texte et visuel Allô Lapins & Volailles by MG | /distribution | Logo + 3 lignes |
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
