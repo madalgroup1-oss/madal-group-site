@@ -12,7 +12,8 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | [ ] | Offres Consulting : nom, prestations, tarif, périodicité | /consulting | Saisie dans /admin |
 | [x] | Textes des 9 services Technologie, reçus le 23/10/2026 (résumé + description détaillée) | /technologie et /technologie/<service> (9 pages créées le 23/10/2026) | `src/data/landings.ts` |
 | [ ] | Catalogue Distribution : conditionnements et prix des 10 produits pré-remplis le 19/10/2026 (migration `0004`, « Prix sur demande »), autres produits | /distribution | Saisie dans /admin |
-| [ ] | Texte et visuel Allô Lapins & Volailles by MG | /distribution | Logo + 3 lignes |
+| [x] | Texte Allô Lapins & Volailles by MG, reçu le 23/10/2026 | /distribution | 3 lignes |
+| [ ] | Logo Allô Lapins & Volailles by MG (photo de lapin provisoire en attendant) | /distribution | SVG ou PNG fond transparent |
 | [ ] | Fiche BMVT GESTION PRO : problème traité, fonctionnalités, captures | /solutions/bmvt-gestion-pro | Texte + 3 captures |
 | [ ] | Fiche Madal RH : problème traité, fonctionnalités, captures | /solutions/madal-rh | Texte + 3 captures |
 | [ ] | 3 premiers articles du Mag (un par pôle) | /mag | Saisie dans /admin |
@@ -28,7 +29,7 @@ Tant qu'une ligne n'est pas cochée, le site affiche `[À FOURNIR : …]` à l'e
 | 3 | Les visuels fournis (façade, bureaux, équipe) sont-ils les photos définitives ? | Utilisés tels quels |
 | 4 | Ordre des sections de /consulting : le bloc « Nos offres » a été déplacé tout en haut dans la maquette en ligne | Ordre du cahier des charges (offres après la méthode) |
 | 5 | /distribution : le bandeau « Promotions » est 5e dans le cahier des charges ; un bandeau se lit mieux en haut de page | Placé juste sous le hero (masqué tant qu'aucune promotion n'est en cours) |
-| 6 | Textes des méthodes : /technologie n'a que les noms des 5 étapes (cadrage, maquette, développement, déploiement, maintenance) | Descriptions affichées en `[À FOURNIR]` |
+| 6 | Textes des méthodes : /technologie n'a que les noms des 5 étapes (cadrage, maquette, développement, déploiement, maintenance) | Résolu : descriptions reçues le 23/10/2026 |
 | 7 | Photos de banque d'images (`src/assets/images/poles/`) utilisées pour illustrer les services et les familles de produits | Hors hero uniquement ; heros Distribution et Technologie typographiques, hero Consulting avec la photo réelle de l'équipe |
 | 8 | Siège social (« Yopougon Petit Toit Rouge, carrefour ancienne pharmacie Noya ») différent des locaux (Camp Militaire) | Siège dans les mentions légales et la politique de confidentialité ; Camp Militaire partout ailleurs (décision du 19/10/2026) |
 | 9 | Politique de confidentialité : durée de conservation des demandes et délai de réponse aux demandes d'accès | 3 ans après le dernier échange ; réponse sous un mois (validé le 19/10/2026) |
