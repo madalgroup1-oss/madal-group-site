@@ -72,7 +72,7 @@ supabase/
 ## Règles de design
 
 - Couleurs : uniquement celles de `tokens.css`. `#22C55E` ne porte jamais de texte blanc et n'est jamais une couleur de texte sur fond clair (utiliser `--vert-texte`). Bouton vert = texte `--vert-fonce`.
-- Logo : fichiers fournis, **jamais redessinés, déformés ni recolorés**. `logo-disque.jpg` est le disque central recadré du logo officiel à plat (fourni le 23/10/2026).
+- Logo : fichiers fournis, **jamais redessinés, déformés ni recolorés**. `logo-disque.jpg` est un recadrage du sceau en relief, conservé par décision du 23/10/2026 (la version à plat a été écartée).
 - Mobile d'abord : tout doit fonctionner à 360 px. Cibles tactiles ≥ 44 px. Largeur de contenu ≤ 1 200 px.
 - Police Barlow, auto-hébergée (pas d'appel à Google Fonts en production). JetBrains Mono (graisse 500, auto-hébergée) pour les étiquettes et les boutons uniquement.
 - Direction visuelle « D — plan technique » validée le 17/10/2026 (remplace l'aspect des maquettes `docs/maquettes/`, dont la structure reste la référence) : en-tête flottant vert foncé, titres serrés, étiquettes en chasse fixe, trame `.trame`, `.grille-technique` à croix « + », photos `.angle-coupe`.
