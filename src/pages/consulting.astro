@@ -58,7 +58,7 @@ const madalRh = solutions.find((solution) => solution.slug === 'madal-rh');
         {
           SERVICES_CONSULTING.map((service, index) => (
             <li>
-              <CarteService service={service} numero={index + 1} />
+              <CarteService service={service} numero={index + 1} href={`/consulting/${service.slug}`} />
             </li>
           ))
         }

@@ -37,33 +37,200 @@ export interface Etape {
   texte: string | null;
 }
 
+export interface Prestation {
+  titre: string;
+  texte: string;
+}
+
+/** Service doté de sa propre page (/consulting/<slug>). */
+export interface ServiceDetaille extends Service {
+  slug: string;
+  texte: string;
+  /** Titre complet, <h1> de la page du service. */
+  titreComplet: string;
+  /** Meta description de la page (≈ 150 caractères). */
+  description: string;
+  introduction: string[];
+  prestations: Prestation[];
+  objectif: string;
+  /** Renvoi vers un autre pôle ou une solution du groupe. */
+  renvoi?: { texte: string; libelle: string; href: string };
+}
+
 // ---------------------------------------------------------------------------
 // Madal Consulting
+// Textes fournis par MADAL GROUP le 23/10/2026, retravaillés à la relecture.
 // ---------------------------------------------------------------------------
-export const SERVICES_CONSULTING: Service[] = [
+export const SERVICES_CONSULTING: ServiceDetaille[] = [
   {
+    slug: 'comptabilite',
     titre: 'Comptabilité',
-    texte: null,
+    titreComplet: 'Comptabilité et suivi financier',
+    texte:
+      'Tenue de votre comptabilité, suivi de vos opérations et préparation de vos états financiers selon le SYSCOHADA révisé, pour piloter votre activité avec des chiffres fiables.',
+    description:
+      'Madal Consulting, Abidjan : tenue de comptabilité SYSCOHADA, rapprochements bancaires, clôture, états financiers et tableaux de bord pour PME.',
+    introduction: [
+      "La comptabilité permet de connaître la situation réelle de votre entreprise, de mesurer ses performances et de décider en connaissance de cause.",
+      'Madal Consulting met en place pour les entrepreneurs, les PME et les organisations une comptabilité rigoureuse, tenue selon le référentiel SYSCOHADA révisé.',
+    ],
+    prestations: [
+      { titre: 'Comptabilité générale', texte: 'Enregistrement des achats, ventes, encaissements et décaissements.' },
+      {
+        titre: 'Pièces justificatives',
+        texte: 'Classement des factures, reçus et relevés bancaires, pour la traçabilité de chaque opération.',
+      },
+      { titre: 'Rapprochements bancaires', texte: 'Contrôle de la concordance entre vos écritures et vos relevés.' },
+      { titre: 'Comptes clients et fournisseurs', texte: 'Suivi des créances, des dettes et des échéances de règlement.' },
+      { titre: "Clôture de l'exercice", texte: "Préparation et contrôle des écritures de fin d'année." },
+      { titre: 'États financiers', texte: "Préparation des documents de fin d'exercice exigés par le référentiel applicable." },
+      { titre: 'Tableaux de bord', texte: 'Indicateurs simples pour suivre vos charges, vos produits et votre rentabilité.' },
+    ],
+    objectif: 'Une comptabilité à jour, fiable et réellement utile à la gestion quotidienne.',
     visuel: { src: comptabiliteCalculatrice, alt: 'Saisie comptable avec une calculatrice' },
   },
   {
+    slug: 'fiscalite',
     titre: 'Fiscalité',
-    texte: null,
+    titreComplet: 'Fiscalité et conformité fiscale',
+    texte:
+      'Déclarations, TVA, mise en place de la facture normalisée électronique (FNE) et gestion de votre facturation : des obligations fiscales maîtrisées, sans retard ni pénalité.',
+    description:
+      'Madal Consulting, Abidjan : déclarations fiscales, TVA, mise en place de la facture normalisée électronique (FNE), facturation et assistance au contrôle fiscal.',
+    introduction: [
+      'Une déclaration tardive, une erreur de calcul ou une obligation mal comprise peut entraîner des pénalités et peser sur votre trésorerie.',
+      'Madal Consulting identifie les obligations propres à votre régime et à votre activité, puis vous aide à les respecter dans les délais.',
+    ],
+    prestations: [
+      { titre: 'Diagnostic fiscal', texte: "Analyse de votre régime d'imposition et des obligations qui en découlent." },
+      { titre: 'Déclarations', texte: 'Collecte des données, calculs et préparation des déclarations.' },
+      { titre: 'Calendrier fiscal', texte: 'Anticipation des échéances de déclaration et de paiement.' },
+      { titre: 'TVA', texte: 'Contrôle des opérations concernées et préparation des éléments déclaratifs.' },
+      {
+        titre: "Impôts et taxes liés à l'activité",
+        texte: 'Suivi des autres prélèvements applicables à votre entreprise.',
+      },
+      {
+        titre: 'Facture normalisée électronique (FNE)',
+        texte:
+          "Ouverture et paramétrage de votre espace FNE, puis, à votre demande, émission et suivi de vos factures normalisées pour une facturation fiable et conforme.",
+      },
+      {
+        titre: 'Prévention des risques',
+        texte: "Contrôle de cohérence et correction des anomalies avant qu'elles ne coûtent cher.",
+      },
+      {
+        titre: 'Contrôle fiscal',
+        texte: 'Préparation des documents et assistance pendant la procédure, selon la mission convenue.',
+      },
+    ],
+    objectif: "Des obligations respectées, des échéances anticipées et moins de risques d'erreur.",
     visuel: { src: comptabiliteClasseur, alt: 'Classeur de pièces fiscales et calculatrice' },
   },
   {
+    slug: 'gestion-sociale',
     titre: 'Gestion sociale',
-    texte: null,
+    titreComplet: 'Gestion sociale et administration du personnel',
+    texte:
+      'Paie, dossiers du personnel, congés, mise en place de votre espace CNPS et déclarations sociales : une gestion du personnel rigoureuse et confidentielle.',
+    description:
+      'Madal Consulting, Abidjan : traitement de la paie, dossiers du personnel, congés, déclarations CNPS et documents sociaux pour les entreprises.',
+    introduction: [
+      'La gestion du personnel demande de la rigueur, de la confidentialité et une bonne connaissance du droit du travail.',
+      'Madal Consulting aide les entreprises à fiabiliser leur paie et à organiser leur administration du personnel.',
+    ],
+    prestations: [
+      { titre: 'Paie', texte: 'Collecte des éléments variables, calcul des rémunérations et contrôle des bulletins.' },
+      { titre: 'Dossiers du personnel', texte: 'Constitution et mise à jour du dossier de chaque salarié.' },
+      { titre: 'Absences et congés', texte: 'Suivi des congés, permissions et absences ayant une incidence sur la paie.' },
+      { titre: 'Documents sociaux', texte: 'Contrats, attestations et autres documents liés à la relation de travail.' },
+      {
+        titre: 'Déclarations CNPS',
+        texte:
+          'Ouverture et paramétrage de votre espace employeur CNPS, puis, à votre demande, prise en charge de vos déclarations et du suivi de vos cotisations.',
+      },
+      { titre: 'Entrées et sorties', texte: 'Formalités et documents liés aux embauches et aux départs.' },
+      { titre: 'Éléments de rémunération', texte: 'Contrôle des primes, indemnités et retenues.' },
+      { titre: 'Procédures RH', texte: 'Méthodes de classement, de contrôle et de suivi administratif.' },
+    ],
+    objectif: 'Un personnel géré avec rigueur et une visibilité claire sur vos obligations sociales.',
+    renvoi: {
+      texte:
+        "Pour automatiser la paie et le pointage, cette prestation s'appuie sur Madal RH, le logiciel développé par Madal Technologie.",
+      libelle: 'Découvrir Madal RH',
+      href: '/solutions/madal-rh',
+    },
     visuel: { src: reunionEquipe, alt: "Réunion d'une équipe autour d'un dossier" },
   },
   {
+    slug: 'accompagnement-administratif',
     titre: 'Accompagnement administratif',
-    texte: null,
+    titreComplet: 'Assistance et organisation administrative',
+    texte:
+      'Classement, suivi des dossiers, des contrats et des échéances, dématérialisation : une organisation claire qui vous libère du temps.',
+    description:
+      'Madal Consulting, Abidjan : organisation documentaire, suivi des dossiers, contrats et échéances, procédures internes et dématérialisation.',
+    introduction: [
+      "Une administration bien organisée fait circuler l'information, facilite le suivi des dossiers et évite les oublis.",
+      'Madal Consulting met en place des méthodes de travail adaptées au fonctionnement de votre entreprise.',
+    ],
+    prestations: [
+      { titre: 'Organisation documentaire', texte: 'Classement, archivage et structuration de vos dossiers.' },
+      { titre: 'Factures et échéances', texte: 'Suivi des règlements et des dates importantes.' },
+      {
+        titre: 'Dossiers administratifs',
+        texte: 'Préparation, mise à jour et suivi des dossiers indispensables à votre activité.',
+      },
+      { titre: 'Contrats et courriers', texte: 'Organisation des contrats, attestations et documents professionnels.' },
+      {
+        titre: 'Procédures internes',
+        texte: "Circuits de traitement, de validation et de conservation de l'information.",
+      },
+      { titre: 'Appui au quotidien', texte: 'Préparation de documents et coordination administrative.' },
+      { titre: 'Dématérialisation', texte: 'Passage au numérique de vos documents et de vos circuits de travail.' },
+      { titre: "Gain d'efficacité", texte: 'Repérage des tâches répétitives et méthodes pour les alléger.' },
+    ],
+    objectif: 'Une organisation plus fluide, mieux structurée et adaptée à vos besoins réels.',
     visuel: { src: analyseDocuments, alt: 'Analyse de documents administratifs' },
   },
   {
+    slug: 'conseil',
     titre: 'Conseil',
-    texte: null,
+    titreComplet: "Conseil en gestion et développement d'entreprise",
+    texte:
+      "Diagnostic, budgets, tableaux de bord et aide à la création d'entreprise : des décisions fondées sur des informations fiables.",
+    description:
+      "Madal Consulting, Abidjan : diagnostic organisationnel, gestion financière, budgets, tableaux de bord et accompagnement à la création d'entreprise.",
+    introduction: [
+      "Un dirigeant décide chaque jour de questions de finances, d'organisation, de personnel et de croissance.",
+      "Madal Consulting l'aide à y voir clair, à structurer ses activités et à améliorer ses résultats.",
+    ],
+    prestations: [
+      {
+        titre: 'Diagnostic organisationnel',
+        texte: 'Analyse de votre fonctionnement, de vos processus et de vos difficultés.',
+      },
+      {
+        titre: 'Gestion financière',
+        texte: 'Analyse des charges, des marges, de la trésorerie et des indicateurs clés.',
+      },
+      { titre: 'Budgets', texte: 'Prévisions financières et suivi des écarts avec les objectifs.' },
+      { titre: 'Procédures', texte: 'Circuits de validation, responsabilités et méthodes de travail formalisés.' },
+      {
+        titre: "Création d'entreprise",
+        texte: 'Structuration du projet, budget prévisionnel et organisation de départ.',
+      },
+      { titre: 'Suivi de la performance', texte: 'Indicateurs de gestion et tableaux de bord sur mesure.' },
+      { titre: 'Développement', texte: 'Analyse des opportunités et des priorités de croissance.' },
+      { titre: 'Digitalisation', texte: "Choix des outils numériques utiles, avec l'appui de Madal Technologie." },
+    ],
+    objectif: 'Une vision claire de votre entreprise pour des décisions fondées sur des informations fiables.',
+    renvoi: {
+      texte:
+        'Logiciels de gestion, applications sur mesure, réseaux : Madal Technologie met en œuvre les outils numériques recommandés.',
+      libelle: 'Découvrir Madal Technologie',
+      href: '/technologie',
+    },
     visuel: { src: reunionPoigneeDeMain, alt: "Poignée de main à l'issue d'un rendez-vous de conseil" },
   },
 ];
